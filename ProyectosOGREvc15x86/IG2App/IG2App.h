@@ -25,7 +25,9 @@ protected:
   OgreBites::TrayManager* mTrayMgr = nullptr;    
   Ogre::SceneNode* mLightNode = nullptr;
   Ogre::SceneNode* mCamNode = nullptr;
-  Ogre::SceneNode* mSinbadNode = nullptr;
+  Ogre::SceneNode* mSinbadNode = nullptr; 
+  Ogre::SceneNode* fondonode = nullptr;
+  Ogre::SceneNode* fondoarriba = nullptr;
   OgreBites::CameraMan* mCamMgr = nullptr;
  
 };
