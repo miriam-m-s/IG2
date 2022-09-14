@@ -1,117 +1,160 @@
-#include "IG2App.h"
+	#include "IG2App.h"
 
-#include <OgreEntity.h>
-#include <OgreInput.h>
-#include <SDL_keycode.h>
-#include <OgreMeshManager.h>
+	#include <OgreEntity.h>
+	#include <OgreInput.h>
+	#include <SDL_keycode.h>
+	#include <OgreMeshManager.h>
 
-using namespace Ogre;
+	using namespace Ogre;
 
-bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
-{
-  if (evt.keysym.sym == SDLK_ESCAPE)
-  {
-    getRoot()->queueEndRendering();
-  }
-  //else if (evt.keysym.sym == SDLK_???)
+	bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
+	{
+	  if (evt.keysym.sym == SDLK_ESCAPE)
+	  {
+		getRoot()->queueEndRendering();
+	  }
+	  //else if (evt.keysym.sym == SDLK_???)
   
-  return true;
-}
+	  return true;
+	}
 
-void IG2App::shutdown()
-{
-  mShaderGenerator->removeSceneManager(mSM);  
-  mSM->removeRenderQueueListener(mOverlaySystem);  
+	void IG2App::shutdown()
+	{
+	  mShaderGenerator->removeSceneManager(mSM);  
+	  mSM->removeRenderQueueListener(mOverlaySystem);  
 					
-  mRoot->destroySceneManager(mSM);  
+	  mRoot->destroySceneManager(mSM);  
 
-  delete mTrayMgr;  mTrayMgr = nullptr;
-  delete mCamMgr; mCamMgr = nullptr;
+	  delete mTrayMgr;  mTrayMgr = nullptr;
+	  delete mCamMgr; mCamMgr = nullptr;
   
-  // do not forget to call the base 
-  IG2ApplicationContext::shutdown();
-}
+	  // do not forget to call the base 
+	  IG2ApplicationContext::shutdown();
+	}
 
-void IG2App::setup(void)
-{
-  // do not forget to call the base first
-  IG2ApplicationContext::setup();
+	void IG2App::setup(void)
+	{
+	  // do not forget to call the base first
+	  IG2ApplicationContext::setup();
 
-  mSM = mRoot->createSceneManager();  
+	  mSM = mRoot->createSceneManager();  
 
-  // register our scene with the RTSS
-  mShaderGenerator->addSceneManager(mSM);
+	  // register our scene with the RTSS
+	  mShaderGenerator->addSceneManager(mSM);
 
-  mSM->addRenderQueueListener(mOverlaySystem);
+	  mSM->addRenderQueueListener(mOverlaySystem);
 
-  mTrayMgr = new OgreBites::TrayManager("TrayGUISystem", mWindow.render);  
-  mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-  addInputListener(mTrayMgr);
+	  mTrayMgr = new OgreBites::TrayManager("TrayGUISystem", mWindow.render);  
+	  mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+	  addInputListener(mTrayMgr);
 
-  addInputListener(this);   
-  setupScene();
-}
+	  addInputListener(this);   
+	  setupScene();
+	}
 
-void IG2App::setupScene(void)
-{
-  // create the camera
-  Camera* cam = mSM->createCamera("Cam");
-  cam->setNearClipDistance(1); 
-  cam->setFarClipDistance(10000);
-  cam->setAutoAspectRatio(true);
-  //cam->setPolygonMode(Ogre::PM_WIREFRAME); 
+	void IG2App::setupScene(void)
+	{
+	  // create the camera
+	  Camera* cam = mSM->createCamera("Cam");
+	  cam->setNearClipDistance(1); 
+	  cam->setFarClipDistance(10000);
+	  cam->setAutoAspectRatio(true);
+	  //cam->setPolygonMode(Ogre::PM_WIREFRAME); 
 
-  mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
-  mCamNode->attachObject(cam);
+	  mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
+	  mCamNode->attachObject(cam);
 
-  mCamNode->setPosition(0, 0, 1000);
-  mCamNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
-  //mCamNode->setDirection(Ogre::Vector3(0, 0, -1));  
+	  mCamNode->setPosition(0, 0, 1000);
+	  mCamNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
+	  //mCamNode->setDirection(Ogre::Vector3(0, 0, -1));  
   
-  // and tell it to render into the main window
-  Viewport* vp = getRenderWindow()->addViewport(cam);
-  //vp->setBackgroundColour(Ogre::ColourValue(1, 1, 1));
+	  // and tell it to render into the main window
+	  Viewport* vp = getRenderWindow()->addViewport(cam);
+	  vp->setBackgroundColour(Ogre::ColourValue(0.5, 0.7, 1));
 
-  //------------------------------------------------------------------------
+	  //------------------------------------------------------------------------
 
-  // without light we would just get a black screen 
+	  // without light we would just get a black screen 
 
-  Light* luz = mSM->createLight("Luz");
-  luz->setType(Ogre::Light::LT_DIRECTIONAL);
-  luz->setDiffuseColour(0.75, 0.75, 0.75);
+	  Light* luz = mSM->createLight("Luz");
+	  luz->setType(Ogre::Light::LT_DIRECTIONAL);
+	  luz->setDiffuseColour(0.75, 0.75, 0.75);
 
-  mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
-  //mLightNode = mCamNode->createChildSceneNode("nLuz");
-  mLightNode->attachObject(luz);
+	  mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
+	  //mLightNode = mCamNode->createChildSceneNode("nLuz");
+	  mLightNode->attachObject(luz);
 
-  mLightNode->setDirection(Ogre::Vector3(0, 0, -1));  //vec3.normalise();
-  //lightNode->setPosition(0, 0, 1000);
+	  mLightNode->setDirection(Ogre::Vector3(0, 0, -1));  //vec3.normalise();
+	  //lightNode->setPosition(0, 0, 1000);
  
-  //------------------------------------------------------------------------
+	  //------------------------------------------------------------------------
 
-  // finally something to render
+	  // finally something to render
 
-  Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
+	  //Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
 
-  mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
-  mSinbadNode->attachObject(ent);
+	  //mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
+	  //mSinbadNode->attachObject(ent);
 
-  //mSinbadNode->setPosition(400, 100, -300);
-  mSinbadNode->setScale(20, 20, 20);
-  //mSinbadNode->yaw(Ogre::Degree(-45));
-  //mSinbadNode->showBoundingBox(true);
-  //mSinbadNode->setVisible(false);
+	  ////mSinbadNode->setPosition(400, 100, -300);
+	  //mSinbadNode->setScale(20, 20, 20);
+	  //mSinbadNode->yaw(Ogre::Degree(-45));
+	  //mSinbadNode->showBoundingBox(true);
+	  //mSinbadNode->setVisible(false);
 
-  //------------------------------------------------------------------------
+	  Ogre::SceneNode* mClockNode = mSM->getRootSceneNode()->createChildSceneNode();
+	  mClockNode->setPosition(0,0,0);
+	  Ogre::SceneNode* mHoursNode = mClockNode->createChildSceneNode();
 
-  mCamMgr = new OgreBites::CameraMan(mCamNode);
-  addInputListener(mCamMgr);
-  mCamMgr->setStyle(OgreBites::CS_ORBIT);  
+	  double angle = 0;
+	  double radius = 200;
+
+	  for (int i = 0; i < 12; i++) {
+
+		  Ogre::Entity* hora = mSM->createEntity("uv_sphere.mesh");
+
+		  Ogre::SceneNode* Hora = mHoursNode->createChildSceneNode();
+		  Hora->attachObject(hora);
+
+		  Hora->setScale(0.2, 0.2, 0.2);
+		  Hora->setPosition(Ogre::Math::Cos(Ogre::Math::DegreesToRadians(angle)) *radius, 
+			  Ogre::Math::Sin(Ogre::Math::DegreesToRadians(angle))*radius , 0);
+
+		  angle += 360 / 12;
+	  }
+
+	  Ogre::Entity* agujaM = mSM->createEntity("cube.mesh");
+	  Ogre::SceneNode* AgujaM = mClockNode->createChildSceneNode();
+	  AgujaM->attachObject(agujaM);
+	  AgujaM->setScale(0.2, 1.75, 0.1);
+	  AgujaM->setPosition(mClockNode->getPosition().x, mClockNode->getPosition().y + radius / 4 , 0);
+
+	  Ogre::Entity* agujaH = mSM->createEntity("cube.mesh");
+	  Ogre::SceneNode* AgujaH = mClockNode->createChildSceneNode();
+	  AgujaH->attachObject(agujaH);
+	  AgujaH->setScale(0.1, 1.5, 0.1);
+	  AgujaH->setPosition(mClockNode->getPosition().x + radius/4, mClockNode->getPosition().y, 0);
+	  AgujaH->roll(Ogre::Degree(90));
+
+	  Ogre::Entity* agujaS = mSM->createEntity("cube.mesh");
+	  Ogre::SceneNode* AgujaS = mClockNode->createChildSceneNode();
+	  AgujaS->attachObject(agujaS);
+	  AgujaS->setScale(0.1/2, 1.5, 0.1);
+	  AgujaS->setPosition(mClockNode->getPosition().x, mClockNode->getPosition().y - radius / 4, 0);
+
+	  //mSinbadNode->setPosition(400, 100, -300);
+	  //mSinbadNode->setScale(20, 20, 20);
+
+	  //------------------------------------------------------------------------
+
+	  mCamMgr = new OgreBites::CameraMan(mCamNode);
+	  addInputListener(mCamMgr);
+	  mCamMgr->setStyle(OgreBites::CS_ORBIT);  
   
-  //mCamMgr->setTarget(mSinbadNode);  
-  //mCamMgr->setYawPitchDist(Radian(0), Degree(30), 100);
+	  //mCamMgr->setTarget(mSinbadNode);  
+	  //mCamMgr->setYawPitchDist(Radian(0), Degree(30), 100);
 
-  //------------------------------------------------------------------------
+	  //------------------------------------------------------------------------
 
-}
+	}
 
