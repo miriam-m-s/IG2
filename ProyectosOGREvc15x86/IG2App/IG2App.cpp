@@ -70,8 +70,7 @@ void IG2App::setupScene(void)
   
   // and tell it to render into the main window
   Viewport* vp = getRenderWindow()->addViewport(cam);
-  vp->setBackgroundColour(Ogre::ColourValue(0.7, 0.8,
-	  0.9));
+  //vp->setBackgroundColour(Ogre::ColourValue(1, 1, 1));
 
   //------------------------------------------------------------------------
 
@@ -85,7 +84,7 @@ void IG2App::setupScene(void)
   //mLightNode = mCamNode->createChildSceneNode("nLuz");
   mLightNode->attachObject(luz);
 
-  mLightNode->setDirection(Ogre::Vector3(1, 1, -1));  //vec3.normalise();
+  mLightNode->setDirection(Ogre::Vector3(0, 0, -1));  //vec3.normalise();
   //lightNode->setPosition(0, 0, 1000);
  
   //------------------------------------------------------------------------
@@ -102,18 +101,7 @@ void IG2App::setupScene(void)
   //mSinbadNode->yaw(Ogre::Degree(-45));
   //mSinbadNode->showBoundingBox(true);
   //mSinbadNode->setVisible(false);
-  Ogre::Entity* ent1 = mSM->createEntity("RomanBathLower.mesh");
 
-  fondonode = mSM->getRootSceneNode()->createChildSceneNode("nfondo");
-  fondonode->attachObject(ent1);
-
-  Ogre::Entity* ent2 = mSM->createEntity("RomanBathUpper.mesh");
-
-  fondoarriba = mSM->getRootSceneNode()->createChildSceneNode("nfondo1");
-  fondoarriba->attachObject(ent2);
-
-  //mSinbadNode->setPosition(400, 100, -300);
-  //fondonode->setScale(20, 20, 20);
   //------------------------------------------------------------------------
 
   mCamMgr = new OgreBites::CameraMan(mCamNode);
