@@ -13,7 +13,16 @@
 	  {
 		getRoot()->queueEndRendering();
 	  }
-	  //else if (evt.keysym.sym == SDLK_???)
+	  else if (evt.keysym.sym == SDLK_g) {
+		  auto mClockNode = mSM->getRootSceneNode()->getChild("Clock");
+	
+		  mClockNode->roll(Ogre::Degree(-8));
+	  }
+	  else if (evt.keysym.sym == SDLK_y) {
+		  auto nHours = mSM->getRootSceneNode()->getChild("Clock")->getChild("Hours");
+
+		  nHours->yaw(Ogre::Degree(-8));
+	  }
   
 	  return true;
 	}
@@ -102,18 +111,18 @@
 	  //mSinbadNode->showBoundingBox(true);
 	  //mSinbadNode->setVisible(false);
 
-	  Ogre::SceneNode* mClockNode = mSM->getRootSceneNode()->createChildSceneNode();
+	  Ogre::SceneNode* mClockNode = mSM->getRootSceneNode()->createChildSceneNode("Clock");
 	  mClockNode->setPosition(0,0,0);
-	  Ogre::SceneNode* mHoursNode = mClockNode->createChildSceneNode();
+	  Ogre::SceneNode* mHoursNode = mClockNode->createChildSceneNode("Hours");
 
-	  double angle = 0;
+	  double angle = 90;
 	  double radius = 200;
 
 	  for (int i = 0; i < 12; i++) {
 
 		  Ogre::Entity* hora = mSM->createEntity("uv_sphere.mesh");
 
-		  Ogre::SceneNode* Hora = mHoursNode->createChildSceneNode();
+		  Ogre::SceneNode* Hora = mHoursNode->createChildSceneNode("Hora"+std::to_string(i+1));
 		  Hora->attachObject(hora);
 
 		  Hora->setScale(0.2, 0.2, 0.2);
@@ -122,6 +131,11 @@
 
 		  angle += 360 / 12;
 	  }
+	  //EJ 2
+	/*  for (int i = 0; i < 12; i+=2) {
+		  auto s=mHoursNode->getChild("Hora" + std::to_string(i + 1));
+		  s->setScale(0.1, 0.1, 0.1);
+	  }*/
 
 	  Ogre::Entity* agujaM = mSM->createEntity("cube.mesh");
 	  Ogre::SceneNode* AgujaM = mClockNode->createChildSceneNode();
@@ -140,7 +154,8 @@
 	  Ogre::SceneNode* AgujaS = mClockNode->createChildSceneNode();
 	  AgujaS->attachObject(agujaS);
 	  AgujaS->setScale(0.1/2, 1.5, 0.1);
-	  AgujaS->setPosition(mClockNode->getPosition().x, mClockNode->getPosition().y - radius / 4, 0);
+	  AgujaS->roll(Ogre::Degree(-60));
+	  AgujaS->setPosition(mClockNode->getPosition().x-50, mClockNode->getPosition().y - radius / 4+20, 0);
 
 	  //mSinbadNode->setPosition(400, 100, -300);
 	  //mSinbadNode->setScale(20, 20, 20);
