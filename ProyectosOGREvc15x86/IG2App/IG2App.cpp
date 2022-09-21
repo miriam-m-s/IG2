@@ -4,6 +4,7 @@
 	#include <OgreInput.h>
 	#include <SDL_keycode.h>
 	#include <OgreMeshManager.h>
+	#include  "Noria.h"
 
 	using namespace Ogre;
 
@@ -93,7 +94,7 @@
 	  //mLightNode = mCamNode->createChildSceneNode("nLuz");
 	  mLightNode->attachObject(luz);
 
-	  mLightNode->setDirection(Ogre::Vector3(0, 0, -1));  //vec3.normalise();
+	  mLightNode->setDirection(Ogre::Vector3(-1, -1, 0));  //vec3.normalise();
 	  //lightNode->setPosition(0, 0, 1000);
  
 	  //------------------------------------------------------------------------
@@ -111,54 +112,59 @@
 	  //mSinbadNode->showBoundingBox(true);
 	  //mSinbadNode->setVisible(false);
 
-	  Ogre::SceneNode* mClockNode = mSM->getRootSceneNode()->createChildSceneNode("Clock");
-	  mClockNode->setPosition(0,0,0);
-	  Ogre::SceneNode* mHoursNode = mClockNode->createChildSceneNode("Hours");
+	  //Ogre::SceneNode* mClockNode = mSM->getRootSceneNode()->createChildSceneNode("Clock");
+	  //mClockNode->setPosition(0,0,0);
+	  //Ogre::SceneNode* mHoursNode = mClockNode->createChildSceneNode("Hours");
 
-	  double angle = 90;
-	  double radius = 200;
+	  //double angle = 90;
+	  //double radius = 200;
 
-	  for (int i = 0; i < 12; i++) {
+	  //for (int i = 0; i < 12; i++) {
 
-		  Ogre::Entity* hora = mSM->createEntity("uv_sphere.mesh");
+		 // Ogre::Entity* hora = mSM->createEntity("uv_sphere.mesh");
 
-		  Ogre::SceneNode* Hora = mHoursNode->createChildSceneNode("Hora"+std::to_string(i+1));
-		  Hora->attachObject(hora);
+		 // Ogre::SceneNode* Hora = mHoursNode->createChildSceneNode("Hora"+std::to_string(i+1));
+		 // Hora->attachObject(hora);
 
-		  Hora->setScale(0.2, 0.2, 0.2);
-		  Hora->setPosition(Ogre::Math::Cos(Ogre::Math::DegreesToRadians(angle)) *radius, 
-			  Ogre::Math::Sin(Ogre::Math::DegreesToRadians(angle))*radius , 0);
+		 // Hora->setScale(0.2, 0.2, 0.2);
+		 // Hora->setPosition(Ogre::Math::Cos(Ogre::Math::DegreesToRadians(angle)) *radius, 
+			//  Ogre::Math::Sin(Ogre::Math::DegreesToRadians(angle))*radius , 0);
 
-		  angle += 360 / 12;
-	  }
+		 // angle += 360 / 12;
+	  //}
+
 	  //EJ 2
-	/*  for (int i = 0; i < 12; i+=2) {
+	 /*  for (int i = 0; i < 12; i+=2) {
 		  auto s=mHoursNode->getChild("Hora" + std::to_string(i + 1));
 		  s->setScale(0.1, 0.1, 0.1);
 	  }*/
 
-	  Ogre::Entity* agujaM = mSM->createEntity("cube.mesh");
-	  Ogre::SceneNode* AgujaM = mClockNode->createChildSceneNode();
-	  AgujaM->attachObject(agujaM);
-	  AgujaM->setScale(0.2, 1.75, 0.1);
-	  AgujaM->setPosition(mClockNode->getPosition().x, mClockNode->getPosition().y + radius / 4 , 0);
+	  //Ogre::Entity* agujaM = mSM->createEntity("cube.mesh");
+	  //Ogre::SceneNode* AgujaM = mClockNode->createChildSceneNode();
+	  //AgujaM->attachObject(agujaM);
+	  //AgujaM->setScale(0.2, 1.75, 0.1);
+	  //AgujaM->setPosition(mClockNode->getPosition().x, mClockNode->getPosition().y + radius / 4 , 0);
 
-	  Ogre::Entity* agujaH = mSM->createEntity("cube.mesh");
-	  Ogre::SceneNode* AgujaH = mClockNode->createChildSceneNode();
-	  AgujaH->attachObject(agujaH);
-	  AgujaH->setScale(0.1, 1.5, 0.1);
-	  AgujaH->setPosition(mClockNode->getPosition().x + radius/4, mClockNode->getPosition().y, 0);
-	  AgujaH->roll(Ogre::Degree(90));
+	  //Ogre::Entity* agujaH = mSM->createEntity("cube.mesh");
+	  //Ogre::SceneNode* AgujaH = mClockNode->createChildSceneNode();
+	  //AgujaH->attachObject(agujaH);
+	  //AgujaH->setScale(0.1, 1.5, 0.1);
+	  //AgujaH->setPosition(mClockNode->getPosition().x + radius/4, mClockNode->getPosition().y, 0);
+	  //AgujaH->roll(Ogre::Degree(90));
 
-	  Ogre::Entity* agujaS = mSM->createEntity("cube.mesh");
-	  Ogre::SceneNode* AgujaS = mClockNode->createChildSceneNode();
-	  AgujaS->attachObject(agujaS);
-	  AgujaS->setScale(0.1/2, 1.5, 0.1);
-	  AgujaS->roll(Ogre::Degree(-60));
-	  AgujaS->setPosition(mClockNode->getPosition().x-50, mClockNode->getPosition().y - radius / 4+20, 0);
+	  //Ogre::Entity* agujaS = mSM->createEntity("cube.mesh");
+	  //Ogre::SceneNode* AgujaS = mClockNode->createChildSceneNode();
+	  //AgujaS->attachObject(agujaS);
+	  //AgujaS->setScale(0.1/2, 1.5, 0.1);
+	  //AgujaS->roll(Ogre::Degree(-60));
+	  //AgujaS->setPosition(mClockNode->getPosition().x-50, mClockNode->getPosition().y - radius / 4+20, 0);
 
 	  //mSinbadNode->setPosition(400, 100, -300);
 	  //mSinbadNode->setScale(20, 20, 20);
+
+	  Ogre::SceneNode*  NoriaNode = mSM->getRootSceneNode()->createChildSceneNode("Noria");
+
+	  Noria* noria = new Noria(5, NoriaNode);
 
 	  //------------------------------------------------------------------------
 
