@@ -167,9 +167,12 @@
 	  //mSinbadNode->setPosition(400, 100, -300);
 	  //mSinbadNode->setScale(20, 20, 20);
 
-	  Ogre::SceneNode*  NoriaNode = mSM->getRootSceneNode()->createChildSceneNode("Noria");
+	   Ogre::SceneNode*  Plano = mSM->getRootSceneNode()->createChildSceneNode("Plano");
+	   Ogre::Entity* plano = mSM->createEntity("cube.mesh");
+	   Plano->attachObject(plano);
+	   Plano->setScale(50, 0.25, 50);
 
-	   noria = new Noria(20, NoriaNode);
+	   noria = new Noria(20, Plano);
 
 	  //------------------------------------------------------------------------
 
