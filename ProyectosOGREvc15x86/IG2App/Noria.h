@@ -8,9 +8,11 @@ class Noria
 public:
 
 	Noria(int n, Ogre::SceneNode* node);
-	~Noria();
+	~Noria() {  };
+	void giraNoria();
+	void frameRendered();
 
 private:
-
+	Ogre::SceneNode* aspasNode=nullptr;
 };
 

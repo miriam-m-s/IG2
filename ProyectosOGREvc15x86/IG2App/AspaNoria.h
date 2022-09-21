@@ -9,6 +9,7 @@ class AspaNoria
 		
 	AspaNoria(Ogre::SceneNode* NoriaNode);
 	~AspaNoria();
+	
 
 private:
 

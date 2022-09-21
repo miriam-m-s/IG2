@@ -4,7 +4,7 @@
 	#include <OgreInput.h>
 	#include <SDL_keycode.h>
 	#include <OgreMeshManager.h>
-	#include  "Noria.h"
+
 
 	using namespace Ogre;
 
@@ -15,14 +15,19 @@
 		getRoot()->queueEndRendering();
 	  }
 	  else if (evt.keysym.sym == SDLK_g) {
-		  auto mClockNode = mSM->getRootSceneNode()->getChild("Clock");
+		 /* auto mClockNode = mSM->getRootSceneNode()->getChild("Clock");
 	
-		  mClockNode->roll(Ogre::Degree(-8));
+		  mClockNode->roll(Ogre::Degree(-8));*/
+
+		  
 	  }
 	  else if (evt.keysym.sym == SDLK_y) {
-		  auto nHours = mSM->getRootSceneNode()->getChild("Clock")->getChild("Hours");
+		 /* auto nHours = mSM->getRootSceneNode()->getChild("Clock")->getChild("Hours");
 
-		  nHours->yaw(Ogre::Degree(-8));
+		  nHours->yaw(Ogre::Degree(-8));*/
+	  }
+	  else if (evt.keysym.sym == SDLK_q) {
+		  noria->giraNoria();
 	  }
   
 	  return true;
@@ -164,7 +169,7 @@
 
 	  Ogre::SceneNode*  NoriaNode = mSM->getRootSceneNode()->createChildSceneNode("Noria");
 
-	  Noria* noria = new Noria(5, NoriaNode);
+	   noria = new Noria(20, NoriaNode);
 
 	  //------------------------------------------------------------------------
 

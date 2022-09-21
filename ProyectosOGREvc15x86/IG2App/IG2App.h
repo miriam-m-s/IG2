@@ -7,13 +7,13 @@
 #include <OgreTrays.h>
 #include <OgreCameraMan.h>
 #include <vector>
-
+#include "Noria.h"
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener 
 {
 public:
   explicit IG2App() : IG2ApplicationContext("IG2App") { };  // new -> setup()  
-  virtual ~IG2App() { };   // delete -> shutdown()  
+  virtual ~IG2App() { delete noria; };   // delete -> shutdown()  
  
 protected:
   virtual void setup();
@@ -28,6 +28,7 @@ protected:
   Ogre::SceneNode* mCamNode = nullptr;
   Ogre::SceneNode* mSinbadNode = nullptr;
   OgreBites::CameraMan* mCamMgr = nullptr;
+  Noria* noria = nullptr;
  
 };
 
