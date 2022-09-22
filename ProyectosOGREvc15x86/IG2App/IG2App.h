@@ -8,6 +8,7 @@
 #include <OgreCameraMan.h>
 #include <vector>
 #include "Noria.h"
+#include "Muñeco.h"
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener 
 {
@@ -29,7 +30,7 @@ protected:
   Ogre::SceneNode* mSinbadNode = nullptr;
   OgreBites::CameraMan* mCamMgr = nullptr;
   Noria* noria = nullptr;
- 
+  Muñeco* muñeco = nullptr;
 };
 
 #endif
