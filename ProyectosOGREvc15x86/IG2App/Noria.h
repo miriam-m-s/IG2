@@ -11,8 +11,10 @@ public:
 	~Noria() {  };
 	void giraNoria();
 	void frameRendered();
+	Ogre::SceneNode* getNoria();
 
 private:
 	Ogre::SceneNode* aspasNode=nullptr;
+	Ogre::SceneNode* cilindroNode = nullptr;
 };
 

@@ -5,7 +5,7 @@ Noria::Noria(int n, Ogre::SceneNode* node)
 {
 	float angle = 90.0f;
 
-	Ogre::SceneNode* cilindroNode = node->createChildSceneNode("Cilindro");
+	cilindroNode = node->createChildSceneNode("Cilindro");
 	cilindroNode->setInheritScale(false);
 	Ogre::Entity* cilindro = node->getCreator()->createEntity("Barrel.mesh");
 
@@ -13,8 +13,9 @@ Noria::Noria(int n, Ogre::SceneNode* node)
 	cilindroNode->setScale(40, 25, 40);
 	cilindroNode->roll(Ogre::Degree(90));
 
-	aspasNode= node->createChildSceneNode("Aspas");
+	aspasNode= cilindroNode->createChildSceneNode("Aspas");
 	aspasNode->setInheritScale(false);
+	aspasNode->setInheritOrientation(false);
 
 	for (int i = 0; i < n; i++) {
 
@@ -38,4 +39,9 @@ void Noria::giraNoria()
 void Noria::frameRendered()
 {
 	giraNoria();
+}
+
+Ogre::SceneNode* Noria::getNoria()
+{
+	return cilindroNode;
 }

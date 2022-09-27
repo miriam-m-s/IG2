@@ -122,7 +122,7 @@
     <ClInclude Include="AspaNoria.h" />
     <ClInclude Include="IG2ApplicationContext.h" />
     <ClInclude Include="IG2App.h" />
-    <ClInclude Include="Muñeco.h" />
+    <ClInclude Include="Munyeco.h" />
     <ClInclude Include="Noria.h" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +130,7 @@
     <ClCompile Include="IG2ApplicationContext.cpp" />
     <ClCompile Include="IG2Main.cpp" />
     <ClCompile Include="IG2App.cpp" />
-    <ClCompile Include="Muñeco.cpp" />
+    <ClCompile Include="Munyeco.cpp" />
     <ClCompile Include="Noria.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -167,14 +167,22 @@
 	  //mSinbadNode->setPosition(400, 100, -300);
 	  //mSinbadNode->setScale(20, 20, 20);
 
-	   //Ogre::SceneNode*  Plano = mSM->getRootSceneNode()->createChildSceneNode("Plano");
-	   //Ogre::Entity* plano = mSM->createEntity("cube.mesh");
-	   //Plano->attachObject(plano);
-	   //Plano->setScale(50, 0.25, 50);
+	   Ogre::SceneNode*  Plano = mSM->getRootSceneNode()->createChildSceneNode("Plano");
+	   Ogre::Entity* plano = mSM->createEntity("cube.mesh");
+	   Plano->attachObject(plano);
+	   Plano->setScale(30, 0.25, 30);
 
-	   //noria = new Noria(20, Plano);
+	   noria = new Noria(20, Plano);
+	   noria->getNoria()->setPosition(0,200,0);
 
-	   muñeco = new Muñeco(mSM->getRootSceneNode());
+	   olaf = new Munyeco(Plano);
+
+	   Ogre::SceneNode* cuelloOlaf = olaf->getCuello();
+	   cuelloOlaf->setPosition(Plano->getScale().x/1.25 , 800,- Plano->getScale().z/1.25 );
+
+	   cuelloOlaf->yaw(Ogre::Degree(-45));
+
+	   //cuelloOlaf->lookAt(noria->getNoria()->getPosition(),  cuelloOlaf->TS_LOCAL);
 
 	  //------------------------------------------------------------------------
 

@@ -2,11 +2,12 @@
 #include <OgreSceneNode.h>
 #include <OgreSceneManager.h>
 
-class Muñeco
+class Munyeco
 {
 public:
-	Muñeco(Ogre::SceneNode *padre);
-	~Muñeco() {};
+	Munyeco(Ogre::SceneNode *padre);
+	~Munyeco() {};
+	Ogre::SceneNode* getCuello();
 
 private:
 
