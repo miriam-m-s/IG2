@@ -27,7 +27,10 @@
 		  nHours->yaw(Ogre::Degree(-8));*/
 	  }
 	  else if (evt.keysym.sym == SDLK_q) {
-		  noria->giraNoria();
+		 noria->giraNoria(1.0);
+	  }
+	  else if (evt.keysym.sym == SDLK_p) {
+		  mSM->getRootSceneNode()->yaw(Ogre::Radian(3));
 	  }
   
 	  return true;
@@ -167,22 +170,21 @@
 	  //mSinbadNode->setPosition(400, 100, -300);
 	  //mSinbadNode->setScale(20, 20, 20);
 
-	   Ogre::SceneNode*  Plano = mSM->getRootSceneNode()->createChildSceneNode("Plano");
-	   Ogre::Entity* plano = mSM->createEntity("cube.mesh");
-	   Plano->attachObject(plano);
-	   Plano->setScale(30, 0.25, 30);
+	  //creacion de plano
+	  Ogre::SceneNode* PN = mSM->getRootSceneNode()->createChildSceneNode();
+	  Plano* plano = new Plano(PN);
+	  Ogre::SceneNode* NN = PN->createChildSceneNode();
+	  //creacion de noria
+	   noria = new Noria(20, PN);
 
-	   noria = new Noria(20, Plano);
 	   noria->getNoria()->setPosition(0,200,0);
+	   Ogre::SceneNode* MUNY = PN->createChildSceneNode();
+	   //creacion del muñeco
+	   olaf = new Munyeco(MUNY);
+	   MUNY->setPosition(PN->getScale().x/1.25 , 800,- PN->getScale().z/1.25 );
+	   MUNY->yaw(Ogre::Degree(-45));
 
-	   olaf = new Munyeco(Plano);
-
-	   Ogre::SceneNode* cuelloOlaf = olaf->getCuello();
-	   cuelloOlaf->setPosition(Plano->getScale().x/1.25 , 800,- Plano->getScale().z/1.25 );
-
-	   cuelloOlaf->yaw(Ogre::Degree(-45));
-
-	   //cuelloOlaf->lookAt(noria->getNoria()->getPosition(),  cuelloOlaf->TS_LOCAL);
+	   addInputListener(noria);
 
 	  //------------------------------------------------------------------------
 

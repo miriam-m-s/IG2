@@ -7,8 +7,8 @@
 #include <OgreTrays.h>
 #include <OgreCameraMan.h>
 #include <vector>
-#include "Noria.h"
-#include "Munyeco.h"
+#include "EntidadIG.h"
+
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener 
 {

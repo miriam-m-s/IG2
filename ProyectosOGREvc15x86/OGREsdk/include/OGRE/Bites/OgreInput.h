@@ -9,6 +9,7 @@
 #define SAMPLES_COMMON_INCLUDE_INPUT_H_
 
 #include <OgreBitesPrerequisites.h>
+#include <iostream>
 
 namespace Ogre {
     struct FrameEvent;
@@ -119,7 +120,9 @@ however they can be used to control event propagation in a hierarchy
 */
 struct _OgreBitesExport InputListener {
     virtual ~InputListener() {}
-    virtual void frameRendered(const Ogre::FrameEvent& evt) { }
+    virtual void frameRendered(const Ogre::FrameEvent& evt) {
+     
+    }
     virtual bool keyPressed(const KeyboardEvent& evt) { return true;}
     virtual bool keyReleased(const KeyboardEvent& evt) { return true; }
     virtual bool touchMoved(const TouchFingerEvent& evt) { return true; }
