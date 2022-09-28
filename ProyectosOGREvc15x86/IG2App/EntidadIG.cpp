@@ -8,11 +8,15 @@ EntidadIG::EntidadIG(Ogre::SceneNode* nodo) {
 	mSM = mNode->getCreator();
 }
 
-
-
-Plano::Plano(Ogre::SceneNode* node):EntidadIG(node)
+void EntidadIG::sendEvent(MessageType msgType, EntidadIG* entidad)
 {
-	
+	for (EntidadIG* e : appListeners)
+		e->receiveEvent(msgType, this);
+}
+
+Plano::Plano(Ogre::SceneNode* node) :EntidadIG(node)
+{
+
 	Ogre::Entity* plano = node->getCreator()->createEntity("cube.mesh");
 	node->attachObject(plano);
 	node->setScale(30, 0.25, 30);
@@ -49,7 +53,7 @@ AspaNoria::~AspaNoria()
 {
 }
 
-Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node),estagirando(true)
+Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node), estagirando(true)
 {
 	float angle = 90.0f;
 
@@ -63,7 +67,7 @@ Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node),estagirando(true)
 
 	aspasNode = cilindroNode->createChildSceneNode("Aspas");
 	aspasNode->setInheritScale(false);
-	aspasNode->setInheritOrientation(false);
+	aspasNode->roll(Ogre::Degree(-90));
 
 	for (int i = 0; i < n; i++) {
 		Ogre::SceneNode* Aspa = aspasNode->createChildSceneNode("Aspa" + std::to_string(i + 1));
@@ -74,31 +78,26 @@ Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node),estagirando(true)
 }
 
 
-
-void Noria::giraNoria(Ogre::Real time)
+void Noria::giraNoria()
 {
-	
-	aspasNode->pitch(Ogre::Radian(time));
+	if (!estagirando) aspasNode->pitch(Ogre::Degree(1.0));
 }
 
 void Noria::frameRendered(const Ogre::FrameEvent& evt)
 {
+
 	if (estagirando) {
 		Ogre::Real time = evt.timeSinceLastEvent;
-		giraNoria(time);
+		aspasNode->pitch(Ogre::Radian(time));
 	}
-	
-
 }
 
-
-
-Ogre::SceneNode* Noria::getNoria()
+void Noria::receiveEvent(MessageType msgType, EntidadIG* entidad)
 {
-	return cilindroNode;
+	estagirando = false;
 }
 
-Munyeco::Munyeco(Ogre::SceneNode* padre) :EntidadIG(padre)
+Munyeco::Munyeco(Ogre::SceneNode* padre) :  EntidadIG(padre), tortura(false) 
 {
 	cuello = padre->createChildSceneNode();
 	cuello->setInheritScale(false);
@@ -107,13 +106,12 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) :EntidadIG(padre)
 	Ogre::Entity* Cabeza = padre->getCreator()->createEntity("sphere.mesh");
 	cabeza->attachObject(Cabeza);
 	cabeza->setPosition(0, 100 * cabeza->getScale().y, 0);
-	
+
 	Ogre::SceneNode* nariz = cabeza->createChildSceneNode();
 	Ogre::Entity* Nariz = padre->getCreator()->createEntity("sphere.mesh");
 	nariz->attachObject(Nariz);
 	nariz->setScale(0.1, 0.1, 0.1);
 	nariz->setPosition(0, 0, 100 * cabeza->getScale().z);
-
 
 	cuerpo = cuello->createChildSceneNode();
 	Ogre::Entity* Cuerpo = padre->getCreator()->createEntity("sphere.mesh");
@@ -130,9 +128,18 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) :EntidadIG(padre)
 	cuello->setScale(0.5, 0.5, 0.5);
 }
 
-Ogre::SceneNode* Munyeco::getCuello()
+void Munyeco::receiveEvent(MessageType msgType, EntidadIG* entidad)
 {
-	return cuello;
+	tortura = true;
+}
+
+void Munyeco::frameRendered(const Ogre::FrameEvent& evt)
+{
+	if (tortura) {
+		Ogre::Real time = evt.timeSinceLastEvent;
+		cabeza->yaw(Ogre::Radian(time));
+		cuerpo->yaw(-Ogre::Radian(time));
+	}
 }
 
 

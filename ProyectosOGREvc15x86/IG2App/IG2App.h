@@ -31,6 +31,8 @@ protected:
   OgreBites::CameraMan* mCamMgr = nullptr;
   Noria* noria = nullptr;
   Munyeco* olaf = nullptr;
+  Plano* plano = nullptr;
+  Ogre::SceneNode* PN;
 };
 
 #endif
