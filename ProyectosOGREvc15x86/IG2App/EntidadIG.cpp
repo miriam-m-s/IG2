@@ -22,17 +22,17 @@ Plano::Plano(Ogre::SceneNode* node) :EntidadIG(node)
 	node->setScale(30, 0.25, 30);
 }
 
-AspaNoria::AspaNoria(Ogre::SceneNode* NoriaNode) :EntidadIG(NoriaNode)
+AspaNoria::AspaNoria(Ogre::SceneNode* NoriaNode, float angle,int i) :EntidadIG(NoriaNode)
 {
-
-	AspaNoriaNode = NoriaNode->createChildSceneNode();
+	
+	AspaNoriaNode = NoriaNode->createChildSceneNode("Aspita" + std::to_string(i + 1));
 
 	Ogre::Entity* cubo = NoriaNode->getCreator()->createEntity("cube.mesh");
-	cuboNode = AspaNoriaNode->createChildSceneNode();
+	cuboNode = AspaNoriaNode->createChildSceneNode("cubo" + std::to_string(i + 1));
 	cuboNode->attachObject(cubo);
 	cuboNode->setScale(0.7, 0.7, 0.7);
 	cuboNode->setPosition(0, 0, -225);
-	cuboNode->setInheritOrientation(false);
+	cuboNode->pitch(Ogre::Degree(-angle));
 
 	Ogre::Entity* tablero1 = NoriaNode->getCreator()->createEntity("cube.mesh");
 	tableNode1 = AspaNoriaNode->createChildSceneNode();
@@ -53,10 +53,15 @@ AspaNoria::~AspaNoria()
 {
 }
 
-Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node), estagirando(true)
+void AspaNoria::frameRendered(const Ogre::FrameEvent& evt)
+{
+	//
+}
+
+Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node), estagirando(true),n(n)
 {
 	float angle = 90.0f;
-
+	
 	cilindroNode = node->createChildSceneNode("Cilindro");
 	cilindroNode->setInheritScale(false);
 	Ogre::Entity* cilindro = node->getCreator()->createEntity("Barrel.mesh");
@@ -71,7 +76,8 @@ Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node), estagirando(true)
 
 	for (int i = 0; i < n; i++) {
 		Ogre::SceneNode* Aspa = aspasNode->createChildSceneNode("Aspa" + std::to_string(i + 1));
-		AspaNoria* aspaNoria = new AspaNoria(Aspa);
+		
+		AspaNoria* aspaNoria = new AspaNoria(Aspa,angle,i);
 		Aspa->pitch(Ogre::Degree(angle));
 		angle += 360.0f / n;
 	}
@@ -88,7 +94,13 @@ void Noria::frameRendered(const Ogre::FrameEvent& evt)
 
 	if (estagirando) {
 		Ogre::Real time = evt.timeSinceLastEvent;
+	
 		aspasNode->pitch(Ogre::Radian(time));
+
+		for (int i = 0; i < n; i++) {
+			auto node = aspasNode->getChild("Aspa" + std::to_string(i + 1))->getChild("Aspita" + std::to_string(i + 1))->getChild("cubo" + std::to_string(i + 1));
+			node->pitch(Ogre::Radian( -time));
+		}
 	}
 }
 

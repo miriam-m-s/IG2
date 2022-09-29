@@ -76,6 +76,7 @@ class Noria :public  EntidadIG
 		Ogre::SceneNode* aspasNode = nullptr;
 		Ogre::SceneNode* cilindroNode = nullptr;
 		bool estagirando;
+		int n;
 };
 
 class AspaNoria : public  EntidadIG
@@ -83,8 +84,11 @@ class AspaNoria : public  EntidadIG
 
 	public:
 
-		AspaNoria(Ogre::SceneNode* NoriaNode);
+		AspaNoria(Ogre::SceneNode* NoriaNode, float angle,int i);
 		~AspaNoria();
+
+
+		void frameRendered(const Ogre::FrameEvent& evt) override;
 
 
 	private:
