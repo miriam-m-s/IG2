@@ -1,0 +1,86 @@
+material Practica1/plano {
+		technique {
+			pass {
+				diffuse 0.4 0.4 0.4
+				texture_unit {
+					texture Water02.jpg
+					colour_op add
+					scroll_anim 0.0  0.1
+				}
+		 }
+	 }
+}
+
+material Practica1/cangilon {
+		technique {
+			pass {
+				diffuse 0.7 0.7 0.7
+				texture_unit {
+					texture BumpyMetal.jpg
+					colour_op add
+				}
+		 }
+	 }
+}
+
+material Practica1/tablon {
+		technique {
+			pass {
+				diffuse 0.7 0.4 0.0
+		 }
+	 }
+}
+
+material Practica1/rodillo {
+		technique {
+			pass {
+				diffuse 0.3 0.3 0.3
+				texture_unit {
+					texture BeachStones.jpg
+					colour_op add
+				}
+		 }
+	 }
+}
+
+material Practica1/cuerpo {
+		technique {
+			pass {
+				diffuse 0.4 0.4 0.4
+				texture_unit {
+					texture checker.png
+					colour_op add
+					env_map spherical
+				}
+		 }
+	 }
+}
+
+material Practica1/cabeza {
+		technique {
+			pass {
+				diffuse 0.3 0.3 0.3
+				texture_unit {
+					texture spotlight_image.png
+					colour_op add
+					env_map spherical
+				}
+		 }
+	 }
+}
+
+material Practica1/nariz {
+		technique {
+			pass {
+				diffuse 1.0 0.6 0.2
+		 }
+	 }
+}
+
+material Practica1/ombligo {
+		technique {
+			pass {
+				diffuse 1.0 0.0 0.0
+		 }
+	 }
+}

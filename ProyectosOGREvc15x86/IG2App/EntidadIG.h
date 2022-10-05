@@ -55,6 +55,7 @@ class Munyeco :public  EntidadIG
 		bool tortura;
 		virtual void receiveEvent(MessageType msgType, EntidadIG* entidad);
 		void frameRendered(const Ogre::FrameEvent& evt);
+		virtual bool KeyPressed(const OgreBites::KeyboardEvent& evt);
 		Ogre::SceneNode* cuello;
 		Ogre::SceneNode* cabeza;
 		Ogre::SceneNode* cuerpo;

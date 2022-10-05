@@ -18,8 +18,6 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 		/* auto mClockNode = mSM->getRootSceneNode()->getChild("Clock");
 
 		 mClockNode->roll(Ogre::Degree(-8));*/
-
-
 	}
 	else if (evt.keysym.sym == SDLK_y) {
 		/* auto nHours = mSM->getRootSceneNode()->getChild("Clock")->getChild("Hours");
@@ -36,7 +34,6 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 
 	else if (evt.keysym.sym == SDLK_r) {
 		plano->sendEvent(NADA ,noria);
-		plano->sendEvent(NADA ,olaf);
 	}
 
 	return true;
@@ -102,13 +99,13 @@ void IG2App::setupScene(void)
 
 	Light* luz = mSM->createLight("Luz");
 	luz->setType(Ogre::Light::LT_DIRECTIONAL);
-	luz->setDiffuseColour(0.75, 0.75, 0.75);
+	luz->setDiffuseColour(0.9, 0.9, 0.9);
 
 	mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
 	//mLightNode = mCamNode->createChildSceneNode("nLuz");
 	mLightNode->attachObject(luz);
 
-	mLightNode->setDirection(Ogre::Vector3(-1, -1, 0));  //vec3.normalise();
+	mLightNode->setDirection(Ogre::Vector3(-0.5, -1, 0));  //vec3.normalise();
 	//lightNode->setPosition(0, 0, 1000);
 
 	//------------------------------------------------------------------------
@@ -179,6 +176,7 @@ void IG2App::setupScene(void)
 	//creacion de plano
 	PN = mSM->getRootSceneNode()->createChildSceneNode();
 	plano = new Plano(PN);
+	
 
 	//creacion de noria
 	Ogre::SceneNode* NN = PN->createChildSceneNode();
