@@ -191,6 +191,7 @@ void IG2App::setupScene(void)
 	addInputListener(noria);
 	addInputListener(olaf);
 
+
 	EntidadIG::addListener(plano);
 	EntidadIG::addListener(noria);
 	EntidadIG::addListener(olaf);

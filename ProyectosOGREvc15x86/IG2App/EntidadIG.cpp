@@ -123,6 +123,7 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) :  EntidadIG(padre), tortura(false)
 	Ogre::Entity* Cabeza = padre->getCreator()->createEntity("sphere.mesh");
 	cabeza->attachObject(Cabeza);
 	Cabeza->setMaterialName("Practica1/cabeza");
+	
 	cabeza->setPosition(0, 100 * cabeza->getScale().y, 0);
 
 	//Ogre::SceneNode* nariz = cabeza->createChildSceneNode();
@@ -138,7 +139,7 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) :  EntidadIG(padre), tortura(false)
 	cuerpo->attachObject(Cuerpo);
 	cuerpo->setScale(2, 2, 2);
 	cuerpo->setPosition(0, -100 * cuerpo->getScale().y, 0);
-
+	
 	Ogre::SceneNode* ombligo = cuerpo->createChildSceneNode();
 	Ogre::Entity* Ombligo = padre->getCreator()->createEntity("sphere.mesh");
 	Ombligo->setMaterialName("Practica1/ombligo");
@@ -149,6 +150,29 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) :  EntidadIG(padre), tortura(false)
 	cuello->setScale(0.5, 0.5, 0.5);
 }
 
+bool Munyeco::keyPressed(const OgreBites::KeyboardEvent& evt)
+{
+	if (evt.keysym.sym == SDLK_UP)
+	{
+		cuello->translate(Ogre::Math::Sin(cuello->getOrientation().getYaw())*2, 0, Ogre::Math::Cos(cuello->getOrientation().getYaw()) * 2);
+	}
+	else if (evt.keysym.sym == SDLK_DOWN)
+	{
+		cuello->translate(-Ogre::Math::Sin(cuello->getOrientation().getYaw()) * 2, 0,- Ogre::Math::Cos(cuello->getOrientation().getYaw()) * 2);
+	}
+	else if (evt.keysym.sym == SDLK_LEFT)
+	{
+		cuello->yaw(Ogre::Degree(2));
+	}
+	else if (evt.keysym.sym == SDLK_RIGHT)
+	{
+		cuello->yaw(Ogre::Degree(-2));
+	}
+
+
+	return true;
+}
+
 void Munyeco::receiveEvent(MessageType msgType, EntidadIG* entidad)
 {
 	tortura = true;
@@ -156,21 +180,15 @@ void Munyeco::receiveEvent(MessageType msgType, EntidadIG* entidad)
 
 void Munyeco::frameRendered(const Ogre::FrameEvent& evt)
 {
-	if (tortura) {
+	/*if (tortura) {
 		Ogre::Real time = evt.timeSinceLastEvent;
 		cabeza->yaw(Ogre::Radian(time));
 		cuerpo->yaw(-Ogre::Radian(time));
-	}
+	}*/
+	
+
 }
 
-bool Munyeco::KeyPressed(const OgreBites::KeyboardEvent& evt)
-{
-	if (evt.keysym.sym == SDLK_UP)
-	{
-		cuello->translate(0, 0, 100);
-	}
 
-	return true;
-}
 
 
