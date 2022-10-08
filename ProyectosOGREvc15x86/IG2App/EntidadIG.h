@@ -18,10 +18,7 @@ public:
 
 	virtual void frameRendered(const Ogre::FrameEvent& evt) {};
 	virtual void receiveEvent(MessageType msgType,  EntidadIG* entidad) {};
-	virtual bool keyPressed(const OgreBites::KeyboardEvent& evt) {
-	
-		return true; };
-
+	virtual bool keyPressed(const OgreBites::KeyboardEvent& evt) {return true; };
 	virtual void sendEvent(MessageType msgType,  EntidadIG* entidad);
 
 	//Vector estático de listeners
@@ -40,9 +37,8 @@ protected:
 class Plano :public EntidadIG {
 
 public :
-	Plano(Ogre::SceneNode* padre);
 
-	
+	Plano(Ogre::SceneNode* padre);
 };
 
 class Munyeco :public  EntidadIG
@@ -51,16 +47,13 @@ class Munyeco :public  EntidadIG
 
 		Munyeco(Ogre::SceneNode* padre);
 		~Munyeco() {};
-		bool keyPressed(const OgreBites::KeyboardEvent& evt);
-			
-		
-
+	
 	private:
 
 		bool tortura;
 		virtual void receiveEvent(MessageType msgType, EntidadIG* entidad);
 		void frameRendered(const Ogre::FrameEvent& evt);
-		/* bool KeyPressed(const OgreBites::KeyboardEvent& evt);*/
+		bool keyPressed(const OgreBites::KeyboardEvent& evt);
 		Ogre::SceneNode* cuello;
 		Ogre::SceneNode* cabeza;
 		Ogre::SceneNode* cuerpo;
