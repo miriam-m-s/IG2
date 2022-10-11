@@ -120,7 +120,7 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) :  EntidadIG(padre), tortura(false)
 	cuello->setInheritScale(false);
 
 	cabeza = cuello->createChildSceneNode();
-	Ogre::Entity* Cabeza = padre->getCreator()->createEntity("sphere.mesh");
+	 Cabeza = padre->getCreator()->createEntity("sphere.mesh");
 	cabeza->attachObject(Cabeza);
 	Cabeza->setMaterialName("Practica1/cabeza");
 	
@@ -134,7 +134,7 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) :  EntidadIG(padre), tortura(false)
 	//nariz->setPosition(0, 0, 100 * cabeza->getScale().z);
 
 	cuerpo = cuello->createChildSceneNode();
-	Ogre::Entity* Cuerpo = padre->getCreator()->createEntity("sphere.mesh");
+	 Cuerpo = padre->getCreator()->createEntity("sphere.mesh");
 	Cuerpo->setMaterialName("Practica1/cuerpo");
 	cuerpo->attachObject(Cuerpo);
 	cuerpo->setScale(2, 2, 2);
@@ -175,7 +175,9 @@ bool Munyeco::keyPressed(const OgreBites::KeyboardEvent& evt)
 
 void Munyeco::receiveEvent(MessageType msgType, EntidadIG* entidad)
 {
-	tortura = true;
+	//tortura = true;
+	Cabeza->setMaterialName("Practica1/CabezaRoja");
+	Cuerpo->setMaterialName("Practica1/CuerpoRojo");
 }
 
 void Munyeco::frameRendered(const Ogre::FrameEvent& evt)
@@ -189,6 +191,92 @@ void Munyeco::frameRendered(const Ogre::FrameEvent& evt)
 
 }
 
+Avion::Avion(Ogre::SceneNode* padre, int n):EntidadIG(padre)
+{
 
+	esferaCentral = padre->createChildSceneNode();
+	Ogre::Entity * esfera = padre->getCreator()->createEntity("sphere.mesh");
+	esfera->setMaterialName("Practica1/esferaAvion");
+	esferaCentral->attachObject(esfera);
+	esferaCentral->setScale(1.5,1.5,1.5);
 
+	Ogre::SceneNode* NinjaNode = padre->createChildSceneNode();
+	Ogre::Entity* ninja = padre->getCreator()->createEntity("ninja.mesh");
+	ninja->setMaterialName("Practica1/ninja");
+	NinjaNode->attachObject(ninja);
 
+	Ogre::SceneNode* Ala1 = padre->createChildSceneNode();
+	Ogre::Entity* ala1 = padre->getCreator()->createEntity("cube.mesh");
+	ala1->setMaterialName("Practica1/alasAvion");
+	Ala1->attachObject(ala1);
+	Ala1->setScale(3, 0.1, 2);
+	Ala1->setPosition(-150, 0, 0);
+
+	Ogre::SceneNode* Ala2 = padre->createChildSceneNode();
+	Ogre::Entity* ala2 = padre->getCreator()->createEntity("cube.mesh");
+	ala2->setMaterialName("Practica1/alasAvion");
+	Ala2->attachObject(ala2);
+	Ala2->setScale(3, 0.1, 2);
+	Ala2->setPosition(150, 0, 0);
+
+	Ogre::SceneNode* Morro = padre->createChildSceneNode();
+	Ogre::Entity *morro = padre->getCreator()->createEntity("Barrel.mesh");
+	morro->setMaterialName("Practica1/morroAvion");
+	Morro->attachObject(morro);
+	Morro->setScale(20, 25, 20);
+	Morro->pitch(Ogre::Degree(90));
+	Morro->setPosition(0,0,-90);
+
+	Ogre::SceneNode *alaAspa1 = Ala1->createChildSceneNode();
+	AspasNave *Aspa1 = new AspasNave(alaAspa1, 5);
+	alaAspa1->yaw(Ogre::Degree(90));
+	alaAspa1->setPosition(0,0,-90);
+	alaAspa1->setScale(0.3, 0.3, 0.3);
+
+	Ogre::SceneNode* alaAspa2 = Ala2->createChildSceneNode();
+	AspasNave *Aspa2 = new AspasNave(alaAspa2, 5);
+	alaAspa2->yaw(Ogre::Degree(90));
+	alaAspa2->setPosition(0,0,-90);
+	alaAspa2->setScale(0.3,0.3,0.3);
+
+}
+
+AspasNave::AspasNave(Ogre::SceneNode* padre, int n):EntidadIG(padre) {
+
+	float angle = 90.0f;
+
+	Ogre::SceneNode *cilindroNode = padre->createChildSceneNode();
+	cilindroNode->setInheritScale(false);
+	Ogre::Entity* cilindro = padre->getCreator()->createEntity("Barrel.mesh");
+	cilindro->setMaterialName("Practica1/rodillo");
+
+	cilindroNode->attachObject(cilindro);
+	cilindroNode->pitch(Ogre::Degree(90));
+
+	for (int i = 0; i < n; i++) {
+
+		Ogre::SceneNode* aspaNode = cilindroNode->createChildSceneNode();
+
+		Aspa * aspaAvion = new Aspa(aspaNode, i);
+		aspaNode->pitch(Ogre::Degree(angle));
+		angle += 360.0f / n;
+	}
+
+}
+
+Aspa::Aspa(Ogre::SceneNode *Aspa, int i):EntidadIG(Aspa) {
+
+	Ogre::SceneNode *tableNode = Aspa->createChildSceneNode();
+	Ogre::Entity* tablero = Aspa->getCreator()->createEntity("cube.mesh");
+	tablero->setMaterialName("Practica1/tablon");
+	tableNode->attachObject(tablero);
+	tableNode->setScale(0.05, 0.3, 5);
+
+	Ogre::SceneNode *Cilindro = Aspa->createChildSceneNode();
+	Ogre::Entity* cilindro = Aspa->getCreator()->createEntity("cube.mesh");
+	cilindro->setMaterialName("Practica1/cangilon");
+	Cilindro->attachObject(cilindro);
+	Cilindro->setScale(0.7, 0.7, 0.7);
+	Cilindro->setPosition(0, 0, -225);
+
+}

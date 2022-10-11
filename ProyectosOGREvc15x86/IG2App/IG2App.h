@@ -28,11 +28,13 @@ protected:
   Ogre::SceneNode* mLightNode = nullptr;
   Ogre::SceneNode* mCamNode = nullptr;
   Ogre::SceneNode* mSinbadNode = nullptr;
+  Ogre::SceneNode* PN;
   OgreBites::CameraMan* mCamMgr = nullptr;
   Noria* noria = nullptr;
   Munyeco* olaf = nullptr;
   Plano* plano = nullptr;
-  Ogre::SceneNode* PN;
+
+
 };
 
 #endif

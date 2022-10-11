@@ -57,6 +57,9 @@ class Munyeco :public  EntidadIG
 		Ogre::SceneNode* cuello;
 		Ogre::SceneNode* cabeza;
 		Ogre::SceneNode* cuerpo;
+
+		Ogre::Entity* Cabeza;
+		Ogre::Entity* Cuerpo;
 };
 
 class Noria :public  EntidadIG
@@ -96,6 +99,38 @@ class AspaNoria : public  EntidadIG
 		Ogre::SceneNode* tableNode1 = nullptr;
 		Ogre::SceneNode* tableNode2 = nullptr;
 		Ogre::SceneNode* cuboNode = nullptr;
+
+};
+
+class Avion : public EntidadIG {
+
+public:
+
+	Avion(Ogre::SceneNode* padre, int n);
+	~Avion() {};
+
+private:
+
+	Ogre::SceneNode* esferaCentral = nullptr;
+
+};
+
+class AspasNave :public EntidadIG {
+
+public:
+
+	AspasNave(Ogre::SceneNode *padre,  int n);
+	~AspasNave() {};
+
+
+};
+
+class Aspa :public EntidadIG {
+
+public:
+
+	Aspa(Ogre::SceneNode* Aspa, int i);
+	~Aspa() {};
 
 };
 

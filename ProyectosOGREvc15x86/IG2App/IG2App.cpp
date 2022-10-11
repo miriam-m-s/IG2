@@ -175,28 +175,28 @@ void IG2App::setupScene(void)
 
 	//creacion de plano
 	PN = mSM->getRootSceneNode()->createChildSceneNode();
-	plano = new Plano(PN);
+	//plano = new Plano(PN);
 	
 
 	//creacion de noria
-	Ogre::SceneNode* NN = PN->createChildSceneNode();
-	noria = new Noria(20, PN);
+	//Ogre::SceneNode* NN = PN->createChildSceneNode();
+	//noria = new Noria(20, PN);
 
 	//creacion del muñeco
-	Ogre::SceneNode* MUNY = PN->createChildSceneNode();
-	olaf = new Munyeco(MUNY);
-	MUNY->setPosition(PN->getScale().x / 1.25, 800, -PN->getScale().z / 1.25);
-	MUNY->yaw(Ogre::Degree(-45));
+	//Ogre::SceneNode* MUNY = PN->createChildSceneNode();
+	//olaf = new Munyeco(MUNY);
+	//MUNY->setPosition(PN->getScale().x / 1.25, 800, -PN->getScale().z / 1.25);
+	//MUNY->yaw(Ogre::Degree(-45));
 
-	addInputListener(noria);
-	addInputListener(olaf);
+	//addInputListener(noria);
+	//addInputListener(olaf);
 
+	//EntidadIG::addListener(plano);
+	//EntidadIG::addListener(noria);
+	//EntidadIG::addListener(olaf);
 
-	EntidadIG::addListener(plano);
-	EntidadIG::addListener(noria);
-	EntidadIG::addListener(olaf);
-
-
+	Ogre::SceneNode *AvionCompleto = mSM->getRootSceneNode()->createChildSceneNode();
+	Avion* avion = new Avion(AvionCompleto, 5);
 
 	//------------------------------------------------------------------------
 

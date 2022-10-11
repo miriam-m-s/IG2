@@ -84,3 +84,65 @@ material Practica1/ombligo {
 		 }
 	 }
 }
+
+material Practica1/esferaAvion {
+		technique {
+			pass {
+				diffuse 0.9 0.0 0.0
+		 }
+	 }
+}
+
+material Practica1/CabezaRoja {
+		technique {
+			pass {
+				diffuse 0.8 0.0 0.0
+				texture_unit {
+					texture spotlight_image.png
+					colour_op modulate
+					env_map spherical
+				}
+		 }
+	 }
+}
+
+material Practica1/CuerpoRojo {
+		technique {
+			pass {
+				diffuse 0.8 0.0 0.0
+				texture_unit {
+					texture checker.png
+					colour_op modulate
+					env_map spherical
+				}
+		 }
+	 }
+}
+
+material Practica1/ninja {
+		technique {
+			pass {
+				diffuse 1.0 1.0 0.0
+		 }
+	 }
+}
+
+material Practica1/alasAvion {
+		technique {
+			pass {
+				diffuse 0.4 0.4 0.4
+				texture_unit {
+					texture checker.png
+					colour_op add
+				}
+		 }
+	 }
+}
+
+material Practica1/morroAvion {
+		technique {
+			pass {
+				diffuse 0.9 0.6 0.0
+			}
+		}
+}
