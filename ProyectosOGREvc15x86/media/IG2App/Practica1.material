@@ -69,7 +69,7 @@ material Practica1/cabeza {
 	 }
 }
 
-material Practica1/nariz {
+material Practica1/rojo {
 		technique {
 			pass {
 				diffuse 1.0 0.6 0.2
@@ -81,6 +81,14 @@ material Practica1/ombligo {
 		technique {
 			pass {
 				diffuse 1.0 0.0 0.0
+		 }
+	 }
+}
+material Practica1/naranja {
+		technique {
+			pass {
+				diffuse 1 0.6 0.0
+					
 		 }
 	 }
 }
@@ -143,6 +151,29 @@ material Practica1/morroAvion {
 		technique {
 			pass {
 				diffuse 0.9 0.6 0.0
+			}
+		}
+}
+material Practica1/morroAspa {
+		technique {
+			pass {
+				diffuse 0.4 0.4 0.4
+				texture_unit {
+					texture dirt01.jpg
+					colour_op add
+					}
+			}
+		}
+}
+material Practica1/brazo {
+		technique {
+			pass {
+				diffuse 1.0 1 0
+				texture_unit {
+					texture BumpyMetal.jpg
+				colour_op add
+					
+					}
 			}
 		}
 }

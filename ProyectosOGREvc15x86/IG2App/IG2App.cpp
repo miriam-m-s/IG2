@@ -194,9 +194,11 @@ void IG2App::setupScene(void)
 	//EntidadIG::addListener(plano);
 	//EntidadIG::addListener(noria);
 	//EntidadIG::addListener(olaf);
-
-	Ogre::SceneNode *AvionCompleto = mSM->getRootSceneNode()->createChildSceneNode();
-	Avion* avion = new Avion(AvionCompleto, 5);
+	
+	/*Ogre::SceneNode *AvionCompleto = mSM->getRootSceneNode()->createChildSceneNode();
+	Avion* avion = new Avion(AvionCompleto, 5);*/
+	Ogre::SceneNode* Dronenode = mSM->getRootSceneNode()->createChildSceneNode();
+	Dron* drone = new Dron(Dronenode, 3);
 
 	//------------------------------------------------------------------------
 

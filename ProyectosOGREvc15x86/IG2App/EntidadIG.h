@@ -133,6 +133,23 @@ public:
 	~Aspa() {};
 
 };
+class Dron :public EntidadIG {
+
+public:
+
+	Dron(Ogre::SceneNode* padre, int i);
+	~Dron() {};
+
+};
+class BrazoDron :public EntidadIG {
+
+public:
+
+	BrazoDron(Ogre::SceneNode* padre);
+	~BrazoDron() {};
+
+};
+
 
 
 
