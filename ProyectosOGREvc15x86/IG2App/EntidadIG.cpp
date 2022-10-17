@@ -243,25 +243,27 @@ Avion::Avion(Ogre::SceneNode* padre, int n):EntidadIG(padre)
 
 }
 
+bool Avion::keyPressed(const OgreBites::KeyboardEvent& evt)
+{
+	return false;
+}
+
 AspasNave::AspasNave(Ogre::SceneNode* padre, int n):EntidadIG(padre) {
 
 	float angle = 90.0f;
 
 	Ogre::SceneNode *cilindroNode = padre->createChildSceneNode();
-//	cilindroNode->setInheritScale(false);
 	Ogre::Entity* cilindro = padre->getCreator()->createEntity("Barrel.mesh");
 	cilindro->setMaterialName("Practica1/morroAspa");
-
 	cilindroNode->attachObject(cilindro);
-	
 	cilindroNode->setScale(7, 7,7);
 	cilindroNode->roll(Ogre::Degree(90));
-	Ogre::SceneNode* aspapadre= padre->createChildSceneNode();
-	/*aspapadre->setInheritScale(false);*/
-	aspapadre->pitch(Ogre::Degree(90));
+
+	aspaPadre = padre->createChildSceneNode();
+
 	for (int i = 0; i < n; i++) {
 
-		Ogre::SceneNode* aspaNode = aspapadre->createChildSceneNode();
+		Ogre::SceneNode* aspaNode = aspaPadre->createChildSceneNode();
 
 		Aspa * aspaAvion = new Aspa(aspaNode, i);
 		aspaNode->pitch(Ogre::Degree(angle));
@@ -269,6 +271,12 @@ AspasNave::AspasNave(Ogre::SceneNode* padre, int n):EntidadIG(padre) {
 	}
 	
 
+}
+
+void AspasNave::frameRendered(const Ogre::FrameEvent& evt)
+{
+	Ogre::Real time = evt.timeSinceLastEvent;
+	aspaPadre->pitch(Ogre::Radian(time*50));
 }
 
 Aspa::Aspa(Ogre::SceneNode *Aspa, int i):EntidadIG(Aspa) {
@@ -287,30 +295,42 @@ Aspa::Aspa(Ogre::SceneNode *Aspa, int i):EntidadIG(Aspa) {
 	Cilindro->setScale(3, 10,3);
 	Cilindro->setInheritOrientation(false);
 	Cilindro->setPosition(5, 0, -280);
+
 	tableNode->translate(0, 0, -130);
 
 }
 
-Dron::Dron(Ogre::SceneNode* padre, int n):EntidadIG(padre)
+Dron::Dron(Ogre::SceneNode* padre, int n, bool avispa):EntidadIG(padre)
 {
 	Ogre::SceneNode* esferaCentral = padre->createChildSceneNode();
 	Ogre::Entity* esfera = padre->getCreator()->createEntity("sphere.mesh");
-	esfera->setMaterialName("Practica1/esferaAvion");
+
+	if(!avispa)esfera->setMaterialName("Practica1/esferaAvion");
+	else esfera->setMaterialName("Practica1/cabeza");
+
 	esferaCentral->attachObject(esfera);
 
-	Ogre::SceneNode* aspapadre = padre->createChildSceneNode();
+	Ogre::SceneNode *aspaPadre = padre->createChildSceneNode();
 	
 	float angle = 90.0f;
 	for (int i = 0; i < n; i++) {
 
-		Ogre::SceneNode* brazo = aspapadre->createChildSceneNode();
+		Ogre::SceneNode* brazo = aspaPadre->createChildSceneNode();
 
 		BrazoDron* brazito = new BrazoDron(brazo);
 		brazo->pitch(Ogre::Degree(angle));
+		if (i == 0) brazo->setScale(1.5,1.5,1.5);
+		brazos.push_back(brazito);
 	
 		angle += 360.0f / n;
 	}
-	//BrazoDron* brazo = new BrazoDron(padre);
+}
+
+void Dron::frameRendered(const Ogre::FrameEvent& evt)
+{
+	for (int i = 0; i < brazos.size(); i++) {
+		brazos[i]->frameRendered(evt);
+	}
 }
 
 BrazoDron::BrazoDron(Ogre::SceneNode* padre):EntidadIG(padre)
@@ -325,15 +345,18 @@ BrazoDron::BrazoDron(Ogre::SceneNode* padre):EntidadIG(padre)
 
 	Ogre::SceneNode* esferaCentral = padre->createChildSceneNode();
 	Ogre::Entity* esfera = padre->getCreator()->createEntity("sphere.mesh");
-	esferaCentral->setInheritScale(false);
 	esfera->setMaterialName("Practica1/naranja");
 	esferaCentral->attachObject(esfera);
 	esferaCentral->setScale(0.5, 0.5, 0.5);
 	esferaCentral->setPosition(0, -200, 0);
+
 	Ogre::SceneNode* AspaNode = esferaCentral->createChildSceneNode();
-	//AspaNode->setInheritScale(false);
-	//AspaNode->setInheritOrientation(false);
-	AspasNave* aspa = new AspasNave(AspaNode, 3);
+	aspa = new AspasNave(AspaNode, 3);
 	AspaNode->translate(100, 0, 0);
 	AspaNode->setScale(0.4, 0.4, 0.4);
+}
+
+void BrazoDron::frameRendered(const Ogre::FrameEvent& evt)
+{
+	aspa->frameRendered(evt);
 }

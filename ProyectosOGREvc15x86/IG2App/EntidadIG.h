@@ -107,6 +107,7 @@ class Avion : public EntidadIG {
 public:
 
 	Avion(Ogre::SceneNode* padre, int n);
+	bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	~Avion() {};
 
 private:
@@ -117,9 +118,12 @@ private:
 
 class AspasNave :public EntidadIG {
 
+	Ogre::SceneNode* aspaPadre;
+
 public:
 
 	AspasNave(Ogre::SceneNode *padre,  int n);
+	void frameRendered(const Ogre::FrameEvent& evt);
 	~AspasNave() {};
 
 
@@ -133,22 +137,32 @@ public:
 	~Aspa() {};
 
 };
-class Dron :public EntidadIG {
 
-public:
-
-	Dron(Ogre::SceneNode* padre, int i);
-	~Dron() {};
-
-};
 class BrazoDron :public EntidadIG {
+
+	AspasNave* aspa;
 
 public:
 
 	BrazoDron(Ogre::SceneNode* padre);
+	void frameRendered(const Ogre::FrameEvent& evt);
 	~BrazoDron() {};
 
 };
+
+class Dron :public EntidadIG {
+
+	std::vector<BrazoDron*> brazos;
+
+public:
+
+	Dron(Ogre::SceneNode* padre, int i, bool avispa);
+	void frameRendered(const Ogre::FrameEvent& evt);
+	~Dron() {};
+
+};
+
+
 
 
 

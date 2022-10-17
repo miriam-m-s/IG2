@@ -198,7 +198,15 @@ void IG2App::setupScene(void)
 	/*Ogre::SceneNode *AvionCompleto = mSM->getRootSceneNode()->createChildSceneNode();
 	Avion* avion = new Avion(AvionCompleto, 5);*/
 	Ogre::SceneNode* Dronenode = mSM->getRootSceneNode()->createChildSceneNode();
-	Dron* drone = new Dron(Dronenode, 3);
+	Ogre::SceneNode* AvispaDronenode = mSM->getRootSceneNode()->createChildSceneNode();
+
+	Dron* drone = new Dron(Dronenode, 3, false);
+	Dron* droneAvispa = new Dron(AvispaDronenode, 3, true); 
+
+	AvispaDronenode->setScale(0.4, 0.4, 0.4);
+	AvispaDronenode->translate(0, 0, 400);
+
+	addInputListener(drone);
 
 	//------------------------------------------------------------------------
 
