@@ -31,6 +31,14 @@ material Practica1/tablon {
 	 }
 }
 
+material Practica1/cian {
+		technique {
+			pass {
+				diffuse 0.0 1.0 1.0
+		 }
+	 }
+}
+
 material Practica1/rodillo {
 		technique {
 			pass {

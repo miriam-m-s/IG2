@@ -4,7 +4,7 @@
 #include <OgreInput.h>
 #include <SDL_keycode.h>
 #include <OgreMeshManager.h>
-
+#include <cstdlib>
 
 using namespace Ogre;
 
@@ -91,7 +91,7 @@ void IG2App::setupScene(void)
 
 	// and tell it to render into the main window
 	Viewport* vp = getRenderWindow()->addViewport(cam);
-	vp->setBackgroundColour(Ogre::ColourValue(0.5, 0.7, 1));
+	vp->setBackgroundColour(Ogre::ColourValue(0.0, 0.0, 0.0));
 
 	//------------------------------------------------------------------------
 
@@ -105,7 +105,7 @@ void IG2App::setupScene(void)
 	//mLightNode = mCamNode->createChildSceneNode("nLuz");
 	mLightNode->attachObject(luz);
 
-	mLightNode->setDirection(Ogre::Vector3(-0.5, -1, 0));  //vec3.normalise();
+	mLightNode->setDirection(Ogre::Vector3(-0.5, -1, 1));  //vec3.normalise();
 	//lightNode->setPosition(0, 0, 1000);
 
 	//------------------------------------------------------------------------
@@ -194,19 +194,55 @@ void IG2App::setupScene(void)
 	//EntidadIG::addListener(plano);
 	//EntidadIG::addListener(noria);
 	//EntidadIG::addListener(olaf);
-	
-	/*Ogre::SceneNode *AvionCompleto = mSM->getRootSceneNode()->createChildSceneNode();
-	Avion* avion = new Avion(AvionCompleto, 5);*/
-	Ogre::SceneNode* Dronenode = mSM->getRootSceneNode()->createChildSceneNode();
-	Ogre::SceneNode* AvispaDronenode = mSM->getRootSceneNode()->createChildSceneNode();
 
-	Dron* drone = new Dron(Dronenode, 3, false);
-	Dron* droneAvispa = new Dron(AvispaDronenode, 3, true); 
+	Ogre::SceneNode* centroPlaneta = mSM->getRootSceneNode()->createChildSceneNode();
+	Ogre::Entity* planeta = mSM->createEntity("uv_sphere.mesh");
+	planeta->setMaterialName("Practica1/cian");
+	centroPlaneta->attachObject(planeta);
+	centroPlaneta->setScale(4,4,4);
 
-	AvispaDronenode->setScale(0.4, 0.4, 0.4);
-	AvispaDronenode->translate(0, 0, 400);
+	Ogre::SceneNode* nodoMove = centroPlaneta->createChildSceneNode();
+	nodoMove->setInheritScale(false);
+	Ogre::SceneNode* AvionCompleto = nodoMove->createChildSceneNode();
 
-	addInputListener(drone);
+	Avion* avion = new Avion(AvionCompleto, nodoMove, 5);
+	AvionCompleto->setScale(0.2,0.2,0.2);
+	AvionCompleto->translate(0, 420, 0);
+
+	EntidadIG::addListener(avion);
+	addInputListener(avion);
+
+
+	Ogre::SceneNode* centro = centroPlaneta->createChildSceneNode();
+	centro->setInheritScale(false);
+	Ogre::SceneNode* Dronenode = centro->createChildSceneNode();
+	Dronenode->setScale(0.2, 0.2, 0.2);
+	Dronenode->translate(0, 420, 0);
+	Dronenode->roll(Ogre::Degree(90));
+	Ogre::SceneNode* Enjambre = centro->createChildSceneNode();
+	Enjambre->roll(Ogre::Degree(90));
+	Enjambre->translate(0, 420, 0);
+	Enjambre->setScale(0.1, 0.1, 0.1);
+
+	for (int i = 0; i < 10; i++) {
+
+		 double pitch = rand()%360+1;
+		 double yaw = rand()%360+1;
+
+		if (i == 0) {
+			Dron* drone = new Dron(Dronenode, 3, false);
+		    addInputListener(drone);
+		}
+
+		else {
+			Ogre::SceneNode* AvispaDronenode = Enjambre->createChildSceneNode("Avispa" + std::to_string(i + 1));
+			Dron* droneAvispa = new Dron(AvispaDronenode, 3, true);
+		}
+
+		centro->yaw(Ogre::Degree(yaw));
+		centro->pitch(Ogre::Degree(pitch));
+
+	}
 
 	//------------------------------------------------------------------------
 

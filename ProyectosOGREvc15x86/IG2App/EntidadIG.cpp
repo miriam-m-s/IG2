@@ -191,7 +191,7 @@ void Munyeco::frameRendered(const Ogre::FrameEvent& evt)
 
 }
 
-Avion::Avion(Ogre::SceneNode* padre, int n):EntidadIG(padre)
+Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n):EntidadIG(padre), movimiento(nodoMovimiento), estaMoviendo(false)
 {
 
 	esferaCentral = padre->createChildSceneNode();
@@ -227,25 +227,43 @@ Avion::Avion(Ogre::SceneNode* padre, int n):EntidadIG(padre)
 	Morro->pitch(Ogre::Degree(90));
 	Morro->setPosition(0,0,-90);
 
-	Ogre::SceneNode *alaAspa1 = Ala1->createChildSceneNode();
-	AspasNave *Aspa1 = new AspasNave(alaAspa1, 5);
+	Ogre::SceneNode *alaAspa1 = padre->createChildSceneNode();
+	Aspa1 = new AspasNave(alaAspa1, 5);
 	alaAspa1->yaw(Ogre::Degree(90));
-	alaAspa1->setInheritScale(false);
-	alaAspa1->setPosition(-30,0,-50);
+	alaAspa1->setPosition(-200,0,-100);
 	alaAspa1->setScale(0.2, 0.2, 0.2);
 
-	Ogre::SceneNode* alaAspa2 = Ala2->createChildSceneNode();
-	AspasNave *Aspa2 = new AspasNave(alaAspa2, 5);
-	alaAspa2->setInheritScale(false);
+	Ogre::SceneNode* alaAspa2 = padre->createChildSceneNode();
+	Aspa2 = new AspasNave(alaAspa2, 5);
 	alaAspa2->yaw(Ogre::Degree(90));
-	alaAspa2->setPosition(30,0,-50);
+	alaAspa2->setPosition(200,0,-100);
 	alaAspa2->setScale(0.2,0.2,0.2);
 
 }
 
 bool Avion::keyPressed(const OgreBites::KeyboardEvent& evt)
 {
-	return false;
+	if (evt.keysym.sym == SDLK_h)
+	{
+		movimiento->pitch(Ogre::Degree(-4));
+		estaMoviendo = true;
+	}
+	else if (evt.keysym.sym == SDLK_j)
+	{
+		movimiento->yaw(Ogre::Degree(-2));
+	}
+
+	return true;
+}
+
+void Avion::frameRendered(const Ogre::FrameEvent& evt)
+{
+	if (estaMoviendo) {
+		Aspa1->frameRendered(evt);
+		Aspa2->frameRendered(evt);
+	}
+
+	estaMoviendo = false;
 }
 
 AspasNave::AspasNave(Ogre::SceneNode* padre, int n):EntidadIG(padre) {
@@ -271,12 +289,12 @@ AspasNave::AspasNave(Ogre::SceneNode* padre, int n):EntidadIG(padre) {
 	}
 	
 
-}
+ }
 
 void AspasNave::frameRendered(const Ogre::FrameEvent& evt)
 {
 	Ogre::Real time = evt.timeSinceLastEvent;
-	aspaPadre->pitch(Ogre::Radian(time*50));
+	aspaPadre->pitch(Ogre::Radian(time*2000));
 }
 
 Aspa::Aspa(Ogre::SceneNode *Aspa, int i):EntidadIG(Aspa) {

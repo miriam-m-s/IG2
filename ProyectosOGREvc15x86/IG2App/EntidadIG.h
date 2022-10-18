@@ -88,10 +88,7 @@ class AspaNoria : public  EntidadIG
 
 		AspaNoria(Ogre::SceneNode* NoriaNode, float angle,int i);
 		~AspaNoria();
-
-
 		void frameRendered(const Ogre::FrameEvent& evt) override;
-
 
 	private:
 
@@ -99,20 +96,6 @@ class AspaNoria : public  EntidadIG
 		Ogre::SceneNode* tableNode1 = nullptr;
 		Ogre::SceneNode* tableNode2 = nullptr;
 		Ogre::SceneNode* cuboNode = nullptr;
-
-};
-
-class Avion : public EntidadIG {
-
-public:
-
-	Avion(Ogre::SceneNode* padre, int n);
-	bool keyPressed(const OgreBites::KeyboardEvent& evt);
-	~Avion() {};
-
-private:
-
-	Ogre::SceneNode* esferaCentral = nullptr;
 
 };
 
@@ -126,6 +109,26 @@ public:
 	void frameRendered(const Ogre::FrameEvent& evt);
 	~AspasNave() {};
 
+
+};
+
+class Avion : public EntidadIG {
+
+	Ogre::SceneNode* movimiento;
+	AspasNave* Aspa1;
+	AspasNave* Aspa2;
+	bool estaMoviendo;
+
+public:
+
+	Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n);
+	bool keyPressed(const OgreBites::KeyboardEvent& evt);
+	void frameRendered(const Ogre::FrameEvent& evt) override;
+	~Avion() {};
+
+private:
+
+	Ogre::SceneNode* esferaCentral = nullptr;
 
 };
 
