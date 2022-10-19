@@ -43,10 +43,12 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
 	
 	for (auto it = avispero.begin(); it != avispero.end();) {
-		SceneNode* avispa = *it;
+		Ogre::SceneNode* avispa = *it;
 		if (AvionCompleto->_getWorldAABB().intersects(avispa->_getWorldAABB())) {
-			avispa->setVisible(false);
+			//avispa->setVisible(false);
+			avispa->getParent()->removeChild(*it);;
 			it=avispero.erase(it);
+			dronesVivos->setCaption(std::to_string(avispero.size()));
 		}
 		else {
 			++it;
@@ -56,7 +58,6 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 	if (avispero.size() == 0) {
 		drone->changeColor();
 	}
-
 }
 
 void IG2App::shutdown()
@@ -86,10 +87,10 @@ void IG2App::setup(void)
 	mSM->addRenderQueueListener(mOverlaySystem);
 
 	mTrayMgr = new OgreBites::TrayManager("TrayGUISystem", mWindow.render);
+	mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
 
-	//mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-	mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMRIGHT);
-
+	dronesVivos = mTrayMgr->createTextBox(OgreBites::TL_BOTTOMRIGHT, "DronesVivos", std::to_string(avispero.size()), 50, 50);
+	
 	addInputListener(mTrayMgr);
 
 	addInputListener(this);
