@@ -48,7 +48,7 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 			//avispa->setVisible(false);
 			avispa->getParent()->removeChild(*it);;
 			it=avispero.erase(it);
-			dronesVivos->setCaption(std::to_string(avispero.size()));
+			dronesVivos->setText(std::to_string(avispero.size()));
 		}
 		else {
 			++it;
@@ -88,9 +88,11 @@ void IG2App::setup(void)
 
 	mTrayMgr = new OgreBites::TrayManager("TrayGUISystem", mWindow.render);
 	mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-
-	dronesVivos = mTrayMgr->createTextBox(OgreBites::TL_BOTTOMRIGHT, "DronesVivos", std::to_string(avispero.size()), 50, 50);
 	
+	dronesVivos = mTrayMgr->createTextBox(OgreBites::TL_BOTTOMRIGHT, "Drones", Ogre::DisplayString("Drones Vivos"), 300, 80);
+	dronesVivos->setText(std::to_string(avispero.size()));
+	dronesVivos->setTextAlignment(Ogre::TextAreaOverlayElement::Alignment::Center);
+
 	addInputListener(mTrayMgr);
 
 	addInputListener(this);
