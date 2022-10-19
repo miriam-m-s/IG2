@@ -21,8 +21,12 @@ protected:
   virtual void shutdown();
   virtual void setupScene();
 
+  void PlanetaAvispa();
+
+  void GeneraAvispero(Ogre::SceneNode* centroPlaneta);
+
   virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);  // InputListener
-      
+  virtual void frameRendered(const Ogre::FrameEvent& evt);
   Ogre::SceneManager* mSM = nullptr;
   OgreBites::TrayManager* mTrayMgr = nullptr;    
   Ogre::SceneNode* mLightNode = nullptr;
@@ -33,8 +37,9 @@ protected:
   Noria* noria = nullptr;
   Munyeco* olaf = nullptr;
   Plano* plano = nullptr;
-
-
+  Ogre::SceneNode* AvionCompleto;
+  std::vector<Ogre::SceneNode*>avispero;
+  Dron* drone;
 };
 
 #endif

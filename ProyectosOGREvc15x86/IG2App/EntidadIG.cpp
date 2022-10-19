@@ -1,5 +1,6 @@
 #include "EntidadIG.h"
 #include "IG2App.h"
+#include <random>
 
 std::vector<EntidadIG*> EntidadIG::appListeners = std::vector<EntidadIG*>(0, nullptr);
 
@@ -318,15 +319,17 @@ Aspa::Aspa(Ogre::SceneNode *Aspa, int i):EntidadIG(Aspa) {
 
 }
 
-Dron::Dron(Ogre::SceneNode* padre, int n, bool avispa):EntidadIG(padre)
+Dron::Dron(Ogre::SceneNode* padre, int n, bool avispa,Ogre::SceneNode* move):EntidadIG(padre), movimiento(move)
 {
+	myTymer = new Ogre::Timer();
+	initTime = myTymer->getMilliseconds();
 	Ogre::SceneNode* esferaCentral = padre->createChildSceneNode();
-	Ogre::Entity* esfera = padre->getCreator()->createEntity("sphere.mesh");
+	Cabeza = padre->getCreator()->createEntity("sphere.mesh");
 
-	if(!avispa)esfera->setMaterialName("Practica1/esferaAvion");
-	else esfera->setMaterialName("Practica1/cabeza");
+	if(!avispa)Cabeza->setMaterialName("Practica1/esferaAvion");
+	else Cabeza->setMaterialName("Practica1/cabeza");
 
-	esferaCentral->attachObject(esfera);
+	esferaCentral->attachObject(Cabeza);
 
 	Ogre::SceneNode *aspaPadre = padre->createChildSceneNode();
 	
@@ -346,9 +349,33 @@ Dron::Dron(Ogre::SceneNode* padre, int n, bool avispa):EntidadIG(padre)
 
 void Dron::frameRendered(const Ogre::FrameEvent& evt)
 {
+	
 	for (int i = 0; i < brazos.size(); i++) {
 		brazos[i]->frameRendered(evt);
 	}
+	unsigned long s = myTymer->getMilliseconds();
+	if ( s>= initTime + 2000&&s<initTime+4000) {
+		
+		movimiento->yaw(Ogre::Degree(sentido*1));
+		actualiza = true;
+	}
+	else
+	{
+		if (actualiza) {
+			initTime = s;
+			actualiza = false;
+			std::random_device rd;
+			std::default_random_engine eng(rd());
+			std::uniform_int_distribution<int> distr(-1, 1);
+			 sentido = distr(eng);
+			if (sentido == 0) {
+				sentido = -1;
+			}
+		}
+		movimiento->pitch(Ogre::Degree(-0.5f));
+	}
+	
+
 }
 
 BrazoDron::BrazoDron(Ogre::SceneNode* padre):EntidadIG(padre)

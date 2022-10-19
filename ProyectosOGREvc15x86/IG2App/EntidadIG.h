@@ -5,6 +5,8 @@
 #include <OgreTrays.h>
 #include <vector>
 #include <iostream>
+#include<OgreTimer.h>
+
 
 enum MessageType {NADA};
 
@@ -156,12 +158,23 @@ public:
 class Dron :public EntidadIG {
 
 	std::vector<BrazoDron*> brazos;
-
+	Ogre::SceneNode* movimiento;
+	Ogre::Timer* myTymer;
+	unsigned long initTime;
+	Ogre::Entity* Cabeza;
+	bool actualiza = false;
+	int sentido = 1;
 public:
 
-	Dron(Ogre::SceneNode* padre, int i, bool avispa);
+	Dron(Ogre::SceneNode* padre, int i, bool avispa, Ogre::SceneNode* move);
 	void frameRendered(const Ogre::FrameEvent& evt);
-	~Dron() {};
+	~Dron() {
+		delete myTymer;
+	};
+	void changeColor(){
+		Cabeza->setMaterialName("Practica1/Amarillo");
+	}
+	
 
 };
 
