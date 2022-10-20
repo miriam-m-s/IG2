@@ -21,6 +21,8 @@ protected:
   virtual void shutdown();
   virtual void setupScene();
 
+  void NoriaMunyeco();
+
   void PlanetaAvispa();
 
   virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);  // InputListener
@@ -33,7 +35,8 @@ protected:
   Ogre::SceneNode* mLightNode = nullptr;
   Ogre::SceneNode* mCamNode = nullptr;
   Ogre::SceneNode* mSinbadNode = nullptr;
-
+  Ogre::SceneNode* Scene1 = nullptr;
+  Ogre::SceneNode* Scene2 = nullptr;
   Ogre::SceneNode* PN;
   Noria* noria = nullptr;
   Munyeco* olaf = nullptr;
@@ -42,6 +45,7 @@ protected:
   Ogre::SceneNode* AvionCompleto;
   std::vector<Ogre::SceneNode*>avispero;
   Dron* drone;
+
 };
 
 #endif

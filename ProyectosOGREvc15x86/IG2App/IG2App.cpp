@@ -35,6 +35,16 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 	else if (evt.keysym.sym == SDLK_r) {
 		plano->sendEvent(NADA ,noria);
 	}
+	else if (evt.keysym.sym == SDLK_1) {
+		Scene2->setVisible(false);
+		Scene1->setVisible(true);
+		dronesVivos->hide();
+	}
+	else if (evt.keysym.sym == SDLK_2) {
+		Scene1->setVisible(false);
+		Scene2->setVisible(true);
+		dronesVivos->show();
+	}
 
 	return true;
 }
@@ -199,27 +209,7 @@ void IG2App::setupScene(void)
 	//mSinbadNode->setPosition(400, 100, -300);
 	//mSinbadNode->setScale(20, 20, 20);
 
-	//creacion de plano
-	PN = mSM->getRootSceneNode()->createChildSceneNode();
-	//plano = new Plano(PN);
-	
-
-	//creacion de noria
-	//Ogre::SceneNode* NN = PN->createChildSceneNode();
-	//noria = new Noria(20, PN);
-
-	//creacion del muñeco
-	//Ogre::SceneNode* MUNY = PN->createChildSceneNode();
-	//olaf = new Munyeco(MUNY);
-	//MUNY->setPosition(PN->getScale().x / 1.25, 800, -PN->getScale().z / 1.25);
-	//MUNY->yaw(Ogre::Degree(-45));
-
-	//addInputListener(noria);
-	//addInputListener(olaf);
-
-	//EntidadIG::addListener(plano);
-	//EntidadIG::addListener(noria);
-	//EntidadIG::addListener(olaf);
+	NoriaMunyeco();
 
 	PlanetaAvispa();
 
@@ -236,9 +226,39 @@ void IG2App::setupScene(void)
 
 }
 
+void IG2App::NoriaMunyeco()
+{
+	//creacion de plano
+
+	Scene1 = mSM->getRootSceneNode()->createChildSceneNode();
+
+	PN = Scene1->createChildSceneNode();
+	plano = new Plano(PN);
+
+
+	//creacion de noria
+	Ogre::SceneNode* NN = PN->createChildSceneNode();
+	noria = new Noria(20, PN);
+
+	//creacion del muñeco
+	Ogre::SceneNode* MUNY = PN->createChildSceneNode();
+	olaf = new Munyeco(MUNY);
+	MUNY->setPosition(PN->getScale().x / 1.25, 800, -PN->getScale().z / 1.25);
+	MUNY->yaw(Ogre::Degree(-45));
+
+	addInputListener(noria);
+	addInputListener(olaf);
+
+	EntidadIG::addListener(plano);
+	EntidadIG::addListener(noria);
+	EntidadIG::addListener(olaf);
+	Scene1->setVisible(false);
+}
+
 void IG2App::PlanetaAvispa()
 {
-	Ogre::SceneNode* centroPlaneta = mSM->getRootSceneNode()->createChildSceneNode();
+	Scene2 = mSM->getRootSceneNode()->createChildSceneNode();;
+	Ogre::SceneNode* centroPlaneta = Scene2->createChildSceneNode();
 	Ogre::Entity* planeta = mSM->createEntity("uv_sphere.mesh");
 	planeta->setMaterialName("Practica1/cian");
 	centroPlaneta->attachObject(planeta);
