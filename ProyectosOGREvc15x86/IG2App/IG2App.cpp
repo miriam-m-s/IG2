@@ -52,22 +52,23 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
 	
-	for (auto it = avispero.begin(); it != avispero.end();) {
-		Ogre::SceneNode* avispa = *it;
-		if (AvionCompleto->_getWorldAABB().intersects(avispa->_getWorldAABB())) {
-			//avispa->setVisible(false);
-			avispa->getParent()->removeChild(*it);;
-			it=avispero.erase(it);
-			dronesVivos->setText(std::to_string(avispero.size()));
-		}
-		else {
-			++it;
-		}
-	}
+	
+	//for (auto it = avispero.begin(); it != avispero.end();) {
+	//	Ogre::SceneNode* avispa = *it;
+	//	if (AvionCompleto->_getWorldAABB().intersects(avispa->_getWorldAABB())) {
+	//		//avispa->setVisible(false);
+	//		avispa->getParent()->removeChild(*it);;
+	//		it=avispero.erase(it);
+	//		dronesVivos->setText(std::to_string(avispero.size()));
+	//	}
+	//	else {
+	//		++it;
+	//	}
+	//}
 
-	if (avispero.size() == 0) {
-		drone->changeColor();
-	}
+	//if (avispero.size() == 0) {
+	//	drone->changeColor();
+	//}
 }
 
 void IG2App::shutdown()
@@ -127,7 +128,7 @@ void IG2App::setupScene(void)
 
 	// and tell it to render into the main window
 	Viewport* vp = getRenderWindow()->addViewport(cam);
-	vp->setBackgroundColour(Ogre::ColourValue(0.0, 0.0, 0.0));
+	vp->setBackgroundColour(Ogre::ColourValue(1.0, 1.0, 0.0));
 
 	//------------------------------------------------------------------------
 
@@ -263,8 +264,34 @@ void IG2App::PlanetaAvispa()
 	planeta->setMaterialName("Practica1/cian");
 	centroPlaneta->attachObject(planeta);
 	centroPlaneta->setScale(4, 4, 4);
+	Sinbad* sinbad = new Sinbad(centroPlaneta);
+	
+	addInputListener(sinbad);
+	//Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
 
-	Ogre::SceneNode* nodoMove = centroPlaneta->createChildSceneNode();
+	//mSinbadNode = centroPlaneta->createChildSceneNode("nSinbad");
+	//mSinbadNode->attachObject(ent);
+
+	//mSinbadNode->setPosition(0, 120,0);
+	//mSinbadNode->yaw(Ogre::Degree(180));
+	//mSinbadNode->setScale(5, 5, 5);
+	////auto  animation = mSM->createAnimationState("RunBase");
+	// anim_Sinbadtop=ent->getAnimationState("RunTop");
+	// anim_Sinbadtop->setLoop(true);
+	// anim_Sinbadtop->setEnabled(true);
+
+	// anim_Sinbaddown = ent->getAnimationState("RunBase");
+	// anim_Sinbaddown->setLoop(true);
+	// anim_Sinbaddown->setEnabled(true);
+
+	// AnimationStateSet* aux = ent->getAllAnimationStates();
+	// auto it = aux->getAnimationStateIterator().begin();
+	// while (it != aux->getAnimationStateIterator().end())
+	// {
+	//	 auto s = it->first; ++it;
+	//	 std::cout << s << std::endl;
+	// }
+	/*Ogre::SceneNode* nodoMove = centroPlaneta->createChildSceneNode();
 	nodoMove->setInheritScale(false);
     AvionCompleto = nodoMove->createChildSceneNode();
 	
@@ -309,7 +336,7 @@ void IG2App::PlanetaAvispa()
 		centro->yaw(Ogre::Degree(yaw));
 		centro->pitch(Ogre::Degree(pitch));
 
-	}
+	}*/
 
 
 }

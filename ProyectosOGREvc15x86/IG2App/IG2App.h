@@ -41,6 +41,7 @@ protected:
   Noria* noria = nullptr;
   Munyeco* olaf = nullptr;
   Plano* plano = nullptr;
+  
 
   Ogre::SceneNode* AvionCompleto;
   std::vector<Ogre::SceneNode*>avispero;

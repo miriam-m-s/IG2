@@ -164,6 +164,7 @@ class Dron :public EntidadIG {
 	Ogre::Entity* Cabeza;
 	bool actualiza = false;
 	int sentido = 1;
+
 public:
 
 	Dron(Ogre::SceneNode* padre, int i, bool avispa, Ogre::SceneNode* move);
@@ -175,6 +176,28 @@ public:
 		Cabeza->setMaterialName("Practica1/Amarillo");
 	}
 	
+
+};
+
+class Sinbad :public EntidadIG {
+
+private:
+	Ogre::SceneNode* mSinbadNode = nullptr;
+	Ogre::SceneNode* mSinbadNodemov = nullptr;
+	Ogre::AnimationState* anim_Sinbadtop = nullptr;
+	Ogre::AnimationState* anim_Sinbaddown = nullptr;
+	Ogre::Timer* myTymer;
+	unsigned long initTime;
+	int sentido = 1;
+public:
+
+	Sinbad(Ogre::SceneNode* padre);
+	void frameRendered(const Ogre::FrameEvent& evt);
+	~Sinbad() {
+		
+	};
+	
+
 
 };
 

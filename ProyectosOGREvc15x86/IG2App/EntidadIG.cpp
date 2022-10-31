@@ -401,7 +401,64 @@ BrazoDron::BrazoDron(Ogre::SceneNode* padre):EntidadIG(padre)
 	AspaNode->setScale(0.4, 0.4, 0.4);
 }
 
-void BrazoDron::frameRendered(const Ogre::FrameEvent& evt)
+void BrazoDron::frameRendered(const Ogre::FrameEvent& evt) 
 {
 	aspa->frameRendered(evt);
+}
+
+Sinbad::Sinbad(Ogre::SceneNode* padre) :EntidadIG(padre)
+{
+	myTymer = new Ogre::Timer();
+	Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
+	mSinbadNodemov = padre->createChildSceneNode();
+	mSinbadNode = mSinbadNodemov->createChildSceneNode("nSinbad");
+	mSinbadNode->attachObject(ent);
+
+	mSinbadNode->setPosition(0, 120, 0);
+	mSinbadNode->yaw(Ogre::Degree(180));
+	mSinbadNode->setScale(5, 5, 5);
+	//auto  animation = mSM->createAnimationState("RunBase");
+	anim_Sinbadtop = ent->getAnimationState("RunTop");
+	anim_Sinbadtop->setLoop(true);
+	anim_Sinbadtop->setEnabled(true);
+
+	anim_Sinbaddown = ent->getAnimationState("RunBase");
+	anim_Sinbaddown->setLoop(true);
+	anim_Sinbaddown->setEnabled(true);
+
+    Ogre::AnimationStateSet* aux = ent->getAllAnimationStates();
+	auto it = aux->getAnimationStateIterator().begin();
+	while (it != aux->getAnimationStateIterator().end())
+	{
+		auto s = it->first; ++it;
+		std::cout << s << std::endl;
+	}
+
+	initTime = myTymer->getMilliseconds();
+}
+
+void Sinbad::frameRendered(const Ogre::FrameEvent& evt)
+{
+	anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
+	anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
+	mSinbadNodemov->pitch(Ogre::Degree(-100 * evt.timeSinceLastFrame));
+
+	unsigned long s = myTymer->getMilliseconds();
+	if (s >= initTime + 2000 ) {
+
+		mSinbadNodemov->yaw(Ogre::Degree(sentido * 30));
+		initTime = s;
+		
+	}
+	else
+	{		
+			std::random_device rd;
+			std::default_random_engine eng(rd());
+			std::uniform_int_distribution<int> distr(-1, 1);
+			sentido = distr(eng);
+			if (sentido == 0) {
+				sentido = -1;
+			}
+			mSinbadNodemov->pitch(Ogre::Degree(-0.2f));
+	}
 }
