@@ -186,16 +186,23 @@ private:
 	Ogre::SceneNode* mSinbadNodemov = nullptr;
 	Ogre::AnimationState* anim_Sinbadtop = nullptr;
 	Ogre::AnimationState* anim_Sinbaddown = nullptr;
+	Ogre::AnimationState* anim_Sinbaddance = nullptr;
 	Ogre::Timer* myTymer;
 	unsigned long initTime;
 	int sentido = 1;
+	Ogre::Entity* ent;
+	bool corriendo;
+	bool izq;
+
 public:
 
-	Sinbad(Ogre::SceneNode* padre);
+	Sinbad(Ogre::SceneNode* padre, bool mano);
 	void frameRendered(const Ogre::FrameEvent& evt);
-	~Sinbad() {
-		
-	};
+	bool keyPressed(const OgreBites::KeyboardEvent& evt);
+	void arma();
+	void arma(bool izq);
+	void cambiaEspada();
+	~Sinbad() {};
 	
 
 

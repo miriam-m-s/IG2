@@ -406,10 +406,10 @@ void BrazoDron::frameRendered(const Ogre::FrameEvent& evt)
 	aspa->frameRendered(evt);
 }
 
-Sinbad::Sinbad(Ogre::SceneNode* padre) :EntidadIG(padre)
+Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano) :EntidadIG(padre)
 {
 	myTymer = new Ogre::Timer();
-	Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
+	ent = mSM->createEntity("Sinbad.mesh");
 	mSinbadNodemov = padre->createChildSceneNode();
 	mSinbadNode = mSinbadNodemov->createChildSceneNode("nSinbad");
 	mSinbadNode->attachObject(ent);
@@ -417,7 +417,7 @@ Sinbad::Sinbad(Ogre::SceneNode* padre) :EntidadIG(padre)
 	mSinbadNode->setPosition(0, 120, 0);
 	mSinbadNode->yaw(Ogre::Degree(180));
 	mSinbadNode->setScale(5, 5, 5);
-	//auto  animation = mSM->createAnimationState("RunBase");
+
 	anim_Sinbadtop = ent->getAnimationState("RunTop");
 	anim_Sinbadtop->setLoop(true);
 	anim_Sinbadtop->setEnabled(true);
@@ -425,6 +425,10 @@ Sinbad::Sinbad(Ogre::SceneNode* padre) :EntidadIG(padre)
 	anim_Sinbaddown = ent->getAnimationState("RunBase");
 	anim_Sinbaddown->setLoop(true);
 	anim_Sinbaddown->setEnabled(true);
+
+	anim_Sinbaddance = ent->getAnimationState("Dance");
+	anim_Sinbaddance->setLoop(true);
+	anim_Sinbaddance->setEnabled(false);
 
     Ogre::AnimationStateSet* aux = ent->getAllAnimationStates();
 	auto it = aux->getAnimationStateIterator().begin();
@@ -435,23 +439,27 @@ Sinbad::Sinbad(Ogre::SceneNode* padre) :EntidadIG(padre)
 	}
 
 	initTime = myTymer->getMilliseconds();
+	corriendo = true;
+	izq = mano;
+	cambiaEspada();
 }
 
 void Sinbad::frameRendered(const Ogre::FrameEvent& evt)
 {
-	anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
-	anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
-	mSinbadNodemov->pitch(Ogre::Degree(-100 * evt.timeSinceLastFrame));
+	if (corriendo) {
+		anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
+		anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
+		mSinbadNodemov->pitch(Ogre::Degree(-100 * evt.timeSinceLastFrame));
 
-	unsigned long s = myTymer->getMilliseconds();
-	if (s >= initTime + 2000 ) {
+		unsigned long s = myTymer->getMilliseconds();
+		if (s >= initTime + 2000) {
 
-		mSinbadNodemov->yaw(Ogre::Degree(sentido * 30));
-		initTime = s;
-		
-	}
-	else
-	{		
+			mSinbadNodemov->yaw(Ogre::Degree(sentido * 30));
+			initTime = s;
+
+		}
+		else
+		{
 			std::random_device rd;
 			std::default_random_engine eng(rd());
 			std::uniform_int_distribution<int> distr(-1, 1);
@@ -460,5 +468,54 @@ void Sinbad::frameRendered(const Ogre::FrameEvent& evt)
 				sentido = -1;
 			}
 			mSinbadNodemov->pitch(Ogre::Degree(-0.2f));
+		}
+	}
+
+	else {
+		anim_Sinbaddance->addTime(evt.timeSinceLastFrame);
 	}
 }
+
+bool  Sinbad::keyPressed(const OgreBites::KeyboardEvent& evt) {
+	
+	if (evt.keysym.sym == SDLK_c)
+	{
+		corriendo = !corriendo;
+
+		anim_Sinbaddown->setEnabled(!anim_Sinbaddown->getEnabled());
+		anim_Sinbadtop->setEnabled(!anim_Sinbadtop->getEnabled());
+		anim_Sinbaddance->setEnabled(!anim_Sinbaddance->getEnabled());
+
+	}
+
+	return true;
+}
+
+void Sinbad::arma(bool izq) {
+
+	Ogre::MovableObject* sword = mSM->createEntity("Sword.mesh");
+	ent->detachObjectFromBone(sword);
+
+	if (!izq) {
+		ent->attachObjectToBone("Hand.R", sword);
+	}
+
+	else	ent->attachObjectToBone("Hand.L", sword);
+
+}
+
+void Sinbad::arma() {
+
+	Ogre::MovableObject *swordL = mSM->createEntity("Sword.mesh");
+	Ogre::MovableObject *swordR = mSM->createEntity("Sword.mesh");
+
+	ent->attachObjectToBone("Hand.R", swordR);
+	ent->attachObjectToBone("Hand.L", swordL);
+
+}
+
+void Sinbad::cambiaEspada() {
+	arma(izq);
+}
+
+

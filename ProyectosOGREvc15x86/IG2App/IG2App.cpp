@@ -35,11 +35,13 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 	else if (evt.keysym.sym == SDLK_r) {
 		plano->sendEvent(NADA ,noria);
 	}
+
 	else if (evt.keysym.sym == SDLK_1) {
 		Scene2->setVisible(false);
 		Scene1->setVisible(true);
 		dronesVivos->hide();
 	}
+
 	else if (evt.keysym.sym == SDLK_2) {
 		Scene1->setVisible(false);
 		Scene2->setVisible(true);
@@ -264,9 +266,11 @@ void IG2App::PlanetaAvispa()
 	planeta->setMaterialName("Practica1/cian");
 	centroPlaneta->attachObject(planeta);
 	centroPlaneta->setScale(4, 4, 4);
-	Sinbad* sinbad = new Sinbad(centroPlaneta);
+	Sinbad* sinbad = new Sinbad(centroPlaneta, false);
+	//sinbad->arma();
 	
 	addInputListener(sinbad);
+	EntidadIG::addListener(sinbad);
 	//Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
 
 	//mSinbadNode = centroPlaneta->createChildSceneNode("nSinbad");
