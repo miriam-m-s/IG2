@@ -212,12 +212,12 @@ void IG2App::setupScene(void)
 	//mSinbadNode->setPosition(400, 100, -300);
 	//mSinbadNode->setScale(20, 20, 20);
 
-	NoriaMunyeco();
+	//NoriaMunyeco();
 
-	PlanetaAvispa();
+	//PlanetaAvispa();
 
 	//------------------------------------------------------------------------
-
+	EscenaSinbad();
 	mCamMgr = new OgreBites::CameraMan(mCamNode);
 	addInputListener(mCamMgr);
 	mCamMgr->setStyle(OgreBites::CS_ORBIT);
@@ -228,7 +228,12 @@ void IG2App::setupScene(void)
 	//------------------------------------------------------------------------
 
 }
-
+void IG2App::EscenaSinbad() {
+	Ogre::SceneNode*PLN = mSM->getRootSceneNode()->createChildSceneNode();
+	plano = new Plano(PLN);
+	Bomba* bomba_ = new Bomba(mSM->getRootSceneNode());
+	addInputListener(bomba_);
+}
 void IG2App::NoriaMunyeco()
 {
 	//creacion de plano

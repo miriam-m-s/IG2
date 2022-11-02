@@ -21,8 +21,8 @@ protected:
   virtual void shutdown();
   virtual void setupScene();
 
+  void EscenaSinbad();
   void NoriaMunyeco();
-
   void PlanetaAvispa();
 
   virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);  // InputListener

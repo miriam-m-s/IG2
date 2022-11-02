@@ -192,3 +192,15 @@ material Practica1/Amarillo {
 		 }
 	 }
 }
+material Practica1/bomba {
+		technique {
+			pass {
+				diffuse 0.4 0.4 0.4
+				texture_unit {
+					texture checker.png
+					colour_op add
+			
+				}
+		 }
+	 }
+}

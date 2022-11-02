@@ -6,6 +6,8 @@
 #include <vector>
 #include <iostream>
 #include<OgreTimer.h>
+#include<OgreAnimation.h>
+#include<OgreKeyFrame.h>
 
 
 enum MessageType {NADA};
@@ -204,6 +206,20 @@ public:
 	void cambiaEspada();
 	~Sinbad() {};
 	
+
+
+};
+
+class Bomba :public EntidadIG {
+	private:
+		Ogre::AnimationState* animationState;
+public:
+	Bomba(Ogre::SceneNode* padre);
+	void frameRendered(const Ogre::FrameEvent& evt);
+	~Bomba();
+
+	
+
 
 
 };

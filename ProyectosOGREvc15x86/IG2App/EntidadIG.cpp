@@ -518,4 +518,55 @@ void Sinbad::cambiaEspada() {
 	arma(izq);
 }
 
+Bomba::Bomba(Ogre::SceneNode* padre) :EntidadIG(padre)
+{
+	Ogre::SceneNode* node = padre->createChildSceneNode();
+	Ogre::Entity* ent = mSM->createEntity("Barrel.mesh");
+	ent->setMaterialName("Practica1/bomba");
+	node->attachObject(ent);
+	node->setScale(35, 35, 35);
+	node->setPosition(0, 100, 0);
 
+	int duration = 16;
+	Ogre::Animation* animation = mSM->createAnimation("AnimVV", duration);
+
+	Ogre::NodeAnimationTrack* track = animation->createNodeTrack(0);
+	track->setAssociatedNode(node);
+	Ogre::Real durPaso = duration / 4.0;
+	Ogre::Vector3 keyframePos = node->getPosition();
+	auto keyframeRot = node->getOrientation();
+
+	//ORIGEN
+	Ogre::TransformKeyFrame* kf = track->createNodeKeyFrame(durPaso * 0);
+	kf->setTranslate(keyframePos);
+	kf->setScale(node->getScale());
+	kf->setRotation(keyframeRot);
+	//ARRIBA
+    kf=track->createNodeKeyFrame(durPaso*1);
+	kf->setTranslate(keyframePos +Ogre::Vector3(0,200,0));
+	kf->setScale(node->getScale());
+	kf->setRotation(keyframeRot);
+	//ORIGEN
+	kf = track->createNodeKeyFrame(durPaso * 2);
+	kf->setTranslate(keyframePos);
+	kf->setScale(node->getScale());
+	//ABAJO
+	kf = track->createNodeKeyFrame(durPaso *3);
+	kf->setTranslate(keyframePos + Ogre::Vector3(0, -300, 0));
+	kf->setScale(node->getScale());
+	//ORIGEN
+	kf = track->createNodeKeyFrame(durPaso *4);
+	kf->setTranslate(keyframePos);
+	kf->setScale(node->getScale());
+
+	animationState = mSM->createAnimationState("AnimVV");
+	animationState->setLoop(true);
+	animationState->setEnabled(true);
+	
+}
+void Bomba::frameRendered(const Ogre::FrameEvent& evt) {
+	animationState->addTime(evt.timeSinceLastFrame);
+}
+Bomba::~Bomba()
+{
+}
