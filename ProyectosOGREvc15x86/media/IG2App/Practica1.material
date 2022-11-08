@@ -5,7 +5,7 @@ material Practica1/plano {
 				texture_unit {
 					texture Water02.jpg
 					colour_op add
-					scroll_anim 0.0  0.1
+					scroll_anim 0.1  0.1
 				}
 		 }
 	 }
@@ -81,6 +81,14 @@ material Practica1/rojo {
 		technique {
 			pass {
 				diffuse 1.0 0.6 0.2
+		 }
+	 }
+}
+
+material Practica1/Rojo {
+		technique {
+			pass {
+				diffuse 1.0 0.0 0.0
 		 }
 	 }
 }
@@ -192,6 +200,7 @@ material Practica1/Amarillo {
 		 }
 	 }
 }
+
 material Practica1/bomba {
 		technique {
 			pass {
@@ -200,6 +209,18 @@ material Practica1/bomba {
 					texture checker.png
 					colour_op add
 			
+				}
+		 }
+	 }
+}
+
+material Practica1/piedras {
+		technique {
+			pass {
+				diffuse 0.4 0.4 0.4
+				texture_unit {
+					texture BeachStones.jpg
+					colour_op modulate
 				}
 		 }
 	 }

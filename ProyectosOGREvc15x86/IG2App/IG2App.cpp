@@ -14,22 +14,30 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 	{
 		getRoot()->queueEndRendering();
 	}
+
 	else if (evt.keysym.sym == SDLK_g) {
 		/* auto mClockNode = mSM->getRootSceneNode()->getChild("Clock");
 
 		 mClockNode->roll(Ogre::Degree(-8));*/
 	}
+
 	else if (evt.keysym.sym == SDLK_y) {
 		/* auto nHours = mSM->getRootSceneNode()->getChild("Clock")->getChild("Hours");
 
 		 nHours->yaw(Ogre::Degree(-8));*/
 	}
+
 	else if (evt.keysym.sym == SDLK_q) {
 		noria->giraNoria();
 	}
 
 	else if (evt.keysym.sym == SDLK_p) {
 		PN->yaw(Ogre::Degree(1.0));
+	}
+
+	else if (evt.keysym.sym == SDLK_t) {
+		plano->sendEvent(DETIENE, plano);
+		plano->sendEvent(CAMBIATEXTURE, plano);
 	}
 
 	else if (evt.keysym.sym == SDLK_r) {
@@ -39,13 +47,31 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 	else if (evt.keysym.sym == SDLK_1) {
 		Scene2->setVisible(false);
 		Scene1->setVisible(true);
+		Scene4->setVisible(false);
+		Scene3->setVisible(false);
 		dronesVivos->hide();
 	}
 
 	else if (evt.keysym.sym == SDLK_2) {
 		Scene1->setVisible(false);
 		Scene2->setVisible(true);
+		Scene4->setVisible(false);
+		Scene3->setVisible(false);
 		dronesVivos->show();
+	}
+
+	else if (evt.keysym.sym == SDLK_3) {
+		Scene1->setVisible(false);
+		Scene2->setVisible(false);
+		Scene4->setVisible(false);
+		Scene3->setVisible(true);
+	}
+
+	else if (evt.keysym.sym == SDLK_4) {
+		Scene1->setVisible(false);
+		Scene3->setVisible(false);
+		Scene2->setVisible(false);
+		Scene4->setVisible(true);
 	}
 
 	return true;
@@ -130,7 +156,7 @@ void IG2App::setupScene(void)
 
 	// and tell it to render into the main window
 	Viewport* vp = getRenderWindow()->addViewport(cam);
-	vp->setBackgroundColour(Ogre::ColourValue(1.0, 1.0, 0.0));
+	vp->setBackgroundColour(Ogre::ColourValue(1.0, 1.0, 1.0));
 
 	//------------------------------------------------------------------------
 
@@ -212,12 +238,14 @@ void IG2App::setupScene(void)
 	//mSinbadNode->setPosition(400, 100, -300);
 	//mSinbadNode->setScale(20, 20, 20);
 
-	//NoriaMunyeco();
+	NoriaMunyeco();
 
-	//PlanetaAvispa();
+	PlanetaAvispa();
 
-	//------------------------------------------------------------------------
-	EscenaSinbad();
+	EscenaBombaSinbad();
+
+	EscenaPlanetaSinbad();
+
 	mCamMgr = new OgreBites::CameraMan(mCamNode);
 	addInputListener(mCamMgr);
 	mCamMgr->setStyle(OgreBites::CS_ORBIT);
@@ -228,12 +256,61 @@ void IG2App::setupScene(void)
 	//------------------------------------------------------------------------
 
 }
-void IG2App::EscenaSinbad() {
-	Ogre::SceneNode*PLN = mSM->getRootSceneNode()->createChildSceneNode();
+
+void IG2App::EscenaBombaSinbad() {
+
+	Scene4 = mSM->getRootSceneNode()->createChildSceneNode();
+
+	Ogre::SceneNode*PLN = Scene4->createChildSceneNode();
 	plano = new Plano(PLN);
-	Bomba* bomba_ = new Bomba(mSM->getRootSceneNode());
-	addInputListener(bomba_);
+	PLN->setScale(Ogre::Vector3(30, 0.25, 30));
+
+	Ogre::SceneNode *planoR = Scene4->createChildSceneNode();
+	Plano* planoRojo = new Plano(planoR);
+	planoRojo->SetMaterial("Practica1/Rojo");
+	planoR->setScale(Ogre::Vector3(10, 0.25, 10));
+	planoR->translate(Ogre::Vector3(-1000,10,-1000));
+
+	Ogre::SceneNode *planoA = Scene4->createChildSceneNode();
+	Plano* planoAmarillo = new Plano(planoA);
+	planoA->setScale(Ogre::Vector3(10, 0.25, 10));
+	planoA->setPosition(Ogre::Vector3(1000, 10,1000));
+	planoAmarillo->SetMaterial("Practica1/Amarillo");
+
+	Bomba* bomba = new Bomba(Scene4);
+	addInputListener(bomba);
+
+	Sinbad* sinbad = new Sinbad(Scene4, false, 4);
+	//sinbad->arma();
+
+	addInputListener(sinbad);
+	addInputListener(plano);
+	EntidadIG::addListener(sinbad);
+	EntidadIG::addListener(plano);
+	EntidadIG::addListener(bomba);
+
+	Scene4->setVisible(false);
+}  
+
+void IG2App::EscenaPlanetaSinbad() {
+
+	Scene3 = mSM->getRootSceneNode()->createChildSceneNode();;
+	Ogre::SceneNode* centroPlaneta = Scene3->createChildSceneNode();
+	Ogre::Entity* planeta = mSM->createEntity("uv_sphere.mesh");
+
+	planeta->setMaterialName("Practica1/cian");
+	centroPlaneta->attachObject(planeta);
+	centroPlaneta->setScale(4, 4, 4);
+
+	Sinbad* sinbad = new Sinbad(centroPlaneta, false, 3);
+	//sinbad->arma();
+
+	addInputListener(sinbad);
+	EntidadIG::addListener(sinbad);
+
+	Scene3->setVisible(false);
 }
+
 void IG2App::NoriaMunyeco()
 {
 	//creacion de plano
@@ -242,7 +319,6 @@ void IG2App::NoriaMunyeco()
 
 	PN = Scene1->createChildSceneNode();
 	plano = new Plano(PN);
-
 
 	//creacion de noria
 	Ogre::SceneNode* NN = PN->createChildSceneNode();
@@ -260,6 +336,7 @@ void IG2App::NoriaMunyeco()
 	EntidadIG::addListener(plano);
 	EntidadIG::addListener(noria);
 	EntidadIG::addListener(olaf);
+
 	Scene1->setVisible(false);
 }
 
@@ -271,36 +348,8 @@ void IG2App::PlanetaAvispa()
 	planeta->setMaterialName("Practica1/cian");
 	centroPlaneta->attachObject(planeta);
 	centroPlaneta->setScale(4, 4, 4);
-	Sinbad* sinbad = new Sinbad(centroPlaneta, false);
-	//sinbad->arma();
-	
-	addInputListener(sinbad);
-	EntidadIG::addListener(sinbad);
-	//Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
 
-	//mSinbadNode = centroPlaneta->createChildSceneNode("nSinbad");
-	//mSinbadNode->attachObject(ent);
-
-	//mSinbadNode->setPosition(0, 120,0);
-	//mSinbadNode->yaw(Ogre::Degree(180));
-	//mSinbadNode->setScale(5, 5, 5);
-	////auto  animation = mSM->createAnimationState("RunBase");
-	// anim_Sinbadtop=ent->getAnimationState("RunTop");
-	// anim_Sinbadtop->setLoop(true);
-	// anim_Sinbadtop->setEnabled(true);
-
-	// anim_Sinbaddown = ent->getAnimationState("RunBase");
-	// anim_Sinbaddown->setLoop(true);
-	// anim_Sinbaddown->setEnabled(true);
-
-	// AnimationStateSet* aux = ent->getAllAnimationStates();
-	// auto it = aux->getAnimationStateIterator().begin();
-	// while (it != aux->getAnimationStateIterator().end())
-	// {
-	//	 auto s = it->first; ++it;
-	//	 std::cout << s << std::endl;
-	// }
-	/*Ogre::SceneNode* nodoMove = centroPlaneta->createChildSceneNode();
+	Ogre::SceneNode* nodoMove = centroPlaneta->createChildSceneNode();
 	nodoMove->setInheritScale(false);
     AvionCompleto = nodoMove->createChildSceneNode();
 	
@@ -345,9 +394,7 @@ void IG2App::PlanetaAvispa()
 		centro->yaw(Ogre::Degree(yaw));
 		centro->pitch(Ogre::Degree(pitch));
 
-	}*/
-
-
+	}
 }
 
 

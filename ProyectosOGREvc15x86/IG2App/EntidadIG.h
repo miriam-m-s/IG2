@@ -10,7 +10,7 @@
 #include<OgreKeyFrame.h>
 
 
-enum MessageType {NADA};
+enum MessageType {NADA, CAMBIATEXTURE, DETIENE};
 
 class EntidadIG :public OgreBites::InputListener {
 public:
@@ -40,9 +40,18 @@ protected:
 
 class Plano :public EntidadIG {
 
+	Ogre::Entity* plano;
+	virtual void receiveEvent(MessageType msgType, EntidadIG* entidad);
+	bool cambiaText;
+	unsigned long initTime;
+	Ogre::Timer* myTymer;
+
 public :
 
 	Plano(Ogre::SceneNode* padre);
+	void SetMaterial(std::string name);
+	void frameRendered(const Ogre::FrameEvent& evt);
+
 };
 
 class Munyeco :public  EntidadIG
@@ -178,7 +187,6 @@ public:
 		Cabeza->setMaterialName("Practica1/Amarillo");
 	}
 	
-
 };
 
 class Sinbad :public EntidadIG {
@@ -195,10 +203,11 @@ private:
 	Ogre::Entity* ent;
 	bool corriendo;
 	bool izq;
+	int scene;
 
 public:
 
-	Sinbad(Ogre::SceneNode* padre, bool mano);
+	Sinbad(Ogre::SceneNode* padre, bool mano, int scene_);
 	void frameRendered(const Ogre::FrameEvent& evt);
 	bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	void arma();
@@ -213,15 +222,12 @@ public:
 class Bomba :public EntidadIG {
 	private:
 		Ogre::AnimationState* animationState;
+		bool parada;
+		virtual void receiveEvent(MessageType msgType, EntidadIG* entidad);
 public:
 	Bomba(Ogre::SceneNode* padre);
 	void frameRendered(const Ogre::FrameEvent& evt);
 	~Bomba();
-
-	
-
-
-
 };
 
 

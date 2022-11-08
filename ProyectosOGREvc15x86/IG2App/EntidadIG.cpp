@@ -17,11 +17,44 @@ void EntidadIG::sendEvent(MessageType msgType, EntidadIG* entidad)
 
 Plano::Plano(Ogre::SceneNode* node) :EntidadIG(node)
 {
-
-	Ogre::Entity* plano = node->getCreator()->createEntity("cube.mesh");
+	plano = node->getCreator()->createEntity("cube.mesh");
 	plano->setMaterialName("Practica1/plano");
 	node->attachObject(plano);
-	node->setScale(30, 0.25, 30);
+	cambiaText = false;
+	myTymer = new Ogre::Timer();
+}
+
+void Plano::SetMaterial(std::string name) {
+	plano->setMaterialName(name);
+}
+
+void Plano::receiveEvent(MessageType msgType, EntidadIG* entidad) {
+
+	switch (msgType)
+	{
+	case NADA:
+		break;
+	case CAMBIATEXTURE:
+		cambiaText = true;
+		initTime = myTymer->getMilliseconds();
+		break;
+	case DETIENE:
+		break;
+	default:
+		break;
+	}
+
+}
+
+void Plano::frameRendered(const Ogre::FrameEvent& evt) {
+
+	if (cambiaText) {
+		if (myTymer->getMilliseconds() >= initTime+5000) {
+			plano->setMaterialName("Practica1/piedras");
+			cambiaText = false;
+		}
+	}
+
 }
 
 AspaNoria::AspaNoria(Ogre::SceneNode* NoriaNode, float angle,int i) :EntidadIG(NoriaNode)
@@ -88,7 +121,6 @@ Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node), estagirando(true),n
 		angle += 360.0f / n;
 	}
 }
-
 
 void Noria::giraNoria()
 {
@@ -353,6 +385,7 @@ void Dron::frameRendered(const Ogre::FrameEvent& evt)
 	for (int i = 0; i < brazos.size(); i++) {
 		brazos[i]->frameRendered(evt);
 	}
+
 	unsigned long s = myTymer->getMilliseconds();
 	if ( s>= initTime + 2000&&s<initTime+4000) {
 		
@@ -406,17 +439,26 @@ void BrazoDron::frameRendered(const Ogre::FrameEvent& evt)
 	aspa->frameRendered(evt);
 }
 
-Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano) :EntidadIG(padre)
+Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 {
 	myTymer = new Ogre::Timer();
 	ent = mSM->createEntity("Sinbad.mesh");
 	mSinbadNodemov = padre->createChildSceneNode();
-	mSinbadNode = mSinbadNodemov->createChildSceneNode("nSinbad");
+	mSinbadNode = mSinbadNodemov->createChildSceneNode();
 	mSinbadNode->attachObject(ent);
 
-	mSinbadNode->setPosition(0, 120, 0);
-	mSinbadNode->yaw(Ogre::Degree(180));
-	mSinbadNode->setScale(5, 5, 5);
+	scene = scene_;
+
+	if (scene == 3) {
+		mSinbadNode->setPosition(0, 120, 0);
+		mSinbadNode->yaw(Ogre::Degree(180));
+		mSinbadNode->setScale(5, 5, 5);
+	}
+
+	else if (scene == 4) {
+		mSinbadNode->setScale(20, 20, 20);
+		mSinbadNode->setPosition(1000, mSinbadNode->getScale().y / 2 * 12, 1000);
+	}
 
 	anim_Sinbadtop = ent->getAnimationState("RunTop");
 	anim_Sinbadtop->setLoop(true);
@@ -446,33 +488,40 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano) :EntidadIG(padre)
 
 void Sinbad::frameRendered(const Ogre::FrameEvent& evt)
 {
-	if (corriendo) {
-		anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
-		anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
-		mSinbadNodemov->pitch(Ogre::Degree(-100 * evt.timeSinceLastFrame));
+	if (scene == 3) {
+		if (corriendo) {
+			anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
+			anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
+			mSinbadNodemov->pitch(Ogre::Degree(-100 * evt.timeSinceLastFrame));
 
-		unsigned long s = myTymer->getMilliseconds();
-		if (s >= initTime + 2000) {
+			unsigned long s = myTymer->getMilliseconds();
+			if (s >= initTime + 2000) {
 
-			mSinbadNodemov->yaw(Ogre::Degree(sentido * 30));
-			initTime = s;
+				mSinbadNodemov->yaw(Ogre::Degree(sentido * 30));
+				initTime = s;
 
-		}
-		else
-		{
-			std::random_device rd;
-			std::default_random_engine eng(rd());
-			std::uniform_int_distribution<int> distr(-1, 1);
-			sentido = distr(eng);
-			if (sentido == 0) {
-				sentido = -1;
 			}
-			mSinbadNodemov->pitch(Ogre::Degree(-0.2f));
+			else
+			{
+				std::random_device rd;
+				std::default_random_engine eng(rd());
+				std::uniform_int_distribution<int> distr(-1, 1);
+				sentido = distr(eng);
+				if (sentido == 0) {
+					sentido = -1;
+				}
+				mSinbadNodemov->pitch(Ogre::Degree(-0.2f));
+			}
+		}
+
+		else {
+			anim_Sinbaddance->addTime(evt.timeSinceLastFrame);
 		}
 	}
 
-	else {
-		anim_Sinbaddance->addTime(evt.timeSinceLastFrame);
+	else if (scene == 4) {
+		anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
+		anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
 	}
 }
 
@@ -534,18 +583,17 @@ Bomba::Bomba(Ogre::SceneNode* padre) :EntidadIG(padre)
 	track->setAssociatedNode(node);
 	Ogre::Real durPaso = duration / 4.0;
 	Ogre::Vector3 keyframePos = node->getPosition();
-	auto keyframeRot = node->getOrientation();
+	Ogre::Vector3 src(0, 0, 1);
 
 	//ORIGEN
 	Ogre::TransformKeyFrame* kf = track->createNodeKeyFrame(durPaso * 0);
 	kf->setTranslate(keyframePos);
 	kf->setScale(node->getScale());
-	kf->setRotation(keyframeRot);
 	//ARRIBA
     kf=track->createNodeKeyFrame(durPaso*1);
 	kf->setTranslate(keyframePos +Ogre::Vector3(0,200,0));
 	kf->setScale(node->getScale());
-	kf->setRotation(keyframeRot);
+	kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 1)));
 	//ORIGEN
 	kf = track->createNodeKeyFrame(durPaso * 2);
 	kf->setTranslate(keyframePos);
@@ -554,6 +602,7 @@ Bomba::Bomba(Ogre::SceneNode* padre) :EntidadIG(padre)
 	kf = track->createNodeKeyFrame(durPaso *3);
 	kf->setTranslate(keyframePos + Ogre::Vector3(0, -300, 0));
 	kf->setScale(node->getScale());
+	kf->setRotation(src.getRotationTo(Ogre::Vector3(-1, 0, 1)));
 	//ORIGEN
 	kf = track->createNodeKeyFrame(durPaso *4);
 	kf->setTranslate(keyframePos);
@@ -563,10 +612,30 @@ Bomba::Bomba(Ogre::SceneNode* padre) :EntidadIG(padre)
 	animationState->setLoop(true);
 	animationState->setEnabled(true);
 	
+	parada = false;
 }
+
 void Bomba::frameRendered(const Ogre::FrameEvent& evt) {
-	animationState->addTime(evt.timeSinceLastFrame);
+	if(!parada) animationState->addTime(evt.timeSinceLastFrame);
 }
+
 Bomba::~Bomba()
 {
+}
+
+void Bomba::receiveEvent(MessageType msgType, EntidadIG* entidad) {
+	
+	switch (msgType)
+	{
+	case NADA:
+		break;
+	case CAMBIATEXTURE:
+		break;
+	case DETIENE:
+		parada = true;
+		break;
+	default:
+		break;
+	}
+
 }
