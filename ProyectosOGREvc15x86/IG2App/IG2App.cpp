@@ -156,7 +156,7 @@ void IG2App::setupScene(void)
 
 	// and tell it to render into the main window
 	Viewport* vp = getRenderWindow()->addViewport(cam);
-	vp->setBackgroundColour(Ogre::ColourValue(1.0, 1.0, 1.0));
+	vp->setBackgroundColour(Ogre::ColourValue(0.6, 0.7, 0.8));
 
 	//------------------------------------------------------------------------
 
@@ -277,11 +277,31 @@ void IG2App::EscenaBombaSinbad() {
 	planoA->setPosition(Ogre::Vector3(1000, 10,1000));
 	planoAmarillo->SetMaterial("Practica1/Amarillo");
 
+	
 	Bomba* bomba = new Bomba(Scene4);
 	addInputListener(bomba);
 
 	Sinbad* sinbad = new Sinbad(Scene4, false, 4);
 	//sinbad->arma();
+
+
+	Ogre::SceneNode* NN = Scene4->createChildSceneNode();
+	noria = new Noria(20, NN);
+	NN->setPosition(-1500,0, -1000);
+	//creacion del muñeco
+	Ogre::SceneNode* MUNY = Scene4->createChildSceneNode();
+	olaf = new Munyeco(MUNY);
+	MUNY->setPosition(-1200,200, -1400);
+	MUNY->yaw(Ogre::Degree(90));
+
+	Ogre::SceneNode* bombanode = Scene4->createChildSceneNode();
+	Ogre::SceneNode* avion = bombanode->createChildSceneNode();
+	Avion* aviones = new Avion(avion, bombanode, 5,4);
+	avion->setScale(0.5, 0.5, 0.5);
+	avion->translate(400, 700, 0);
+
+	EntidadIG::addListener(aviones);
+	addInputListener(aviones);
 
 	addInputListener(sinbad);
 	addInputListener(plano);
@@ -313,29 +333,29 @@ void IG2App::EscenaPlanetaSinbad() {
 
 void IG2App::NoriaMunyeco()
 {
-	//creacion de plano
+	////creacion de plano
 
 	Scene1 = mSM->getRootSceneNode()->createChildSceneNode();
 
-	PN = Scene1->createChildSceneNode();
-	plano = new Plano(PN);
+	//PN = Scene1->createChildSceneNode();
+	//plano = new Plano(PN);
 
-	//creacion de noria
-	Ogre::SceneNode* NN = PN->createChildSceneNode();
-	noria = new Noria(20, PN);
+	////creacion de noria
+	//Ogre::SceneNode* NN = PN->createChildSceneNode();
+	//noria = new Noria(20, PN);
 
-	//creacion del muñeco
-	Ogre::SceneNode* MUNY = PN->createChildSceneNode();
-	olaf = new Munyeco(MUNY);
-	MUNY->setPosition(PN->getScale().x / 1.25, 800, -PN->getScale().z / 1.25);
-	MUNY->yaw(Ogre::Degree(-45));
+	////creacion del muñeco
+	//Ogre::SceneNode* MUNY = PN->createChildSceneNode();
+	//olaf = new Munyeco(MUNY);
+	//MUNY->setPosition(PN->getScale().x / 1.25, 800, -PN->getScale().z / 1.25);
+	//MUNY->yaw(Ogre::Degree(-45));
 
-	addInputListener(noria);
-	addInputListener(olaf);
+	//addInputListener(noria);
+	//addInputListener(olaf);
 
-	EntidadIG::addListener(plano);
-	EntidadIG::addListener(noria);
-	EntidadIG::addListener(olaf);
+	//EntidadIG::addListener(plano);
+	//EntidadIG::addListener(noria);
+	//EntidadIG::addListener(olaf);
 
 	Scene1->setVisible(false);
 }

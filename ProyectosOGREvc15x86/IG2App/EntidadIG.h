@@ -8,6 +8,9 @@
 #include<OgreTimer.h>
 #include<OgreAnimation.h>
 #include<OgreKeyFrame.h>
+#include<OgreBillboard.h>
+#include<OgreBillboardSet.h>
+#include<OgreParticleSystem.h>
 
 
 enum MessageType {NADA, CAMBIATEXTURE, DETIENE};
@@ -134,13 +137,13 @@ class Avion : public EntidadIG {
 
 public:
 
-	Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n);
+	Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n,int scene=2);
 	bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	void frameRendered(const Ogre::FrameEvent& evt) override;
 	~Avion() {};
 
 private:
-
+	int scene_;
 	Ogre::SceneNode* esferaCentral = nullptr;
 
 };
