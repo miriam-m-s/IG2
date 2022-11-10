@@ -197,6 +197,7 @@ private:
 	Ogre::AnimationState* anim_Sinbadtop = nullptr;
 	Ogre::AnimationState* anim_Sinbaddown = nullptr;
 	Ogre::AnimationState* anim_Sinbaddance = nullptr;
+	Ogre::AnimationState* anim_Sinbadmove=nullptr;
 	Ogre::Timer* myTymer;
 	unsigned long initTime;
 	int sentido = 1;
@@ -208,6 +209,7 @@ private:
 public:
 
 	Sinbad(Ogre::SceneNode* padre, bool mano, int scene_);
+	void animaciones();
 	void frameRendered(const Ogre::FrameEvent& evt);
 	bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	void arma();

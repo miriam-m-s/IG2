@@ -458,19 +458,13 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 	else if (scene == 4) {
 		mSinbadNode->setScale(20, 20, 20);
 		mSinbadNode->setPosition(1000, mSinbadNode->getScale().y / 2 * 12, 1000);
+		mSinbadNode->yaw(Ogre::Degree(90));
 	}
 
-	anim_Sinbadtop = ent->getAnimationState("RunTop");
-	anim_Sinbadtop->setLoop(true);
-	anim_Sinbadtop->setEnabled(true);
+	animaciones();
+	
 
-	anim_Sinbaddown = ent->getAnimationState("RunBase");
-	anim_Sinbaddown->setLoop(true);
-	anim_Sinbaddown->setEnabled(true);
 
-	anim_Sinbaddance = ent->getAnimationState("Dance");
-	anim_Sinbaddance->setLoop(true);
-	anim_Sinbaddance->setEnabled(false);
 
     Ogre::AnimationStateSet* aux = ent->getAllAnimationStates();
 	auto it = aux->getAnimationStateIterator().begin();
@@ -484,6 +478,60 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 	corriendo = true;
 	izq = mano;
 	cambiaEspada();
+
+	int duration = 16;
+	Ogre::Animation* animation = mSM->createAnimation("animSS", duration);
+
+	Ogre::NodeAnimationTrack* track = animation->createNodeTrack(0);
+	track->setAssociatedNode(mSinbadNodemov);
+
+	Ogre::Real durPaso = duration / 4.0;
+	Ogre::Vector3 sinbadInitPose = mSinbadNodemov->getPosition();
+	Ogre::Vector3 src(0, 0, 1);
+
+	//1 keyframe rotar a simbad
+	Ogre::TransformKeyFrame* kf = track->createNodeKeyFrame(durPaso * 0);
+	kf->setScale(mSinbadNodemov->getScale());
+	kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, -1)));
+
+	//2 keyframe mover a sinbad 
+	kf = track->createNodeKeyFrame(durPaso * 1);
+	kf->setScale(mSinbadNodemov->getScale());
+	kf->setTranslate(Ogre::Vector3(0, 0, 200));
+
+	//3 keyframe girar a sinbad
+	kf = track->createNodeKeyFrame(durPaso * 2);
+	kf->setScale(mSinbadNodemov->getScale());
+	kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 1)));
+
+	//4 keyframe mover a sinbad 
+	kf = track->createNodeKeyFrame(durPaso * 3);
+	kf->setScale(mSinbadNodemov->getScale());
+	kf->setTranslate(Ogre::Vector3(0, 0, 200));
+
+	//5 keyframe rotar a simbad
+	kf = track->createNodeKeyFrame(durPaso * 4);
+	kf->setScale(mSinbadNodemov->getScale());
+	kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, -1)));
+
+	anim_Sinbadmove = mSM->createAnimationState("animSS");
+	anim_Sinbadmove->setLoop(true);
+	anim_Sinbadmove->setEnabled(true);
+}
+
+void Sinbad::animaciones()
+{
+	anim_Sinbadtop = ent->getAnimationState("RunTop");
+	anim_Sinbadtop->setLoop(true);
+	anim_Sinbadtop->setEnabled(true);
+
+	anim_Sinbaddown = ent->getAnimationState("RunBase");
+	anim_Sinbaddown->setLoop(true);
+	anim_Sinbaddown->setEnabled(true);
+
+	anim_Sinbaddance = ent->getAnimationState("Dance");
+	anim_Sinbaddance->setLoop(true);
+	anim_Sinbaddance->setEnabled(false);
 }
 
 void Sinbad::frameRendered(const Ogre::FrameEvent& evt)
@@ -520,8 +568,10 @@ void Sinbad::frameRendered(const Ogre::FrameEvent& evt)
 	}
 
 	else if (scene == 4) {
-		anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
+		/*anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
 		anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
+		anim_Sinbadmove->addTime(evt.timeSinceLastFrame);*/
+
 	}
 }
 
