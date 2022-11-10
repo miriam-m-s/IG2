@@ -50,7 +50,7 @@ void Plano::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 void Plano::frameRendered(const Ogre::FrameEvent& evt) {
 
 	if (cambiaText) {
-		if (myTymer->getMilliseconds() >= initTime+5000) {
+		if (myTymer->getMilliseconds() >= initTime + 5000) {
 			plano->setMaterialName("Practica1/piedras");
 			cambiaText = false;
 		}
@@ -58,9 +58,9 @@ void Plano::frameRendered(const Ogre::FrameEvent& evt) {
 
 }
 
-AspaNoria::AspaNoria(Ogre::SceneNode* NoriaNode, float angle,int i) :EntidadIG(NoriaNode)
+AspaNoria::AspaNoria(Ogre::SceneNode* NoriaNode, float angle, int i) :EntidadIG(NoriaNode)
 {
-	
+
 	AspaNoriaNode = NoriaNode->createChildSceneNode("Aspita" + std::to_string(i + 1));
 
 	Ogre::Entity* cubo = NoriaNode->getCreator()->createEntity("cube.mesh");
@@ -97,10 +97,10 @@ void AspaNoria::frameRendered(const Ogre::FrameEvent& evt)
 	//
 }
 
-Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node), estagirando(true),n(n)
+Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node), estagirando(true), n(n)
 {
 	float angle = 90.0f;
-	
+
 	cilindroNode = node->createChildSceneNode("Cilindro");
 	cilindroNode->setInheritScale(false);
 	Ogre::Entity* cilindro = node->getCreator()->createEntity("Barrel.mesh");
@@ -116,8 +116,8 @@ Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node), estagirando(true),n
 
 	for (int i = 0; i < n; i++) {
 		Ogre::SceneNode* Aspa = aspasNode->createChildSceneNode("Aspa" + std::to_string(i + 1));
-		
-		AspaNoria* aspaNoria = new AspaNoria(Aspa,angle,i);
+
+		AspaNoria* aspaNoria = new AspaNoria(Aspa, angle, i);
 		Aspa->pitch(Ogre::Degree(angle));
 		angle += 360.0f / n;
 	}
@@ -133,12 +133,12 @@ void Noria::frameRendered(const Ogre::FrameEvent& evt)
 
 	if (estagirando) {
 		Ogre::Real time = evt.timeSinceLastEvent;
-	
+
 		aspasNode->pitch(Ogre::Radian(time));
 
 		for (int i = 0; i < n; i++) {
 			auto node = aspasNode->getChild("Aspa" + std::to_string(i + 1))->getChild("Aspita" + std::to_string(i + 1))->getChild("cubo" + std::to_string(i + 1));
-			node->pitch(Ogre::Radian( -time));
+			node->pitch(Ogre::Radian(-time));
 		}
 	}
 }
@@ -148,16 +148,16 @@ void Noria::receiveEvent(MessageType msgType, EntidadIG* entidad)
 	estagirando = false;
 }
 
-Munyeco::Munyeco(Ogre::SceneNode* padre) :  EntidadIG(padre), tortura(false) 
+Munyeco::Munyeco(Ogre::SceneNode* padre) : EntidadIG(padre), tortura(false)
 {
 	cuello = padre->createChildSceneNode();
 	cuello->setInheritScale(false);
 
 	cabeza = cuello->createChildSceneNode();
-	 Cabeza = padre->getCreator()->createEntity("sphere.mesh");
+	Cabeza = padre->getCreator()->createEntity("sphere.mesh");
 	cabeza->attachObject(Cabeza);
 	Cabeza->setMaterialName("Practica1/cabeza");
-	
+
 	cabeza->setPosition(0, 100 * cabeza->getScale().y, 0);
 
 	//Ogre::SceneNode* nariz = cabeza->createChildSceneNode();
@@ -168,12 +168,12 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) :  EntidadIG(padre), tortura(false)
 	//nariz->setPosition(0, 0, 100 * cabeza->getScale().z);
 
 	cuerpo = cuello->createChildSceneNode();
-	 Cuerpo = padre->getCreator()->createEntity("sphere.mesh");
+	Cuerpo = padre->getCreator()->createEntity("sphere.mesh");
 	Cuerpo->setMaterialName("Practica1/cuerpo");
 	cuerpo->attachObject(Cuerpo);
 	cuerpo->setScale(2, 2, 2);
 	cuerpo->setPosition(0, -100 * cuerpo->getScale().y, 0);
-	
+
 	Ogre::SceneNode* ombligo = cuerpo->createChildSceneNode();
 	Ogre::Entity* Ombligo = padre->getCreator()->createEntity("sphere.mesh");
 	Ombligo->setMaterialName("Practica1/ombligo");
@@ -188,11 +188,11 @@ bool Munyeco::keyPressed(const OgreBites::KeyboardEvent& evt)
 {
 	if (evt.keysym.sym == SDLK_UP)
 	{
-		cuello->translate(Ogre::Math::Sin(cuello->getOrientation().getYaw())*2, 0, Ogre::Math::Cos(cuello->getOrientation().getYaw()) * 2);
+		cuello->translate(Ogre::Math::Sin(cuello->getOrientation().getYaw()) * 2, 0, Ogre::Math::Cos(cuello->getOrientation().getYaw()) * 2);
 	}
 	else if (evt.keysym.sym == SDLK_DOWN)
 	{
-		cuello->translate(-Ogre::Math::Sin(cuello->getOrientation().getYaw()) * 2, 0,- Ogre::Math::Cos(cuello->getOrientation().getYaw()) * 2);
+		cuello->translate(-Ogre::Math::Sin(cuello->getOrientation().getYaw()) * 2, 0, -Ogre::Math::Cos(cuello->getOrientation().getYaw()) * 2);
 	}
 	else if (evt.keysym.sym == SDLK_LEFT)
 	{
@@ -221,18 +221,18 @@ void Munyeco::frameRendered(const Ogre::FrameEvent& evt)
 		cabeza->yaw(Ogre::Radian(time));
 		cuerpo->yaw(-Ogre::Radian(time));
 	}*/
-	
+
 
 }
 
-Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n,int scene):EntidadIG(padre), movimiento(nodoMovimiento), estaMoviendo(false),scene_(scene)
+Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n, int scene) :EntidadIG(padre), movimiento(nodoMovimiento), estaMoviendo(false), scene_(scene)
 {
 
 	esferaCentral = padre->createChildSceneNode();
-	Ogre::Entity * esfera = padre->getCreator()->createEntity("sphere.mesh");
+	Ogre::Entity* esfera = padre->getCreator()->createEntity("sphere.mesh");
 	esfera->setMaterialName("Practica1/esferaAvion");
 	esferaCentral->attachObject(esfera);
-	esferaCentral->setScale(1.5,1.5,1.5);
+	esferaCentral->setScale(1.5, 1.5, 1.5);
 
 	Ogre::SceneNode* NinjaNode = padre->createChildSceneNode();
 	Ogre::Entity* ninja = padre->getCreator()->createEntity("ninja.mesh");
@@ -254,24 +254,24 @@ Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n,int 
 	Ala2->setPosition(150, 0, 0);
 
 	Ogre::SceneNode* Morro = padre->createChildSceneNode();
-	Ogre::Entity *morro = padre->getCreator()->createEntity("Barrel.mesh");
+	Ogre::Entity* morro = padre->getCreator()->createEntity("Barrel.mesh");
 	morro->setMaterialName("Practica1/morroAvion");
 	Morro->attachObject(morro);
 	Morro->setScale(20, 25, 20);
 	Morro->pitch(Ogre::Degree(90));
-	Morro->setPosition(0,0,-90);
+	Morro->setPosition(0, 0, -90);
 
-	Ogre::SceneNode *alaAspa1 = padre->createChildSceneNode();
+	Ogre::SceneNode* alaAspa1 = padre->createChildSceneNode();
 	Aspa1 = new AspasNave(alaAspa1, 5);
 	alaAspa1->yaw(Ogre::Degree(90));
-	alaAspa1->setPosition(-200,0,-100);
+	alaAspa1->setPosition(-200, 0, -100);
 	alaAspa1->setScale(0.2, 0.2, 0.2);
 
 	Ogre::SceneNode* alaAspa2 = padre->createChildSceneNode();
 	Aspa2 = new AspasNave(alaAspa2, 5);
 	alaAspa2->yaw(Ogre::Degree(90));
-	alaAspa2->setPosition(200,0,-100);
-	alaAspa2->setScale(0.2,0.2,0.2);
+	alaAspa2->setPosition(200, 0, -100);
+	alaAspa2->setScale(0.2, 0.2, 0.2);
 
 	if (scene_ == 4) {
 		Ogre::SceneNode* cartel = padre->createChildSceneNode();
@@ -279,17 +279,17 @@ Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n,int 
 		bbSet->setDefaultDimensions(200, 200);
 		bbSet->setMaterialName("Practica1/points");
 		cartel->attachObject(bbSet);
-		
-		
-		 bbSet->createBillboard({0,0,200});
 
-		 Ogre::ParticleSystem* pSys = mSM->createParticleSystem("psSmoke","particles/Smoke");
-		 pSys->setEmitting(true);
-		 cartel->attachObject(pSys);
-			
-		
+
+		bbSet->createBillboard({ 0,0,200 });
+
+		Ogre::ParticleSystem* pSys = mSM->createParticleSystem("psSmoke", "particles/Smoke");
+		pSys->setEmitting(true);
+		cartel->attachObject(pSys);
+
+
 	}
-	
+
 
 }
 
@@ -306,7 +306,7 @@ bool Avion::keyPressed(const OgreBites::KeyboardEvent& evt)
 			movimiento->yaw(Ogre::Degree(-2));
 		}
 	}
-	
+
 
 	return true;
 }
@@ -326,18 +326,18 @@ void Avion::frameRendered(const Ogre::FrameEvent& evt)
 		Aspa2->frameRendered(evt);
 		movimiento->yaw(Ogre::Degree(2));
 	}
-	
+
 }
 
-AspasNave::AspasNave(Ogre::SceneNode* padre, int n):EntidadIG(padre) {
+AspasNave::AspasNave(Ogre::SceneNode* padre, int n) :EntidadIG(padre) {
 
 	float angle = 90.0f;
 
-	Ogre::SceneNode *cilindroNode = padre->createChildSceneNode();
+	Ogre::SceneNode* cilindroNode = padre->createChildSceneNode();
 	Ogre::Entity* cilindro = padre->getCreator()->createEntity("Barrel.mesh");
 	cilindro->setMaterialName("Practica1/morroAspa");
 	cilindroNode->attachObject(cilindro);
-	cilindroNode->setScale(7, 7,7);
+	cilindroNode->setScale(7, 7, 7);
 	cilindroNode->roll(Ogre::Degree(90));
 
 	aspaPadre = padre->createChildSceneNode();
@@ -346,34 +346,34 @@ AspasNave::AspasNave(Ogre::SceneNode* padre, int n):EntidadIG(padre) {
 
 		Ogre::SceneNode* aspaNode = aspaPadre->createChildSceneNode();
 
-		Aspa * aspaAvion = new Aspa(aspaNode, i);
+		Aspa* aspaAvion = new Aspa(aspaNode, i);
 		aspaNode->pitch(Ogre::Degree(angle));
 		angle += 360.0f / n;
 	}
-	
 
- }
+
+}
 
 void AspasNave::frameRendered(const Ogre::FrameEvent& evt)
 {
 	Ogre::Real time = evt.timeSinceLastEvent;
-	aspaPadre->pitch(Ogre::Radian(time*2000));
+	aspaPadre->pitch(Ogre::Radian(time * 2000));
 }
 
-Aspa::Aspa(Ogre::SceneNode *Aspa, int i):EntidadIG(Aspa) {
+Aspa::Aspa(Ogre::SceneNode* Aspa, int i) :EntidadIG(Aspa) {
 
-	Ogre::SceneNode *tableNode = Aspa->createChildSceneNode();
+	Ogre::SceneNode* tableNode = Aspa->createChildSceneNode();
 	Ogre::Entity* tablero = Aspa->getCreator()->createEntity("cube.mesh");
 	tablero->setMaterialName("Practica1/tablon");
 	tableNode->attachObject(tablero);
-	tableNode->setScale(0.05,0.5, 4);
+	tableNode->setScale(0.05, 0.5, 4);
 	tableNode->setPosition(0, 0, 0);
 
-	Ogre::SceneNode *Cilindro = Aspa->createChildSceneNode();
+	Ogre::SceneNode* Cilindro = Aspa->createChildSceneNode();
 	Ogre::Entity* cilindro = Aspa->getCreator()->createEntity("Barrel.mesh");
 	cilindro->setMaterialName("Practica1/ombligo");
 	Cilindro->attachObject(cilindro);
-	Cilindro->setScale(3, 10,3);
+	Cilindro->setScale(3, 10, 3);
 	Cilindro->setInheritOrientation(false);
 	Cilindro->setPosition(5, 0, -280);
 
@@ -381,20 +381,20 @@ Aspa::Aspa(Ogre::SceneNode *Aspa, int i):EntidadIG(Aspa) {
 
 }
 
-Dron::Dron(Ogre::SceneNode* padre, int n, bool avispa,Ogre::SceneNode* move):EntidadIG(padre), movimiento(move)
+Dron::Dron(Ogre::SceneNode* padre, int n, bool avispa, Ogre::SceneNode* move) :EntidadIG(padre), movimiento(move)
 {
 	myTymer = new Ogre::Timer();
 	initTime = myTymer->getMilliseconds();
 	Ogre::SceneNode* esferaCentral = padre->createChildSceneNode();
 	Cabeza = padre->getCreator()->createEntity("sphere.mesh");
 
-	if(!avispa)Cabeza->setMaterialName("Practica1/esferaAvion");
+	if (!avispa)Cabeza->setMaterialName("Practica1/esferaAvion");
 	else Cabeza->setMaterialName("Practica1/cabeza");
 
 	esferaCentral->attachObject(Cabeza);
 
-	Ogre::SceneNode *aspaPadre = padre->createChildSceneNode();
-	
+	Ogre::SceneNode* aspaPadre = padre->createChildSceneNode();
+
 	float angle = 90.0f;
 	for (int i = 0; i < n; i++) {
 
@@ -402,24 +402,24 @@ Dron::Dron(Ogre::SceneNode* padre, int n, bool avispa,Ogre::SceneNode* move):Ent
 
 		BrazoDron* brazito = new BrazoDron(brazo);
 		brazo->pitch(Ogre::Degree(angle));
-		if (i == 0) brazo->setScale(1.5,1.5,1.5);
+		if (i == 0) brazo->setScale(1.5, 1.5, 1.5);
 		brazos.push_back(brazito);
-	
+
 		angle += 360.0f / n;
 	}
 }
 
 void Dron::frameRendered(const Ogre::FrameEvent& evt)
 {
-	
+
 	for (int i = 0; i < brazos.size(); i++) {
 		brazos[i]->frameRendered(evt);
 	}
 
 	unsigned long s = myTymer->getMilliseconds();
-	if ( s>= initTime + 2000&&s<initTime+4000) {
-		
-		movimiento->yaw(Ogre::Degree(sentido*1));
+	if (s >= initTime + 2000 && s < initTime + 4000) {
+
+		movimiento->yaw(Ogre::Degree(sentido * 1));
 		actualiza = true;
 	}
 	else
@@ -430,18 +430,18 @@ void Dron::frameRendered(const Ogre::FrameEvent& evt)
 			std::random_device rd;
 			std::default_random_engine eng(rd());
 			std::uniform_int_distribution<int> distr(-1, 1);
-			 sentido = distr(eng);
+			sentido = distr(eng);
 			if (sentido == 0) {
 				sentido = -1;
 			}
 		}
 		movimiento->pitch(Ogre::Degree(-0.5f));
 	}
-	
+
 
 }
 
-BrazoDron::BrazoDron(Ogre::SceneNode* padre):EntidadIG(padre)
+BrazoDron::BrazoDron(Ogre::SceneNode* padre) :EntidadIG(padre)
 {
 	Ogre::SceneNode* cilindreNode = padre->createChildSceneNode();
 	Ogre::Entity* cilin = padre->getCreator()->createEntity("Barrel.mesh");
@@ -464,7 +464,7 @@ BrazoDron::BrazoDron(Ogre::SceneNode* padre):EntidadIG(padre)
 	AspaNode->setScale(0.4, 0.4, 0.4);
 }
 
-void BrazoDron::frameRendered(const Ogre::FrameEvent& evt) 
+void BrazoDron::frameRendered(const Ogre::FrameEvent& evt)
 {
 	aspa->frameRendered(evt);
 }
@@ -490,78 +490,75 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 		mSinbadNode->setPosition(1000, mSinbadNode->getScale().y / 2 * 12, 1000);
 		mSinbadNode->yaw(Ogre::Degree(90));
 
-			int duration = 16;
-	Ogre::Animation* animation = mSM->createAnimation("animSS", duration);
+		int duration = 16;
+		Ogre::Animation* animation = mSM->createAnimation("animSS", duration);
 
-	Ogre::NodeAnimationTrack* track = animation->createNodeTrack(0);
-	track->setAssociatedNode(mSinbadNode);
+		Ogre::NodeAnimationTrack* track = animation->createNodeTrack(0);
+		track->setAssociatedNode(mSinbadNode);
 
-	Ogre::Real durPaso = duration / 4.0;
-	Ogre::Vector3 sinbadInitPose = mSinbadNode->getPosition();
-	Ogre::Vector3 sinbadDestination = { -1300, mSinbadNode->getScale().y / 2*12, -900 };
-	Ogre::Vector3 src(1, 0, 0);
+		Ogre::Real durPaso = duration / 4.0;
+		Ogre::Vector3 sinbadInitPose = mSinbadNode->getPosition();
+		Ogre::Vector3 sinbadDestination = { -1300, mSinbadNode->getScale().y / 2 * 12, -900 };
+		Ogre::Vector3 src(1, 0, 0);
 
-	////1 keyframe rotar a simbad
-	//Ogre::TransformKeyFrame* kf = track->createNodeKeyFrame(durPaso * 0);
-	//kf->setScale(mSinbadNode->getScale());
-	//kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, -1)));
-	//kf->setTranslate(sinbadInitPose);
+		////1 keyframe rotar a simbad
+		//Ogre::TransformKeyFrame* kf = track->createNodeKeyFrame(durPaso * 0);
+		//kf->setScale(mSinbadNode->getScale());
+		//kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, -1)));
+		//kf->setTranslate(sinbadInitPose);
 
-	//////2 keyframe mover a sinbad 
-	////kf = track->createNodeKeyFrame(durPaso * 1);
-	////kf->setScale(mSinbadNode->getScale());
-	////kf->setTranslate(sinbadDestination);
-	////kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 0)));
-	//////3 keyframe girar a sinbad
-	////kf = track->createNodeKeyFrame(durPaso * 2);
-	////kf->setScale(mSinbadNode->getScale());
-	////kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 0)));
-	////kf->setTranslate(sinbadDestination);
-	//////kf->setTranslate(sinbadInitPose + Ogre::Vector3(0, 0, 2000));
+		//////2 keyframe mover a sinbad 
+		////kf = track->createNodeKeyFrame(durPaso * 1);
+		////kf->setScale(mSinbadNode->getScale());
+		////kf->setTranslate(sinbadDestination);
+		////kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 0)));
+		//////3 keyframe girar a sinbad
+		////kf = track->createNodeKeyFrame(durPaso * 2);
+		////kf->setScale(mSinbadNode->getScale());
+		////kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 0)));
+		////kf->setTranslate(sinbadDestination);
+		//////kf->setTranslate(sinbadInitPose + Ogre::Vector3(0, 0, 2000));
 
-	//////4 keyframe mover a sinbad 
-	////kf = track->createNodeKeyFrame(durPaso * 3);
-	////kf->setScale(mSinbadNode->getScale());
-	////kf->setTranslate(sinbadInitPose);
-	//////5 keyframe rotar a simbad
-	////kf = track->createNodeKeyFrame(durPaso * 4);
-	////kf->setScale(mSinbadNode->getScale());
-	////kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, -1)));
-	////kf->setTranslate(sinbadInitPose);
+		//////4 keyframe mover a sinbad 
+		////kf = track->createNodeKeyFrame(durPaso * 3);
+		////kf->setScale(mSinbadNode->getScale());
+		////kf->setTranslate(sinbadInitPose);
+		//////5 keyframe rotar a simbad
+		////kf = track->createNodeKeyFrame(durPaso * 4);
+		////kf->setScale(mSinbadNode->getScale());
+		////kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, -1)));
+		////kf->setTranslate(sinbadInitPose);
 
-	////6 keyframe rotar a simbad
-	//kf = track->createNodeKeyFrame(durPaso * 1);
-	//kf->setScale(mSinbadNode->getScale());
-	//kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, -1)));
-	//kf->setTranslate(sinbadInitPose);
+		////6 keyframe rotar a simbad
+		//kf = track->createNodeKeyFrame(durPaso * 1);
+		//kf->setScale(mSinbadNode->getScale());
+		//kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, -1)));
+		//kf->setTranslate(sinbadInitPose);
 
-	Ogre::TransformKeyFrame* kf = track->createNodeKeyFrame(durPaso * 0);
-	kf->setTranslate(sinbadInitPose);
-	kf->setScale(mSinbadNode->getScale());
+		Ogre::TransformKeyFrame* kf = track->createNodeKeyFrame(durPaso * 0);
+		kf->setTranslate(sinbadInitPose);
+		kf->setScale(mSinbadNode->getScale());
 
 
-	//ORIGEN
-	kf = track->createNodeKeyFrame(durPaso *0);
-	kf->setTranslate(sinbadInitPose + Ogre::Vector3(0, 200, 0));
-	kf->setScale(mSinbadNode->getScale());
-	kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 1)));
-	//ORIGEN
-	kf = track->createNodeKeyFrame(durPaso * 1);
-	kf->setTranslate(sinbadInitPose + Ogre::Vector3(0, 200, 0));
-	kf->setScale(mSinbadNode->getScale());
-	kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 1)));
+		//ORIGEN
+		kf = track->createNodeKeyFrame(durPaso * 0);
+		kf->setTranslate(sinbadInitPose + Ogre::Vector3(0, 200, 0));
+		kf->setScale(mSinbadNode->getScale());
+		kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 1)));
+		//ORIGEN
+		kf = track->createNodeKeyFrame(durPaso * 1);
+		kf->setTranslate(sinbadInitPose + Ogre::Vector3(0, 200, 0));
+		kf->setScale(mSinbadNode->getScale());
+		kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 1)));
 
-	anim_Sinbadmove = mSM->createAnimationState("animSS");
-	anim_Sinbadmove->setLoop(true);
-	anim_Sinbadmove->setEnabled(true);
+		anim_Sinbadmove = mSM->createAnimationState("animSS");
+		anim_Sinbadmove->setLoop(true);
+		anim_Sinbadmove->setEnabled(true);
 	}
 
 	animaciones();
-	
 
-
-
-    Ogre::AnimationStateSet* aux = ent->getAllAnimationStates();
+	Ogre::AnimationStateSet* aux = ent->getAllAnimationStates();
 	auto it = aux->getAnimationStateIterator().begin();
 	while (it != aux->getAnimationStateIterator().end())
 	{
@@ -633,7 +630,7 @@ void Sinbad::frameRendered(const Ogre::FrameEvent& evt)
 }
 
 bool  Sinbad::keyPressed(const OgreBites::KeyboardEvent& evt) {
-	
+
 	if (evt.keysym.sym == SDLK_c)
 	{
 		corriendo = !corriendo;
@@ -662,8 +659,8 @@ void Sinbad::arma(bool izq) {
 
 void Sinbad::arma() {
 
-	Ogre::MovableObject *swordL = mSM->createEntity("Sword.mesh");
-	Ogre::MovableObject *swordR = mSM->createEntity("Sword.mesh");
+	Ogre::MovableObject* swordL = mSM->createEntity("Sword.mesh");
+	Ogre::MovableObject* swordR = mSM->createEntity("Sword.mesh");
 
 	ent->attachObjectToBone("Hand.R", swordR);
 	ent->attachObjectToBone("Hand.L", swordL);
@@ -697,8 +694,8 @@ Bomba::Bomba(Ogre::SceneNode* padre) :EntidadIG(padre)
 	kf->setTranslate(keyframePos);
 	kf->setScale(node->getScale());
 	//ARRIBA
-    kf=track->createNodeKeyFrame(durPaso*1);
-	kf->setTranslate(keyframePos +Ogre::Vector3(0,200,0));
+	kf = track->createNodeKeyFrame(durPaso * 1);
+	kf->setTranslate(keyframePos + Ogre::Vector3(0, 200, 0));
 	kf->setScale(node->getScale());
 	kf->setRotation(src.getRotationTo(Ogre::Vector3(1, 0, 1)));
 	//ORIGEN
@@ -706,24 +703,24 @@ Bomba::Bomba(Ogre::SceneNode* padre) :EntidadIG(padre)
 	kf->setTranslate(keyframePos);
 	kf->setScale(node->getScale());
 	//ABAJO
-	kf = track->createNodeKeyFrame(durPaso *3);
+	kf = track->createNodeKeyFrame(durPaso * 3);
 	kf->setTranslate(keyframePos + Ogre::Vector3(0, -300, 0));
 	kf->setScale(node->getScale());
 	kf->setRotation(src.getRotationTo(Ogre::Vector3(-1, 0, 1)));
 	//ORIGEN
-	kf = track->createNodeKeyFrame(durPaso *4);
+	kf = track->createNodeKeyFrame(durPaso * 4);
 	kf->setTranslate(keyframePos);
 	kf->setScale(node->getScale());
 
 	animationState = mSM->createAnimationState("AnimVV");
 	animationState->setLoop(true);
 	animationState->setEnabled(true);
-	
+
 	parada = false;
 }
 
 void Bomba::frameRendered(const Ogre::FrameEvent& evt) {
-	if(!parada) animationState->addTime(evt.timeSinceLastFrame);
+	if (!parada) animationState->addTime(evt.timeSinceLastFrame);
 }
 
 Bomba::~Bomba()
@@ -731,7 +728,7 @@ Bomba::~Bomba()
 }
 
 void Bomba::receiveEvent(MessageType msgType, EntidadIG* entidad) {
-	
+
 	switch (msgType)
 	{
 	case NADA:

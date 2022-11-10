@@ -6,6 +6,8 @@
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>
 #include <OgreCameraMan.h>
+#include<OgreBillboardSet.h>
+#include<OgreParticleSystem.h>
 #include <vector>
 #include "EntidadIG.h"
 

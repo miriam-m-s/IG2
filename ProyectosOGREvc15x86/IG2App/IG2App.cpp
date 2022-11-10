@@ -284,7 +284,6 @@ void IG2App::EscenaBombaSinbad() {
 	Sinbad* sinbad = new Sinbad(Scene4, false, 4);
 	//sinbad->arma();
 
-
 	Ogre::SceneNode* NN = Scene4->createChildSceneNode();
 	noria = new Noria(20, NN);
 	NN->setPosition(-1500,0, -1000);
@@ -308,6 +307,17 @@ void IG2App::EscenaBombaSinbad() {
 	EntidadIG::addListener(sinbad);
 	EntidadIG::addListener(plano);
 	EntidadIG::addListener(bomba);
+
+	Ogre::SceneNode* niebla = Scene4->createChildSceneNode();
+	niebla->translate(0, 800, -1000);
+
+	Ogre::BillboardSet* bbSet = mSM->createBillboardSet("niebla", 2);
+	bbSet->setDefaultDimensions(4000, 2000);
+	bbSet->setMaterialName("Practica1/Smoke");
+	niebla->attachObject(bbSet);
+
+	bbSet->createBillboard({ 0,0,0 });
+
 
 	Scene4->setVisible(false);
 }  
