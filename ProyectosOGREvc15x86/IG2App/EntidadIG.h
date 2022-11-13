@@ -13,7 +13,7 @@
 #include<OgreParticleSystem.h>
 
 
-enum MessageType {NADA, CAMBIATEXTURE, DETIENE};
+enum MessageType {NADA, CAMBIATEXTURE, DETIENE, MUERTE, EXPLOSION};
 
 class EntidadIG :public OgreBites::InputListener {
 public:
@@ -37,7 +37,7 @@ protected:
 
 	Ogre::SceneNode* mNode;
 	Ogre::SceneManager* mSM;
-	
+	EntidadIG * ent;
 	
 };
 
@@ -130,7 +130,11 @@ public:
 
 class Avion : public EntidadIG {
 
+	Ogre::ParticleSystem* pSysExp;
 	Ogre::SceneNode* movimiento;
+	Ogre::SceneNode* esferaCentral = nullptr;
+	Ogre::SceneNode* avionCompleto = nullptr;
+	int scene_;
 	AspasNave* Aspa1;
 	AspasNave* Aspa2;
 	bool estaMoviendo;
@@ -141,10 +145,6 @@ public:
 	bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	void frameRendered(const Ogre::FrameEvent& evt) override;
 	~Avion() {};
-
-private:
-	int scene_;
-	Ogre::SceneNode* esferaCentral = nullptr;
 
 };
 
@@ -195,19 +195,25 @@ public:
 class Sinbad :public EntidadIG {
 
 private:
+
 	Ogre::SceneNode* mSinbadNode = nullptr;
 	Ogre::SceneNode* mSinbadNodemov = nullptr;
 	Ogre::AnimationState* anim_Sinbadtop = nullptr;
 	Ogre::AnimationState* anim_Sinbaddown = nullptr;
 	Ogre::AnimationState* anim_Sinbaddance = nullptr;
 	Ogre::AnimationState* anim_Sinbadmove=nullptr;
+	Ogre::AnimationState* anim_SinbaddeadTop=nullptr;
+	Ogre::AnimationState* anim_SinbaddeadIdle=nullptr;
+
 	Ogre::Timer* myTymer;
+
 	unsigned long initTime;
-	int sentido = 1;
-	Ogre::Entity* ent;
-	bool corriendo;
-	bool izq;
-	int scene;
+	int sentido = 1, scene;
+	bool corriendo, vivo, izq;
+
+	Ogre::Entity* sinbad;
+
+	virtual void receiveEvent(MessageType msgType, EntidadIG* entidad);
 
 public:
 
@@ -219,17 +225,19 @@ public:
 	void arma(bool izq);
 	void cambiaEspada();
 	~Sinbad() {};
-	
-
-
 };
 
 class Bomba :public EntidadIG {
+
 	private:
 		Ogre::AnimationState* animationState;
 		bool parada;
 		virtual void receiveEvent(MessageType msgType, EntidadIG* entidad);
+		Ogre::ParticleSystem* pSysExp; 
+		Ogre::SceneNode* bomba;
+
 public:
+
 	Bomba(Ogre::SceneNode* padre);
 	void frameRendered(const Ogre::FrameEvent& evt);
 	~Bomba();

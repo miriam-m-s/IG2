@@ -277,9 +277,7 @@ void IG2App::EscenaBombaSinbad() {
 	planoA->setPosition(Ogre::Vector3(1000, 10,1000));
 	planoAmarillo->SetMaterial("Practica1/Amarillo");
 
-	
 	Bomba* bomba = new Bomba(Scene4);
-	addInputListener(bomba);
 
 	Sinbad* sinbad = new Sinbad(Scene4, false, 4);
 	//sinbad->arma();
@@ -287,26 +285,19 @@ void IG2App::EscenaBombaSinbad() {
 	Ogre::SceneNode* NN = Scene4->createChildSceneNode();
 	noria = new Noria(20, NN);
 	NN->setPosition(-1500,0, -1000);
-	//creacion del muñeco
+
+
 	Ogre::SceneNode* MUNY = Scene4->createChildSceneNode();
 	olaf = new Munyeco(MUNY);
 	MUNY->setPosition(-1200,200, -1400);
 	MUNY->yaw(Ogre::Degree(90));
 
 	Ogre::SceneNode* bombanode = Scene4->createChildSceneNode();
-	Ogre::SceneNode* avion = bombanode->createChildSceneNode();
-	Avion* aviones = new Avion(avion, bombanode, 5,4);
-	avion->setScale(0.5, 0.5, 0.5);
-	avion->translate(400, 700, 0);
-
-	EntidadIG::addListener(aviones);
-	addInputListener(aviones);
-
-	addInputListener(sinbad);
-	addInputListener(plano);
-	EntidadIG::addListener(sinbad);
-	EntidadIG::addListener(plano);
-	EntidadIG::addListener(bomba);
+	
+	Ogre::SceneNode *avionNode = bombanode->createChildSceneNode();
+	Avion *avion = new Avion(avionNode, bombanode, 5,4);
+	avionNode->setScale(0.5, 0.5, 0.5);
+	avionNode->translate(400, 700, 0);
 
 	Ogre::SceneNode* niebla = Scene4->createChildSceneNode();
 	niebla->translate(0, 800, -1000);
@@ -318,6 +309,15 @@ void IG2App::EscenaBombaSinbad() {
 
 	bbSet->createBillboard({ 0,0,0 });
 
+
+	addInputListener(avion);
+	addInputListener(sinbad);
+	addInputListener(plano);
+	addInputListener(bomba);
+	EntidadIG::addListener(avion);
+	EntidadIG::addListener(sinbad);
+	EntidadIG::addListener(plano);
+	EntidadIG::addListener(bomba);
 
 	Scene4->setVisible(false);
 }  

@@ -41,7 +41,10 @@ protected:
   Ogre::SceneNode* Scene2 = nullptr;
   Ogre::SceneNode* Scene3 = nullptr;
   Ogre::SceneNode* Scene4 = nullptr;
-  Ogre::SceneNode* PN;
+  Ogre::SceneNode* PN = nullptr;
+
+  Ogre::ParticleSystem* pSysExp;
+  
   Noria* noria = nullptr;
   Munyeco* olaf = nullptr;
   Plano* plano = nullptr;
