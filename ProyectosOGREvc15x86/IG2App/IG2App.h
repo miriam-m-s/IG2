@@ -46,7 +46,7 @@ protected:
   Ogre::ParticleSystem* pSysExp;
   
   Noria* noria = nullptr;
-  Munyeco* olaf = nullptr;
+
   Plano* plano = nullptr;
 
   Ogre::SceneNode* AvionCompleto;

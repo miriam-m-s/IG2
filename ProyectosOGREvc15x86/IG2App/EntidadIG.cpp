@@ -156,20 +156,20 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) : EntidadIG(padre), tortura(false)
 	cabeza = cuello->createChildSceneNode();
 	Cabeza = padre->getCreator()->createEntity("sphere.mesh");
 	cabeza->attachObject(Cabeza);
-	Cabeza->setMaterialName("Practica1/cabeza");
+	Cabeza->setMaterialName("Practica1/naranja");
 
 	cabeza->setPosition(0, 100 * cabeza->getScale().y, 0);
 
-	//Ogre::SceneNode* nariz = cabeza->createChildSceneNode();
-	//Ogre::Entity* Nariz = padre->getCreator()->createEntity("sphere.mesh");
-	//Nariz->setMaterialName("Practica1/nariz");
-	//nariz->attachObject(Nariz);
-	//nariz->setScale(0.1, 0.1, 0.1);
-	//nariz->setPosition(0, 0, 100 * cabeza->getScale().z);
+	Ogre::SceneNode* nariz = cabeza->createChildSceneNode();
+	Ogre::Entity* Nariz = padre->getCreator()->createEntity("sphere.mesh");
+	Nariz->setMaterialName("Practica1/nariz");
+	nariz->attachObject(Nariz);
+	nariz->setScale(0.1, 0.1, 0.1);
+	nariz->setPosition(0, 0, 100 * cabeza->getScale().z);
 
 	cuerpo = cuello->createChildSceneNode();
 	Cuerpo = padre->getCreator()->createEntity("sphere.mesh");
-	Cuerpo->setMaterialName("Practica1/cuerpo");
+	Cuerpo->setMaterialName("Practica1/naranja");
 	cuerpo->attachObject(Cuerpo);
 	cuerpo->setScale(2, 2, 2);
 	cuerpo->setPosition(0, -100 * cuerpo->getScale().y, 0);
@@ -182,6 +182,58 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) : EntidadIG(padre), tortura(false)
 	ombligo->setPosition(0, 0, 100 * cuerpo->getScale().z / 2);
 
 	cuello->setScale(0.5, 0.5, 0.5);
+
+
+	int duration = 16;
+	Ogre::Animation* animation = mSM->createAnimation("AnimMun", duration);
+
+	Ogre::NodeAnimationTrack* track = animation->createNodeTrack(0);
+	track->setAssociatedNode(cuello);
+	Ogre::Real durPaso = duration / 4.0;
+	Ogre::Vector3 initPose = cuello->getPosition();
+	Ogre::Vector3 finalPose = cuello->getPosition()+Ogre::Vector3(-800,0,0);
+	Ogre::Vector3 src(1, 0, 0);
+
+	//keyframe1
+	Ogre::TransformKeyFrame* kf = track->createNodeKeyFrame(durPaso * 0);
+	kf->setTranslate(initPose);
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(270), Ogre::Vector3(0, 1, 0)));
+	kf->setScale(cuello->getScale());
+
+	//keyframe2
+	kf = track->createNodeKeyFrame(durPaso * 1);
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(270), Ogre::Vector3(0, 1, 0)));
+	kf->setScale(cuello->getScale());
+	kf->setTranslate(finalPose);
+
+	//keyframe3
+    kf = track->createNodeKeyFrame(durPaso * 2);
+	kf->setTranslate(finalPose);
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(90), Ogre::Vector3(0, 1, 0)));
+	kf->setScale(cuello->getScale());
+
+	//keyframe4
+	kf = track->createNodeKeyFrame(durPaso * 3);
+	kf->setTranslate(initPose);
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(90), Ogre::Vector3(0, 1, 0)));
+	kf->setScale(cuello->getScale());
+
+	//keyframe5
+    kf = track->createNodeKeyFrame(durPaso * 4);
+	kf->setTranslate(initPose);
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(270), Ogre::Vector3(0, 1, 0)));
+	kf->setScale(cuello->getScale());
+   
+
+	Ogre::SceneNode* explosion = padre->createChildSceneNode();
+
+
+	animationState = mSM->createAnimationState("AnimMun");
+	animationState->setLoop(true);
+	animationState->setEnabled(true);
+
+
+
 }
 
 bool Munyeco::keyPressed(const OgreBites::KeyboardEvent& evt)
@@ -221,7 +273,7 @@ void Munyeco::frameRendered(const Ogre::FrameEvent& evt)
 		cabeza->yaw(Ogre::Radian(time));
 		cuerpo->yaw(-Ogre::Radian(time));
 	}*/
-
+	animationState->addTime(evt.timeSinceLastFrame);
 
 }
 

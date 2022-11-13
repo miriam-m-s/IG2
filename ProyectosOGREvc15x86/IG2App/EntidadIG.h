@@ -73,7 +73,7 @@ class Munyeco :public  EntidadIG
 		Ogre::SceneNode* cuello;
 		Ogre::SceneNode* cabeza;
 		Ogre::SceneNode* cuerpo;
-
+		Ogre::AnimationState* animationState;
 		Ogre::Entity* Cabeza;
 		Ogre::Entity* Cuerpo;
 };

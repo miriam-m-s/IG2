@@ -288,8 +288,8 @@ void IG2App::EscenaBombaSinbad() {
 
 
 	Ogre::SceneNode* MUNY = Scene4->createChildSceneNode();
-	olaf = new Munyeco(MUNY);
-	MUNY->setPosition(-1200,200, -1400);
+	Munyeco* olaf = new Munyeco(MUNY);
+	MUNY->setPosition(-1200,230, -1400);
 	MUNY->yaw(Ogre::Degree(90));
 
 	Ogre::SceneNode* bombanode = Scene4->createChildSceneNode();
@@ -311,6 +311,7 @@ void IG2App::EscenaBombaSinbad() {
 
 
 	addInputListener(avion);
+	addInputListener(olaf);
 	addInputListener(sinbad);
 	addInputListener(plano);
 	addInputListener(bomba);
