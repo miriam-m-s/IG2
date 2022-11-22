@@ -566,9 +566,9 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 		Ogre::NodeAnimationTrack* track = animation->createNodeTrack(0);
 		track->setAssociatedNode(mSinbadNode);
 
-		Ogre::Real durPaso = duration / 4.0;
+		Ogre::Real durPaso = duration / 5.0;
 		Ogre::Vector3 sinbadInitPose = mSinbadNode->getPosition();
-		Ogre::Vector3 sinbadDestination = { -1200, mSinbadNode->getScale().y / 2 * 12, -900 };
+		Ogre::Vector3 sinbadDestination = { -1200/3, mSinbadNode->getScale().y / 2 * 12, -900/3 };
 		Ogre::Vector3 src(0, 0, 1);
 
 		//1 keyframe rotar a simbad
@@ -577,26 +577,32 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 		kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
 		kf->setTranslate(sinbadInitPose);
 
-		//2 keyframe rotar a simbad
+		//2 keyframe mover a simbad al medio
 		kf = track->createNodeKeyFrame(durPaso * 1);
 		kf->setScale(mSinbadNode->getScale());
 		kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
 		kf->setTranslate(sinbadDestination);
 
-		//3 keyframe rotar a simbad
+		//3 keyframe mover a simbad al destino
 		kf = track->createNodeKeyFrame(durPaso * 2);
 		kf->setScale(mSinbadNode->getScale());
-		kf->setRotation(Ogre::Quaternion(Ogre::Degree(45), Ogre::Vector3(0, 1, 0)));
-		kf->setTranslate(sinbadDestination);
+		kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
+		kf->setTranslate(sinbadDestination * Ogre::Vector3(3,1,3));
 
 		//4 keyframe rotar a simbad
 		kf = track->createNodeKeyFrame(durPaso * 3);
 		kf->setScale(mSinbadNode->getScale());
 		kf->setRotation(Ogre::Quaternion(Ogre::Degree(45), Ogre::Vector3(0, 1, 0)));
+		kf->setTranslate(sinbadDestination * Ogre::Vector3(3, 1, 3));
+
+		//4 keyframe mover  a simbad a la posicion origen
+		kf = track->createNodeKeyFrame(durPaso * 4);
+		kf->setScale(mSinbadNode->getScale());
+		kf->setRotation(Ogre::Quaternion(Ogre::Degree(45), Ogre::Vector3(0, 1, 0)));
 		kf->setTranslate(sinbadInitPose);
 
 		//5 keyframe rotar a simbad
-		kf = track->createNodeKeyFrame(durPaso * 4);
+		kf = track->createNodeKeyFrame(durPaso * 5);
 		kf->setScale(mSinbadNode->getScale());
 		kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
 		kf->setTranslate(sinbadInitPose);
