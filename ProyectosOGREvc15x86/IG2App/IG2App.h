@@ -37,10 +37,6 @@ protected:
 
   Ogre::SceneNode* mLightNode = nullptr;
   Ogre::SceneNode* mCamNode = nullptr;
-  Ogre::SceneNode* Scene1 = nullptr;
-  Ogre::SceneNode* Scene2 = nullptr;
-  Ogre::SceneNode* Scene3 = nullptr;
-  Ogre::SceneNode* Scene4 = nullptr;
   Ogre::SceneNode* PN = nullptr;
 
   Ogre::ParticleSystem* pSysExp;

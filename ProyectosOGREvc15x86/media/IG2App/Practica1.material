@@ -258,3 +258,20 @@ material Practica1/Smoke
 			}
 }
 
+material IG2/Space{
+		technique
+					{
+						pass
+								{
+								diffuse 1.0 1.0 1.0								
+								texture_unit
+								{ 
+									texture spacesky.jpg
+									colour_op add
+									rotate 1.57
+								}
+								
+						}
+					}
+}
+
