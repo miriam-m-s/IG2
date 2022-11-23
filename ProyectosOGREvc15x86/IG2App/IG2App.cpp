@@ -173,8 +173,6 @@ void IG2App::EscenaBombaSinbad() {
 	avionNode->setScale(0.5, 0.5, 0.5);
 	avionNode->translate(400, 700, 0);
 
-	mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -40), "IG2/Space"
-		, 1, 1, true, 1.0, 100, 100);
 
 	addInputListener(avion);
 	addInputListener(sinbad);

@@ -17,8 +17,8 @@ fragment_program MyFirstShaderFS glsl
 material practica2GLSL/bomba{
 	technique {
 			pass {
-					vertex_program MyFirstShaderVS{}
-					fragment_program MyFirstShaderFS{	}
+					vertex_program_ref MyFirstShaderVS{}
+					fragment_program_ref MyFirstShaderFS{	}
 			}
 		}
 }
