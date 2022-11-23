@@ -109,7 +109,7 @@ void IG2App::setupScene(void)
 
 	// and tell it to render into the main window
 	Viewport* vp = getRenderWindow()->addViewport(cam);
-	vp->setBackgroundColour(Ogre::ColourValue(0.6, 0.7, 0.8));
+	vp->setBackgroundColour(Ogre::ColourValue(0.0, 0.0, 0.0));
 
 	//------------------------------------------------------------------------
 
@@ -173,13 +173,8 @@ void IG2App::EscenaBombaSinbad() {
 	avionNode->setScale(0.5, 0.5, 0.5);
 	avionNode->translate(400, 700, 0);
 
-	Ogre::SceneNode* sky = mainScene->createChildSceneNode();
-	Ogre::BillboardSet* bbSet = mSM->createBillboardSet("sky", 1);
-	bbSet->setDefaultDimensions(10000, 10000);
-	bbSet->setMaterialName("IG2/Space");
-	sky->attachObject(bbSet);
-
-	bbSet->createBillboard({ -3000, 0, -3000 });
+	mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -40), "IG2/Space"
+		, 1, 1, true, 1.0, 100, 100);
 
 	addInputListener(avion);
 	addInputListener(sinbad);

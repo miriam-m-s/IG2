@@ -1,0 +1,26 @@
+
+vertex_program MyFirstShaderVS glsl 
+{
+		source MyFirstShaderVS.glsl
+		default_params
+		{
+			param_named_auto modelViewProjMat worldviewproj_matrix
+		}
+}
+
+fragment_program MyFirstShaderFS glsl
+{
+		source MyFirstShaderFS.glsl
+		default_params{}
+}
+
+material practica2GLSL/bomba{
+	technique {
+			pass {
+					vertex_program MyFirstShaderVS{}
+					fragment_program MyFirstShaderFS{	}
+			}
+		}
+}
+
+

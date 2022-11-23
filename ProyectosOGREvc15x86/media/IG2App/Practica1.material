@@ -263,12 +263,22 @@ material IG2/Space{
 					{
 						pass
 								{
-								diffuse 1.0 1.0 1.0								
+								lighting off
+								diffuse 1.0 1.0 1.0					
+								ambient 0.5 0.5 0.5
 								texture_unit
 								{ 
-									texture spacesky.jpg
-									colour_op add
-									rotate 1.57
+									tex_coord_set 0 
+									texture spaceSky.jpg
+									colour_op modulate
+									rotate_anim 0.05
+								}
+
+								texture_unit
+								{ 
+									tex_coord_set 0 
+									texture lightMap.jpg
+									colour_op modulate
 								}
 								
 						}

@@ -781,7 +781,7 @@ Bomba::Bomba(Ogre::SceneNode* padre) :EntidadIG(padre)
 	bomba = padre->createChildSceneNode();
 	Ogre::Entity* ent = mSM->createEntity("Barrel.mesh");
 
-	ent->setMaterialName("Practica1/bomba");
+	ent->setMaterialName("practica2GLSL/bomba");
 	bomba->attachObject(ent);
 	bomba->setScale(35, 35, 35);
 	bomba->setPosition(0, 100, 0);
