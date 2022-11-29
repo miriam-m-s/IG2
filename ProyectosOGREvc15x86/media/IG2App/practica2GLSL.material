@@ -24,3 +24,50 @@ material practica2GLSL/bomba{
 }
 
 
+vertex_program SpaceSkyVS glsl 
+{
+		source SpaceSkyVS.glsl
+		default_params
+		{
+			param_named_auto modelViewProjMat worldviewproj_matrix
+		}
+}
+
+fragment_program SpaceSkyFS glsl
+{
+		source SpaceSkyFS.glsl
+		default_params{
+			param_named texturaL int 0 
+			param_named texturaM int 1 
+			param_named BF float 1.0
+			param_named intLuzAmb float 0.5
+		
+		}
+}
+
+material practica2GLSL/space{
+	technique {
+			pass {
+					vertex_program_ref SpaceSkyVS{}
+					fragment_program_ref SpaceSkyFS{	}
+				
+
+			texture_unit //int 0
+			{ 
+				texture lightMap.jpg 2d // archivo
+				tex_address_mode clamp // sólo configuración
+				filtering bilinear // de acceso al texel
+				rotate_anim 0.05
+			}
+			texture_unit //int 1
+			{ 
+				texture  spaceSky.jpg
+				
+				tex_address_mode wrap // sólo configuración
+			}
+
+			}
+		}
+}
+
+

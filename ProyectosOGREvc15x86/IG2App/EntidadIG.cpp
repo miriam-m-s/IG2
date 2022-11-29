@@ -779,11 +779,11 @@ void Sinbad::cambiaEspada() {
 Bomba::Bomba(Ogre::SceneNode* padre) :EntidadIG(padre)
 {
 	bomba = padre->createChildSceneNode();
-	Ogre::Entity* ent = mSM->createEntity("Barrel.mesh");
+	Ogre::Entity* ent = mSM->createEntity("uv_sphere.mesh");
 
 	ent->setMaterialName("practica2GLSL/bomba");
 	bomba->attachObject(ent);
-	bomba->setScale(35, 35, 35);
+	bomba->setScale(1, 1, 1);
 	bomba->setPosition(0, 100, 0);
 
 	int duration = 16;
