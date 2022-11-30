@@ -10,6 +10,6 @@ out vec4 fFragColor;
 void main(void) {
 		vec3 colorL = vec3(texture(texturaL, vUv0)); // acceso a téxel
 		vec3 colorM = vec3(texture(texturaM, vUv0)); // configuración!
-		vec3 color = mix(colorL, colorM, BF) * intLuzAmb;
+		vec3 color = colorL* colorM * intLuzAmb;
 		fFragColor = vec4(color, 1.0); // out
 }

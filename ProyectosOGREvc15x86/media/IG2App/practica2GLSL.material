@@ -40,7 +40,7 @@ fragment_program SpaceSkyFS glsl
 			param_named texturaL int 0 
 			param_named texturaM int 1 
 			param_named BF float 1.0
-			param_named intLuzAmb float 0.5
+			param_named intLuzAmb float 1.0
 		
 		}
 }
@@ -54,15 +54,15 @@ material practica2GLSL/space{
 
 			texture_unit //int 0
 			{ 
-				texture lightMap.jpg 2d // archivo
+				texture  spaceSky.jpg 2d
 				tex_address_mode clamp // sólo configuración
 				filtering bilinear // de acceso al texel
 				rotate_anim 0.05
 			}
 			texture_unit //int 1
 			{ 
-				texture  spaceSky.jpg
-				
+
+				texture lightMap.jpg 2d // archivo
 				tex_address_mode wrap // sólo configuración
 			}
 
@@ -70,4 +70,98 @@ material practica2GLSL/space{
 		}
 }
 
+vertex_program BombaTeseladaVS glsl 
+{
+		source BombaTeseladaVS.glsl
+		default_params
+		{
+			param_named_auto modelViewProjMat worldviewproj_matrix
+		}
+}
+
+fragment_program BombaTeseladaFS glsl
+{
+		source BombaTeseladaFS.glsl
+		default_params{
+			param_named texturaChecker int 0 
+			param_named texturaSky int 1 
+			param_named texturaBumpy int 2
+			param_named BF float 1.0
+			param_named intLuzAmb float 1.0
+		
+		}
+}
+
+material practica2GLSL/bombaTeselada{
+	technique {
+			pass {
+					vertex_program_ref BombaTeseladaVS{}
+					fragment_program_ref BombaTeseladaFS{	}
+				
+
+			texture_unit //int 0
+			{ 
+				texture checker.png 2d // archivo
+				tex_address_mode wrap // sólo configuración
+			}
+			texture_unit //int 1
+			{ 
+				texture  spaceSky.jpg 2d
+				tex_address_mode clamp // sólo configuración
+				filtering bilinear // de acceso al texel
+			}
+
+			texture_unit //int 2
+			{ 
+				texture BumpyMetal.jpg 2d // archivo
+				tex_address_mode wrap // sólo configuración
+			}
+
+			}
+		}
+}
+
+vertex_program SpaceVS glsl 
+{
+		source SpaceVS.glsl
+		default_params
+		{
+			param_named ZF float 0.5
+			param_named_auto modelViewProjMat worldviewproj_matrix
+		}
+}
+
+fragment_program SpaceFS glsl
+{
+		source SpaceFS.glsl
+		default_params{
+			param_named texturaSky int 0 
+			param_named texturaMap int 1
+			param_named intLuzAmb float 1.0
+		
+		}
+}
+
+material practica2GLSL/space2{
+	technique {
+			pass {
+					vertex_program_ref SpaceVS{}
+					fragment_program_ref SpaceFS{	}
+				
+
+			texture_unit //int 0
+			{ 
+				texture  spaceSky.jpg 2d
+				tex_address_mode clamp // sólo configuración
+				filtering bilinear // de acceso al texel
+			}
+			texture_unit //int 1
+			{ 
+				texture lightMap.jpg 2d // archivo
+				tex_address_mode wrap // sólo configuración
+			}
+
+			}
+		}
+}
 
