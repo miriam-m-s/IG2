@@ -128,6 +128,10 @@ vertex_program SpaceVS glsl
 		{
 			param_named ZF float 0.5
 			param_named_auto modelViewProjMat worldviewproj_matrix
+			param_named a float 0.5
+			param_named b float 1.5
+			param_named_auto st sintime_0_2pi 20
+
 		}
 }
 
@@ -138,6 +142,7 @@ fragment_program SpaceFS glsl
 			param_named texturaSky int 0 
 			param_named texturaMap int 1
 			param_named intLuzAmb float 1.0
+
 		
 		}
 }
@@ -158,6 +163,60 @@ material practica2GLSL/space2{
 			texture_unit //int 1
 			{ 
 				texture lightMap.jpg 2d // archivo
+				tex_address_mode wrap // sólo configuración
+			}
+
+			}
+		}
+}
+
+
+
+vertex_program HolesVS glsl 
+{
+		source HolesVS.glsl
+		default_params
+		{
+			param_named_auto modelViewProjMat worldviewproj_matrix
+		}
+}
+
+fragment_program HolesFS glsl
+{
+		source HolesFS.glsl
+		default_params{
+			param_named corrosion int 0 
+			param_named bumbyMetal int 1 
+			param_named beachStones int 2
+			param_named BF float 1.0
+			param_named intLuzAmb float 1.0
+		
+		}
+}
+
+material practica2GLSL/Holes{
+	technique {
+			pass {
+			cull_hardware none
+					vertex_program_ref HolesVS{}
+					fragment_program_ref HolesFS{	}
+				
+
+			texture_unit //int 0
+			{ 
+				texture corrosion.jpg 2d // archivo
+				tex_address_mode wrap // sólo configuración
+			}
+			texture_unit //int 1
+			{ 
+				texture  BumpyMetal.jpg 2d
+				tex_address_mode clamp // sólo configuración
+				filtering bilinear // de acceso al texel
+			}
+
+			texture_unit //int 2
+			{ 
+				texture BeachStones.jpg 2d // archivo
 				tex_address_mode wrap // sólo configuración
 			}
 
