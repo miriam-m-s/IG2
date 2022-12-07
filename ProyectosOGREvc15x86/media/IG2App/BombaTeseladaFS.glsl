@@ -6,6 +6,7 @@ uniform sampler2D texturaBumpy;
 uniform float BF; // blending factor
 uniform float intLuzAmb; // luz ambiente blanca
 in vec2 vUv0; // out del vertex shader
+in vec2 vUv1; // out del vertex shader
 out vec4 fFragColor;
 
 void main(void) {
@@ -17,7 +18,7 @@ void main(void) {
 			 color = vec3(texture(texturaBumpy, vUv0)); // configuración!
 		}
 
-		else color = vec3(texture(texturaSky, vUv0)); // configuración!
+		else color = vec3(texture(texturaSky, vUv1)); // configuración!
 
 		fFragColor = vec4(color*intLuzAmb, 1.0); // out
 }

@@ -781,7 +781,7 @@ Bomba::Bomba(Ogre::SceneNode* padre) :EntidadIG(padre)
 	bomba = padre->createChildSceneNode();
 	Ogre::Entity* ent = mSM->createEntity("uv_sphere.mesh");
 
-	ent->setMaterialName("practica2GLSL/Holes");
+	ent->setMaterialName("practica2GLSL/HolesLighting");
 	bomba->attachObject(ent);
 	bomba->setScale(1, 1, 1);
 	bomba->setPosition(0, 100, 0);
