@@ -253,7 +253,7 @@ fragment_program HolesAndVertexLightingFS glsl
 	}
 }
 
-material practica2GLSL/HolesLighting{
+material practica2GLSL/HolesVertexLighting{
 	technique 
 	{
 		pass 
@@ -270,4 +270,64 @@ material practica2GLSL/HolesLighting{
 		}
 	}
 }
+
+
+vertex_program HolesAndLightingVS glsl 
+{
+	source HolesAndLightingVS.glsl
+	default_params
+	{
+		
+		param_named_auto modelViewProjMat worldviewproj_matrix
+		param_named_auto normalMat inverse_transpose_worldview_matrix
+		
+	}
+}
+
+fragment_program HolesAndLightingFS glsl
+{
+	source HolesAndLightingFS.glsl
+	default_params{
+			param_named frontMaterial float3 0.72 0.57 0.35
+			param_named backMaterial float3 0.0 0.6 0.83
+			param_named_auto lightDiffuse derived_light_diffuse_colour 0
+			param_named_auto lightPosition light_position_view_space 0
+			param_named corrosion int 0 
+			param_named bumbyMetal int 1 
+			param_named beachStones int 2
+			
+	
+	}
+}
+
+material practica2GLSL/HolesLighting{
+	technique 
+	{
+		pass 
+		{
+			cull_hardware none
+			vertex_program_ref HolesAndLightingVS{}
+			fragment_program_ref HolesAndLightingFS{}
+
+			texture_unit //int 0
+			{ 
+				texture corrosion.jpg 2d // archivo
+				tex_address_mode wrap // s�lo configuraci�n
+			}
+			texture_unit //int 1
+			{ 
+				texture  BumpyMetal.jpg 2d
+				tex_address_mode clamp // s�lo configuraci�n
+				filtering bilinear // de acceso al texel
+			}
+
+			texture_unit //int 2
+			{ 
+				texture BeachStones.jpg 2d // archivo
+				tex_address_mode wrap // s�lo configuraci�n
+			}
+		}
+	}
+}
+
 
