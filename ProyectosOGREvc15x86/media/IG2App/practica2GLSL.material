@@ -55,7 +55,7 @@ material practica2GLSL/space{
 			texture_unit //int 0
 			{ 
 				texture  spaceSky.jpg 2d
-				tex_address_mode clamp // sólo configuración
+				tex_address_mode clamp // sï¿½lo configuraciï¿½n
 				filtering bilinear // de acceso al texel
 				rotate_anim 0.05
 			}
@@ -63,7 +63,7 @@ material practica2GLSL/space{
 			{ 
 
 				texture lightMap.jpg 2d // archivo
-				tex_address_mode wrap // sólo configuración
+				tex_address_mode wrap // sï¿½lo configuraciï¿½n
 			}
 
 			}
@@ -106,19 +106,19 @@ material practica2GLSL/bombaTeselada{
 			texture_unit //int 0
 			{ 
 				texture checker.png 2d // archivo
-				tex_address_mode wrap // sólo configuración
+				tex_address_mode wrap // sï¿½lo configuraciï¿½n
 			}
 			texture_unit //int 1
 			{ 
 				texture  spaceSky.jpg 2d
-				tex_address_mode clamp // sólo configuración
+				tex_address_mode clamp // sï¿½lo configuraciï¿½n
 				filtering bilinear // de acceso al texel
 			}
 
 			texture_unit //int 2
 			{ 
 				texture BumpyMetal.jpg 2d // archivo
-				tex_address_mode wrap // sólo configuración
+				tex_address_mode wrap // sï¿½lo configuraciï¿½n
 			}
 
 			}
@@ -161,13 +161,13 @@ material practica2GLSL/space2{
 			texture_unit //int 0
 			{ 
 				texture  spaceSky.jpg 2d
-				tex_address_mode clamp // sólo configuración
+				tex_address_mode clamp // sï¿½lo configuraciï¿½n
 				filtering bilinear // de acceso al texel
 			}
 			texture_unit //int 1
 			{ 
 				texture lightMap.jpg 2d // archivo
-				tex_address_mode wrap // sólo configuración
+				tex_address_mode wrap // sï¿½lo configuraciï¿½n
 			}
 
 			}
@@ -209,19 +209,19 @@ material practica2GLSL/Holes{
 			texture_unit //int 0
 			{ 
 				texture corrosion.jpg 2d // archivo
-				tex_address_mode wrap // sólo configuración
+				tex_address_mode wrap // sï¿½lo configuraciï¿½n
 			}
 			texture_unit //int 1
 			{ 
 				texture  BumpyMetal.jpg 2d
-				tex_address_mode clamp // sólo configuración
+				tex_address_mode clamp // sï¿½lo configuraciï¿½n
 				filtering bilinear // de acceso al texel
 			}
 
 			texture_unit //int 2
 			{ 
 				texture BeachStones.jpg 2d // archivo
-				tex_address_mode wrap // sólo configuración
+				tex_address_mode wrap // sï¿½lo configuraciï¿½n
 			}
 
 			}
@@ -230,43 +230,44 @@ material practica2GLSL/Holes{
 
 vertex_program HolesAndVertexLightingVS glsl 
 {
-		source HolesAndVertexLightingVS.glsl
-		default_params
-		{
-		    param_named frontMaterial float3 0.72 0.57 0.35 
-		    param_named backMaterial float3 0.0 0.6 0.83 
-		    param_named lightDiffuse float3 1.0 1.0 1.0 
-			param_named_auto modelViewProjMat worldviewproj_matrix
-			param_named_auto normalMat inverse_transpose_worldview_matrix
-			param_named_auto lightPosition light_position_view_space 0
-		}
+	source HolesAndVertexLightingVS.glsl
+	default_params
+	{
+		param_named frontMaterial float3 0.72 0.57 0.35
+		param_named backMaterial float3 0.0 0.6 0.83
+		param_named_auto lightDiffuse derived_light_diffuse_colour 0
+		param_named_auto modelViewProjMat worldviewproj_matrix
+		param_named_auto normalMat inverse_transpose_worldview_matrix
+		param_named_auto lightPosition light_position_view_space 0
+	}
 }
 
 fragment_program HolesAndVertexLightingFS glsl
 {
-		source HolesAndVertexLightingFS.glsl
-		default_params{
-			param_named corrosion int 0 
-			param_named BF float 1.0
-			param_named intLuzAmb float 1.0
-		
-		}
+	source HolesAndVertexLightingFS.glsl
+	default_params{
+		param_named corrosion int 0 
+		param_named BF float 1.0
+		param_named intLuzAmb float 1.0
+	
+	}
 }
 
 material practica2GLSL/HolesLighting{
-	technique {
-			pass {
-					cull_hardware none
-					vertex_program_ref HolesAndVertexLightingVS{}
-					fragment_program_ref HolesAndVertexLightingFS{	}
+	technique 
+	{
+		pass 
+		{
+			cull_hardware none
+			vertex_program_ref HolesAndVertexLightingVS{}
+			fragment_program_ref HolesAndVertexLightingFS{}
 
-					texture_unit //int 0
-					{ 
-						texture corrosion.jpg 2d // archivo
-						tex_address_mode wrap // sólo configuración
-					}
-
+			texture_unit //int 0
+			{ 
+				texture corrosion.jpg 2d // archivo
+				tex_address_mode wrap // sï¿½lo configuraciï¿½n
 			}
 		}
+	}
 }
 
