@@ -337,7 +337,7 @@ vertex_program SpotLightVS glsl
 	{
 		
 		param_named_auto modelViewProjMat worldviewproj_matrix
-		param_named_auto normalMat inverse_transpose_worldview_matrix
+		
 		
 	}
 }
@@ -346,12 +346,7 @@ fragment_program SpotLightFS glsl
 {
 	source SpotLightFS.glsl
 	default_params{
-			
-			param_named_auto positionaLight light_position_view_space 0
-			param_named beachStones int 0
-			param_named_auto st costime_0_2pi 5
-			param_named a float 0
-			param_named b float 2
+				
 	
 	}
 }
@@ -361,16 +356,12 @@ material practica2GLSL/SpotLight{
 	{
 		pass 
 		{
-			cull_hardware none
 			vertex_program_ref SpotLightVS{}
 			fragment_program_ref SpotLightFS{}
 
-			texture_unit //int 0
-			{ 
-				texture BeachStones.jpg 2d 2d // archivo
-				tex_address_mode wrap // s�lo configuraci�n
-			}
 			
 		}
 	}
 }
+
+
