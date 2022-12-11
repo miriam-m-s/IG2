@@ -158,7 +158,13 @@ void IG2App::EscenaBombaSinbad() {
 	planoAmarillo->SetMaterial("Practica1/Amarillo");
 
 	Bomba* bomba = new Bomba(mainScene);
-
+	
+	Ogre::SceneNode * bomba2 = mainScene->createChildSceneNode();
+	Ogre::Entity* ent = mSM->createEntity("uv_sphere.mesh");
+	ent->setMaterialName("practica2GLSL/SpotL");
+	bomba2->attachObject(ent);
+	bomba2->setPosition(-500, 100, 0);
+	
 	Sinbad* sinbad = new Sinbad(mainScene, false, 4);
 	//sinbad->arma();
 

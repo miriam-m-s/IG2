@@ -330,38 +330,44 @@ material practica2GLSL/HolesLighting{
 	}
 }
 
-vertex_program SpotLightVS glsl 
+vertex_program SpotLVS glsl 
 {
-	source SpotLightVS.glsl
-	default_params
-	{
-		
-		param_named_auto modelViewProjMat worldviewproj_matrix
-		
-		
-	}
-}
-
-fragment_program SpotLightFS glsl
-{
-	source SpotLightFS.glsl
-	default_params{
-				
-	
-	}
-}
-
-material practica2GLSL/SpotLight{
-	technique 
-	{
-		pass 
+		source SpotLVS.glsl
+		default_params
 		{
-			vertex_program_ref SpotLightVS{}
-			fragment_program_ref SpotLightFS{}
-
-			
+			param_named_auto modelViewProjMat worldviewproj_matrix
+			param_named_auto normalMat inverse_transpose_worldview_matrix
 		}
-	}
+}
+
+fragment_program SpotLFS glsl
+{
+		source SpotLFS.glsl
+		default_params{
+			param_named beachStones int 0
+			param_named intLuzAmb float 1.0
+		    param_named_auto positionaLight light_position 0
+			param_named a float 0.5
+			param_named b float 1.5
+			param_named_auto st costime_0_2pi 3
+		}
+}
+
+material practica2GLSL/SpotL{
+	technique {
+			pass {
+			
+					vertex_program_ref SpotLVS{}
+					fragment_program_ref SpotLFS{	}
+				
+					texture_unit //int 0
+					{ 
+						texture BeachStones.jpg 2d // archivo
+						tex_address_mode wrap // s�lo configuraci�n
+					}
+
+			}
+		}
 }
 
 
