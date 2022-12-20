@@ -243,6 +243,26 @@ public:
 	~Bomba();
 };
 
+class Bicoptero :public EntidadIG {
+
+private:
+
+	Ogre::ParticleSystem* pSysExp;
+	Ogre::SceneNode* movimiento;
+	Ogre::SceneNode* esferaCentral = nullptr;
+	Ogre::SceneNode* BicopterCompleto = nullptr;
+	AspasNave* Aspa1;
+	AspasNave* Aspa2;
+
+public:
+
+	Bicoptero(Ogre::SceneNode* padre);
+	~Bicoptero() {};
+
+	void frameRendered(const Ogre::FrameEvent& evt);
+};
+
+
 
 
 

@@ -174,19 +174,26 @@ void IG2App::EscenaBombaSinbad() {
 
 	Ogre::SceneNode* bombanode = mainScene->createChildSceneNode();
 	
-	Ogre::SceneNode *avionNode = bombanode->createChildSceneNode();
+	/*Ogre::SceneNode *avionNode = bombanode->createChildSceneNode();
 	Avion *avion = new Avion(avionNode, bombanode, 5,4);
 	avionNode->setScale(0.5, 0.5, 0.5);
-	avionNode->translate(400, 700, 0);
+	avionNode->translate(400, 700, 0);*/
+
+	Ogre::SceneNode* bicopeteroNode = mainScene->createChildSceneNode();
+	Bicoptero* bicopetero = new Bicoptero(bicopeteroNode);
+	bicopeteroNode->setScale(0.5, 0.5, 0.5);
+	bicopeteroNode->translate(0, 700, 0);
+	bicopeteroNode->yaw(Ogre::Degree(45));
 
 	mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -40), "practica2GLSL/space2"
 		, 1, 1, true, 1.0, 100, 100);
 
-	addInputListener(avion);
+	//addInputListener(avion);
 	addInputListener(sinbad);
 	addInputListener(plano);
 	addInputListener(bomba);
-	EntidadIG::addListener(avion);
+	addInputListener(bicopetero);
+	//EntidadIG::addListener(avion);
 	EntidadIG::addListener(sinbad);
 	EntidadIG::addListener(plano);
 	EntidadIG::addListener(bomba);
