@@ -156,6 +156,16 @@ public:
 	~Aspa() {};
 
 };
+class Bicoptero :public EntidadIG {
+public:
+	Bicoptero(Ogre::SceneNode* papa);
+	~Bicoptero() {};
+	void frameRendered(const Ogre::FrameEvent& evt) override;
+protected:
+	Ogre::SceneNode* bicopCompleto = nullptr;
+	AspasNave* Aspa1;
+	AspasNave* Aspa2;
+};
 
 class BrazoDron :public EntidadIG {
 

@@ -861,3 +861,41 @@ void Bomba::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 	}
 
 }
+
+Bicoptero::Bicoptero(Ogre::SceneNode* papa) :EntidadIG(papa)
+{
+	bicopCompleto = papa->createChildSceneNode();
+	Ogre::SceneNode*esferaCentral = bicopCompleto->createChildSceneNode();
+	Ogre::Entity* esfera = papa->getCreator()->createEntity("sphere.mesh");
+	esfera->setMaterialName("Practica1/esferaAvion");
+	esferaCentral->attachObject(esfera);
+	esferaCentral->setScale(1.5, 1.5, 1.5);
+
+	Ogre::SceneNode* morroAvion=bicopCompleto->createChildSceneNode();
+	Ogre::Entity* morro = papa->getCreator()->createEntity("Barrel.mesh");
+	morro->setMaterialName("Practica1/alasAvion");
+	morroAvion->attachObject(morro);
+	morroAvion->setScale(15, 55, 15);
+	morroAvion->roll(Ogre::Degree(90));
+
+
+	Ogre::SceneNode* alaAspa2 = bicopCompleto->createChildSceneNode();
+    Aspa2 = new AspasNave(alaAspa2, 3);
+	alaAspa2->yaw(Ogre::Degree(90));
+	alaAspa2->setPosition(0, 0, -150);
+	alaAspa2->setScale(0.4, 0.4, 0.4);
+
+	Ogre::SceneNode* alaAspa1 = bicopCompleto->createChildSceneNode();
+    Aspa1 = new AspasNave(alaAspa1, 3);
+	alaAspa1->yaw(Ogre::Degree(90));
+	alaAspa1->setPosition(0, 0, 150);
+	alaAspa1->setScale(0.4, 0.4, 0.4);
+
+}
+
+void Bicoptero::frameRendered(const Ogre::FrameEvent& evt)
+{
+	Aspa1->frameRendered(evt);
+	Aspa2->frameRendered(evt);
+
+}
