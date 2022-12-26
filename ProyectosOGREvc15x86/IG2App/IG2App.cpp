@@ -174,26 +174,36 @@ void IG2App::EscenaBombaSinbad() {
 
 	Ogre::SceneNode* bombanode = mainScene->createChildSceneNode();
 	
-	/*Ogre::SceneNode *avionNode = bombanode->createChildSceneNode();
+	Ogre::SceneNode *avionNode = bombanode->createChildSceneNode();
 	Avion *avion = new Avion(avionNode, bombanode, 5,4);
 	avionNode->setScale(0.5, 0.5, 0.5);
-	avionNode->translate(400, 700, 0);*/
+	avionNode->translate(400, 700, 0);
 
-	Ogre::SceneNode* bicopeteroNode = mainScene->createChildSceneNode();
-	Bicoptero* bicopetero = new Bicoptero(bicopeteroNode);
-	bicopeteroNode->setScale(0.5, 0.5, 0.5);
-	bicopeteroNode->translate(0, 700, 0);
-	bicopeteroNode->yaw(Ogre::Degree(45));
+	Ogre::SceneNode* a1 = avion->getAla(1)->createChildSceneNode();
+	Ogre::SceneNode* bicopeteroNode = a1->createChildSceneNode();
+	Bicoptero* bicopetero = new Bicoptero(bicopeteroNode, a1, true);
+	bicopeteroNode->setInheritScale(false);
+	bicopeteroNode->setScale(0.2, 0.2, 0.2);
+	bicopeteroNode->translate(200, 2000, 0);
+
+	Ogre::SceneNode* a2 = avion->getAla(2)->createChildSceneNode();
+	Ogre::SceneNode* bicopeteroNode2 = a2->createChildSceneNode();
+	Bicoptero* bicopetero2 = new Bicoptero(bicopeteroNode2, a2, false);
+	bicopeteroNode2->setInheritScale(false);
+	bicopeteroNode2->setScale(0.2, 0.2, 0.2);
+	bicopeteroNode2->translate(-200, 2000, 0);
+
 
 	mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -40), "practica2GLSL/space2"
 		, 1, 1, true, 1.0, 100, 100);
 
-	//addInputListener(avion);
+	addInputListener(avion);
 	addInputListener(sinbad);
 	addInputListener(plano);
 	addInputListener(bomba);
 	addInputListener(bicopetero);
-	//EntidadIG::addListener(avion);
+	addInputListener(bicopetero2);
+	EntidadIG::addListener(avion);
 	EntidadIG::addListener(sinbad);
 	EntidadIG::addListener(plano);
 	EntidadIG::addListener(bomba);

@@ -293,14 +293,14 @@ Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n, int
 	ninja->setMaterialName("Practica1/ninja");
 	NinjaNode->attachObject(ninja);
 
-	Ogre::SceneNode* Ala1 = avionCompleto->createChildSceneNode();
+     Ala1 = avionCompleto->createChildSceneNode();
 	Ogre::Entity* ala1 = padre->getCreator()->createEntity("cube.mesh");
 	ala1->setMaterialName("Practica1/alasAvion");
 	Ala1->attachObject(ala1);
 	Ala1->setScale(3, 0.1, 2);
 	Ala1->setPosition(-150, 0, 0);
 
-	Ogre::SceneNode* Ala2 = avionCompleto->createChildSceneNode();
+	Ala2 = avionCompleto->createChildSceneNode();
 	Ogre::Entity* ala2 = padre->getCreator()->createEntity("cube.mesh");
 	ala2->setMaterialName("Practica1/alasAvion");
 	Ala2->attachObject(ala2);
@@ -337,7 +337,7 @@ Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n, int
 
 		bbSet->createBillboard({ 0,0,200 });
 
-		Ogre::ParticleSystem* pSys = mSM->createParticleSystem("psSmoke", "particles/Smoke");
+		Ogre::ParticleSystem* pSys = mSM->createParticleSystem("psSmoke", "particles/AvionVerde");
 		pSys->setEmitting(true);
 		cartel->attachObject(pSys);
 
@@ -348,6 +348,20 @@ Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n, int
 		estaMoviendo = true;
 	}
 }
+
+Ogre::SceneNode *Avion::getAla(int ala)
+{
+	switch (ala)
+	{
+	case 1:
+		return Ala1;
+		break;
+	case 2:
+		return Ala2;
+		break;
+	}
+}
+
 
 bool Avion::keyPressed(const OgreBites::KeyboardEvent& evt)
 {
@@ -391,7 +405,7 @@ void Avion::frameRendered(const Ogre::FrameEvent& evt)
 		if (estaMoviendo){
 			Aspa1->frameRendered(evt);
 			Aspa2->frameRendered(evt);
-			movimiento->yaw(Ogre::Degree(1));
+			movimiento->yaw(Ogre::Degree(0.5));
 		}
 	}
 
@@ -862,7 +876,7 @@ void Bomba::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 
 }
 
-Bicoptero::Bicoptero(Ogre::SceneNode* padre):EntidadIG(padre)
+Bicoptero::Bicoptero(Ogre::SceneNode* padre, Ogre::SceneNode *nodoMovimiento, bool azul):EntidadIG(padre),movimiento(nodoMovimiento)
 {
 
 	BicopterCompleto = padre->createChildSceneNode();
@@ -891,10 +905,32 @@ Bicoptero::Bicoptero(Ogre::SceneNode* padre):EntidadIG(padre)
 	alaAspa2->setPosition(150, 0, 0);
 	alaAspa2->setScale(0.5, 0.5, 0.5);
 
+	Ogre::SceneNode* cartel = BicopterCompleto->createChildSceneNode();
+	Ogre::BillboardSet* bbSet = mSM->createBillboardSet(1);
+	bbSet->setDefaultDimensions(200, 200);
+	bbSet->setMaterialName("Practica1/sendo");
+	cartel->attachObject(bbSet);
+
+	bbSet->createBillboard({ 0,150, 0 });
+
+	if (azul) {
+		Ogre::ParticleSystem* pSys = mSM->createParticleSystem("a", "particles/AvionAzul");
+		pSys->setEmitting(true);
+		cartel->attachObject(pSys);
+	}
+
+	else {
+		Ogre::ParticleSystem* pSys = mSM->createParticleSystem("b", "particles/AvionRojo");
+		pSys->setEmitting(true);
+		cartel->attachObject(pSys);
+	}
 }
 
 void Bicoptero::frameRendered(const Ogre::FrameEvent& evt)
 {
 	Aspa1->frameRendered(evt);
 	Aspa2->frameRendered(evt);
+
+	movimiento->pitch(Ogre::Degree(0.5));
+	BicopterCompleto->pitch(Ogre::Degree(-0.5));
 }

@@ -258,6 +258,18 @@ material Practica1/Smoke
 			}
 }
 
+material Practica1/sendo {
+		technique {
+			pass {
+				diffuse 0.3 0.3 0.3
+				texture_unit {
+					texture spotlight_image.png
+					colour_op add
+				}
+		 }
+	 }
+}
+
 material IG2/Space{
 		technique
 					{

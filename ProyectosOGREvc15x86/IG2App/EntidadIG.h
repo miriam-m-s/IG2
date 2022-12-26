@@ -134,6 +134,8 @@ class Avion : public EntidadIG {
 	Ogre::SceneNode* movimiento;
 	Ogre::SceneNode* esferaCentral = nullptr;
 	Ogre::SceneNode* avionCompleto = nullptr;
+	Ogre::SceneNode* Ala2;
+	Ogre::SceneNode* Ala1;
 	int scene_;
 	AspasNave* Aspa1;
 	AspasNave* Aspa2;
@@ -142,6 +144,7 @@ class Avion : public EntidadIG {
 public:
 
 	Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n,int scene=2);
+	Ogre::SceneNode *getAla(int ala);
 	bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	void frameRendered(const Ogre::FrameEvent& evt) override;
 	~Avion() {};
@@ -256,7 +259,7 @@ private:
 
 public:
 
-	Bicoptero(Ogre::SceneNode* padre);
+	Bicoptero(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, bool azul);
 	~Bicoptero() {};
 
 	void frameRendered(const Ogre::FrameEvent& evt);

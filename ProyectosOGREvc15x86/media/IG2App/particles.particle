@@ -1,7 +1,7 @@
 // Example particle systems
 
 // smoke
-particle_system particles/Smoke
+particle_system particles/AvionVerde
 {
 	material        	Practica1/Smoke
 	particle_width  	50
@@ -16,6 +16,93 @@ particle_system particles/Smoke
 	{
 		position 0 15 -20
 		angle 35
+		colour 0 1 0 1
+		emission_rate 100
+		time_to_live 1
+		direction 0 0 0
+		velocity_min 50
+		velocity_max 80    	
+	}
+
+   	affector Rotator
+   	{
+		rotation_range_start 0
+		rotation_range_end 360
+		rotation_speed_range_start -60
+		rotation_speed_range_end 200
+   	}
+
+   	affector Scaler
+   	{
+       	rate 1
+   	}
+	affector ColourFader
+	{
+	
+		alpha	-1.5
+	}
+
+}
+
+particle_system particles/AvionAzul
+{
+	material        	Practica1/Smoke
+	particle_width  	50
+	particle_height 	50
+	cull_each       	true
+	quota           	500
+	billboard_type  	point
+	sorted				true
+    
+	// Area emitter
+	emitter Point
+	{
+		position 0 15 -20
+		angle 35
+		colour 0 0 1 1
+		emission_rate 100
+		time_to_live 1
+		direction 0 0 0
+		velocity_min 50
+		velocity_max 80    	
+	}
+
+   	affector Rotator
+   	{
+		rotation_range_start 0
+		rotation_range_end 360
+		rotation_speed_range_start -60
+		rotation_speed_range_end 200
+   	}
+
+   	affector Scaler
+   	{
+       	rate 1
+   	}
+	affector ColourFader
+	{
+	
+		alpha	-1.5
+	}
+
+}
+
+particle_system particles/AvionRojo
+{
+	material        	Practica1/Smoke
+	particle_width  	50
+	particle_height 	50
+	cull_each       	true
+	quota           	500
+	billboard_type  	point
+	sorted				true
+    
+	// Area emitter
+	emitter Point
+	{
+		position 0 15 -20
+		angle 35
+		colour 1 0 0 1
 		emission_rate 100
 		time_to_live 1
 		direction 0 0 0
