@@ -15,18 +15,6 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 		getRoot()->queueEndRendering();
 	}
 
-	else if (evt.keysym.sym == SDLK_g) {
-		/* auto mClockNode = mSM->getRootSceneNode()->getChild("Clock");
-
-		 mClockNode->roll(Ogre::Degree(-8));*/
-	}
-
-	else if (evt.keysym.sym == SDLK_y) {
-		/* auto nHours = mSM->getRootSceneNode()->getChild("Clock")->getChild("Hours");
-
-		 nHours->yaw(Ogre::Degree(-8));*/
-	}
-
 	else if (evt.keysym.sym == SDLK_q) {
 		noria->giraNoria();
 	}
@@ -179,20 +167,35 @@ void IG2App::EscenaBombaSinbad() {
 	avionNode->setScale(0.5, 0.5, 0.5);
 	avionNode->translate(400, 700, 0);
 
-	Ogre::SceneNode* bicopter = mainScene->createChildSceneNode();
-	Bicoptero* bico = new Bicoptero(bicopter);
-	bicopter->setScale(0.5, 0.5, 0.5);
-	bicopter->translate(400, 700, 0);
+	Ogre::SceneNode* rota1 = avion->getAla(1)->createChildSceneNode();
 
+	Ogre::SceneNode* bicopter = rota1->createChildSceneNode();
+	bicopter->setInheritScale(false);
+	Bicoptero* bico = new Bicoptero(bicopter,rota1,0);
+	bicopter->setScale(0.3, 0.3, 0.3);
+	bicopter->translate(-100, 2000, 0);
+	bicopter->yaw(Ogre::Degree(90));
+
+	Ogre::SceneNode* rota = avion->getAla(2)->createChildSceneNode();
+	
+	Ogre::SceneNode* bicopter1 = rota->createChildSceneNode();
+	bicopter1->setInheritScale(false);
+	Bicoptero* bico1 = new Bicoptero(bicopter1,rota,1);
+	bicopter1->setScale(0.3, 0.3, 0.3);
+	bicopter1->translate(100, -2000, 0);
+	bicopter1->yaw(Ogre::Degree(90));
 	mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -40), "practica2GLSL/space2"
 		, 1, 1, true, 1.0, 100, 100);
 
 	addInputListener(avion);
 	addInputListener(bico);
+	addInputListener(bico1);
 	addInputListener(sinbad);
 	addInputListener(plano);
 	addInputListener(bomba);
 	EntidadIG::addListener(avion);
+	EntidadIG::addListener(bico);
+	EntidadIG::addListener(bico1);
 	EntidadIG::addListener(sinbad);
 	EntidadIG::addListener(plano);
 	EntidadIG::addListener(bomba);

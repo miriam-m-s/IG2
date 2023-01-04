@@ -13,7 +13,7 @@
 #include<OgreParticleSystem.h>
 
 
-enum MessageType {NADA, CAMBIATEXTURE, DETIENE, MUERTE, EXPLOSION};
+enum MessageType {NADA, CAMBIATEXTURE, DETIENE, MUERTE, EXPLOSION,STOP};
 
 class EntidadIG :public OgreBites::InputListener {
 public:
@@ -131,19 +131,24 @@ public:
 class Avion : public EntidadIG {
 
 	Ogre::ParticleSystem* pSysExp;
+	Ogre::ParticleSystem* pSys;
 	Ogre::SceneNode* movimiento;
 	Ogre::SceneNode* esferaCentral = nullptr;
 	Ogre::SceneNode* avionCompleto = nullptr;
+	Ogre::SceneNode* Ala1;
+	Ogre::SceneNode* Ala2;
 	int scene_;
 	AspasNave* Aspa1;
 	AspasNave* Aspa2;
 	bool estaMoviendo;
-
+	
 public:
 
 	Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n,int scene=2);
 	bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	void frameRendered(const Ogre::FrameEvent& evt) override;
+	void receiveEvent(MessageType msgType, EntidadIG* entidad);
+	Ogre::SceneNode* getAla(int i);
 	~Avion() {};
 
 };
@@ -158,13 +163,22 @@ public:
 };
 class Bicoptero :public EntidadIG {
 public:
-	Bicoptero(Ogre::SceneNode* papa);
+	Bicoptero(Ogre::SceneNode* papa, Ogre::SceneNode* rota,int i);
 	~Bicoptero() {};
 	void frameRendered(const Ogre::FrameEvent& evt) override;
+	void receiveEvent(MessageType msgType, EntidadIG* entidad);
+	
 protected:
 	Ogre::SceneNode* bicopCompleto = nullptr;
+	Ogre::SceneNode* papa = nullptr;
+	Ogre::SceneNode* bicoppart = nullptr;
+	Ogre::ParticleSystem* pSys;
+	bool moviendo = true;
+	Ogre::ParticleSystem* pSysExp;
+	Ogre::SceneNode* rota_ = nullptr;
 	AspasNave* Aspa1;
 	AspasNave* Aspa2;
+	int i_;
 };
 
 class BrazoDron :public EntidadIG {
@@ -214,7 +228,7 @@ private:
 	Ogre::AnimationState* anim_Sinbadmove=nullptr;
 	Ogre::AnimationState* anim_SinbaddeadTop=nullptr;
 	Ogre::AnimationState* anim_SinbaddeadIdle=nullptr;
-
+	Ogre::ParticleSystem* pmochila;
 	Ogre::Timer* myTymer;
 
 	unsigned long initTime;

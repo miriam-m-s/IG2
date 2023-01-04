@@ -238,6 +238,19 @@ material Practica1/points {
 		 }
 	 }
 }
+material Practica1/pilotando {
+		technique {
+			pass {
+			    lighting off  
+				texture_unit {
+					texture spotlight_image.png
+					
+					tex_address_mode clamp
+			
+				}
+		 }
+	 }
+}
 
 material Practica1/Smoke
 {
