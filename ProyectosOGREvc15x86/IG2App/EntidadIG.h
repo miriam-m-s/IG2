@@ -13,7 +13,7 @@
 #include<OgreParticleSystem.h>
 
 
-enum MessageType {NADA, CAMBIATEXTURE, DETIENE, MUERTE, EXPLOSION};
+enum MessageType {NADA, CAMBIATEXTURE, DETIENE, MUERTE, EXPLOSION, EXPLOSION_M};
 
 class EntidadIG :public OgreBites::InputListener {
 public:
@@ -131,6 +131,7 @@ public:
 class Avion : public EntidadIG {
 
 	Ogre::ParticleSystem* pSysExp;
+	Ogre::ParticleSystem* pSys;
 	Ogre::SceneNode* movimiento;
 	Ogre::SceneNode* esferaCentral = nullptr;
 	Ogre::SceneNode* avionCompleto = nullptr;
@@ -140,6 +141,8 @@ class Avion : public EntidadIG {
 	AspasNave* Aspa1;
 	AspasNave* Aspa2;
 	bool estaMoviendo;
+
+	virtual void receiveEvent(MessageType msgType, EntidadIG* entidad);
 
 public:
 
@@ -208,11 +211,13 @@ private:
 	Ogre::AnimationState* anim_SinbaddeadTop=nullptr;
 	Ogre::AnimationState* anim_SinbaddeadIdle=nullptr;
 
+	Ogre::ParticleSystem* pSys;
+
 	Ogre::Timer* myTymer;
 
 	unsigned long initTime;
 	int sentido = 1, scene;
-	bool corriendo, vivo, izq;
+	bool corriendo, vivo, izq, detiene;
 
 	Ogre::Entity* sinbad;
 
@@ -250,12 +255,17 @@ class Bicoptero :public EntidadIG {
 
 private:
 
+	Ogre::ParticleSystem* pSys;
 	Ogre::ParticleSystem* pSysExp;
 	Ogre::SceneNode* movimiento;
 	Ogre::SceneNode* esferaCentral = nullptr;
 	Ogre::SceneNode* BicopterCompleto = nullptr;
 	AspasNave* Aspa1;
 	AspasNave* Aspa2;
+
+	bool m;
+
+	virtual void receiveEvent(MessageType msgType, EntidadIG* entidad);
 
 public:
 

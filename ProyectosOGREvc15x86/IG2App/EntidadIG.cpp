@@ -277,6 +277,24 @@ void Munyeco::frameRendered(const Ogre::FrameEvent& evt)
 
 }
 
+void Avion::receiveEvent(MessageType msgType, EntidadIG* entidad)
+{
+	switch (msgType)
+	{
+	case NADA:
+		break;
+	case CAMBIATEXTURE:
+		break;
+	case DETIENE:
+		break;
+	case EXPLOSION_M:
+		pSys->setEmitting(false);
+		break;
+	default:
+		break;
+	}
+}
+
 Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n, int scene) :EntidadIG(padre), movimiento(nodoMovimiento), estaMoviendo(false), scene_(scene)
 {
 
@@ -337,7 +355,7 @@ Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n, int
 
 		bbSet->createBillboard({ 0,0,200 });
 
-		Ogre::ParticleSystem* pSys = mSM->createParticleSystem("psSmoke", "particles/AvionVerde");
+		pSys = mSM->createParticleSystem("psSmoke", "particles/AvionVerde");
 		pSys->setEmitting(true);
 		cartel->attachObject(pSys);
 
@@ -619,7 +637,7 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 		anim_Sinbadmove->setLoop(true);
 		anim_Sinbadmove->setEnabled(true);
 
-		Ogre::ParticleSystem* pSys = mSM->createParticleSystem("mochila", "particles/AvionVerde");
+		pSys = mSM->createParticleSystem("mochila", "particles/AvionVerde");
 		pSys->setEmitting(true);
 		mSinbadNode->attachObject(pSys);
 	}
@@ -637,6 +655,7 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 	initTime = myTymer->getMilliseconds();
 	corriendo = true;
 	vivo = true;
+	detiene = true;
 	izq = mano;
 	cambiaEspada();
 
@@ -704,7 +723,7 @@ void Sinbad::frameRendered(const Ogre::FrameEvent& evt)
 		if (vivo) {
 			//anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
 			//anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
-			anim_Sinbadmove->addTime(evt.timeSinceLastFrame);
+			if(detiene)anim_Sinbadmove->addTime(evt.timeSinceLastFrame);
 		}
 
 		else {
@@ -729,6 +748,12 @@ bool  Sinbad::keyPressed(const OgreBites::KeyboardEvent& evt) {
 		anim_Sinbadtop->setEnabled(!anim_Sinbadtop->getEnabled());
 		anim_Sinbaddance->setEnabled(!anim_Sinbaddance->getEnabled());
 
+	}
+
+	else if (evt.keysym.sym == SDLK_m) {
+		detiene = false;
+		pSys->setEmitting(false);
+		this->sendEvent(EXPLOSION_M, this);
 	}
 
 	return true;
@@ -873,9 +898,29 @@ void Bomba::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 
 }
 
+void Bicoptero::receiveEvent(MessageType msgType, EntidadIG* entidad)
+{
+	switch (msgType)
+	{
+	case NADA:
+		break;
+	case CAMBIATEXTURE:
+		break;
+	case DETIENE:
+		break;
+	case EXPLOSION_M:
+		BicopterCompleto->setVisible(false);
+		pSys->setEmitting(false);
+		pSysExp->setEmitting(true);
+		m = false;
+		break;
+	default:
+		break;
+	}
+}
+
 Bicoptero::Bicoptero(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, bool azul) :EntidadIG(padre), movimiento(nodoMovimiento)
 {
-
 	BicopterCompleto = padre->createChildSceneNode();
 
 	esferaCentral = BicopterCompleto->createChildSceneNode();
@@ -911,23 +956,32 @@ Bicoptero::Bicoptero(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, bo
 	bbSet->createBillboard({ 0,150, 0 });
 
 	if (azul) {
-		Ogre::ParticleSystem* pSys = mSM->createParticleSystem("a", "particles/AvionAzul");
+		pSys = mSM->createParticleSystem("a", "particles/AvionAzul");
+		pSysExp = mSM->createParticleSystem("c", "particles/ExplosionAv");
 		pSys->setEmitting(true);
 		cartel->attachObject(pSys);
 	}
 
 	else {
-		Ogre::ParticleSystem* pSys = mSM->createParticleSystem("b", "particles/AvionRojo");
+	    pSys = mSM->createParticleSystem("b", "particles/AvionRojo");
+		pSysExp = mSM->createParticleSystem("d", "particles/ExplosionAv");
 		pSys->setEmitting(true);
 		cartel->attachObject(pSys);
 	}
+
+	padre->attachObject(pSysExp);
+	pSysExp->setEmitting(false);
+
+	m = true;
 }
 
 void Bicoptero::frameRendered(const Ogre::FrameEvent& evt)
 {
-	Aspa1->frameRendered(evt);
-	Aspa2->frameRendered(evt);
+	if (m) {
+		Aspa1->frameRendered(evt);
+		Aspa2->frameRendered(evt);
 
-	movimiento->pitch(Ogre::Degree(0.5));
-	BicopterCompleto->pitch(Ogre::Degree(-0.5));
+		movimiento->pitch(Ogre::Degree(0.5));
+		BicopterCompleto->pitch(Ogre::Degree(-0.5));
+	}
 }

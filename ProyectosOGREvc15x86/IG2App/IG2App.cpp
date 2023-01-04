@@ -207,6 +207,8 @@ void IG2App::EscenaBombaSinbad() {
 	EntidadIG::addListener(sinbad);
 	EntidadIG::addListener(plano);
 	EntidadIG::addListener(bomba);
+	EntidadIG::addListener(bicopetero);
+	EntidadIG::addListener(bicopetero2);
 }  
 
 
