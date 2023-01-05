@@ -14,35 +14,7 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 	{
 		getRoot()->queueEndRendering();
 	}
-
-	else if (evt.keysym.sym == SDLK_g) {
-		/* auto mClockNode = mSM->getRootSceneNode()->getChild("Clock");
-
-		 mClockNode->roll(Ogre::Degree(-8));*/
-	}
-
-	else if (evt.keysym.sym == SDLK_y) {
-		/* auto nHours = mSM->getRootSceneNode()->getChild("Clock")->getChild("Hours");
-
-		 nHours->yaw(Ogre::Degree(-8));*/
-	}
-
-	else if (evt.keysym.sym == SDLK_q) {
-		noria->giraNoria();
-	}
-
-	else if (evt.keysym.sym == SDLK_p) {
-		PN->yaw(Ogre::Degree(1.0));
-	}
-
-	else if (evt.keysym.sym == SDLK_t) {
-		plano->sendEvent(DETIENE, plano);
-		plano->sendEvent(CAMBIATEXTURE, plano);
-	}
-
-	else if (evt.keysym.sym == SDLK_r) {
-		plano->sendEvent(NADA ,noria);
-	}
+	
 
 	return true;
 }
@@ -124,7 +96,7 @@ void IG2App::setupScene(void)
 	mLightNode->attachObject(luz);
 
 	mLightNode->setDirection(Ogre::Vector3(0, -1, -1));  //vec3.normalise();
-	//lightNode->setPosition(0, 0, 1000);
+	//mLightNode->setPosition(0, 0, 1000);
 
 	//------------------------------------------------------------------------
 
@@ -165,7 +137,7 @@ void IG2App::EscenaBombaSinbad() {
 	bomba2->attachObject(ent);
 	bomba2->setPosition(-500, 100, 0);
 	
-	Sinbad* sinbad = new Sinbad(mainScene, false, 4);
+	Sinbad* sinbad = new Sinbad(mainScene, false);
 	//sinbad->arma();
 
 	Ogre::SceneNode* NN = mainScene->createChildSceneNode();
@@ -175,7 +147,7 @@ void IG2App::EscenaBombaSinbad() {
 	Ogre::SceneNode* bombanode = mainScene->createChildSceneNode();
 	
 	Ogre::SceneNode *avionNode = bombanode->createChildSceneNode();
-	Avion *avion = new Avion(avionNode, bombanode, 5,4);
+	Avion *avion = new Avion(avionNode, bombanode, 5);
 	avionNode->setScale(0.5, 0.5, 0.5);
 	avionNode->translate(400, 700, 0);
 
@@ -186,10 +158,12 @@ void IG2App::EscenaBombaSinbad() {
 	addInputListener(sinbad);
 	addInputListener(plano);
 	addInputListener(bomba);
+	addInputListener(noria);
 	EntidadIG::addListener(avion);
 	EntidadIG::addListener(sinbad);
 	EntidadIG::addListener(plano);
 	EntidadIG::addListener(bomba);
+	EntidadIG::addListener(noria);
 }  
 
 

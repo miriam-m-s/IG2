@@ -45,6 +45,7 @@ class Plano :public EntidadIG {
 
 	Ogre::Entity* plano;
 	virtual void receiveEvent(MessageType msgType, EntidadIG* entidad);
+	bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	bool cambiaText;
 	unsigned long initTime;
 	Ogre::Timer* myTymer;
@@ -54,6 +55,7 @@ public :
 	Plano(Ogre::SceneNode* padre);
 	void SetMaterial(std::string name);
 	void frameRendered(const Ogre::FrameEvent& evt);
+
 
 };
 
@@ -85,7 +87,7 @@ class Noria :public  EntidadIG
 
 		Noria(int n, Ogre::SceneNode* node);
 		~Noria() {  };
-		void giraNoria();
+
 		void frameRendered(const Ogre::FrameEvent& evt);
 
 	private:
@@ -134,14 +136,14 @@ class Avion : public EntidadIG {
 	Ogre::SceneNode* movimiento;
 	Ogre::SceneNode* esferaCentral = nullptr;
 	Ogre::SceneNode* avionCompleto = nullptr;
-	int scene_;
 	AspasNave* Aspa1;
 	AspasNave* Aspa2;
 	bool estaMoviendo;
 
 public:
 
-	Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n,int scene=2);
+	Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n);
+	void ParticulasAvion(Ogre::SceneNode* padre);
 	bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	void frameRendered(const Ogre::FrameEvent& evt) override;
 	~Avion() {};
@@ -208,7 +210,7 @@ private:
 	Ogre::Timer* myTymer;
 
 	unsigned long initTime;
-	int sentido = 1, scene;
+	int sentido = 1;
 	bool corriendo, vivo, izq;
 
 	Ogre::Entity* sinbad;
@@ -217,7 +219,8 @@ private:
 
 public:
 
-	Sinbad(Ogre::SceneNode* padre, bool mano, int scene_);
+	Sinbad(Ogre::SceneNode* padre, bool mano);
+	void AnimacionPersonalizada();
 	void animaciones();
 	void frameRendered(const Ogre::FrameEvent& evt);
 	bool keyPressed(const OgreBites::KeyboardEvent& evt);

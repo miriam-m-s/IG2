@@ -33,18 +33,23 @@ void Plano::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 
 	switch (msgType)
 	{
-	case NADA:
-		break;
 	case CAMBIATEXTURE:
 		cambiaText = true;
 		initTime = myTymer->getMilliseconds();
-		break;
-	case DETIENE:
 		break;
 	default:
 		break;
 	}
 
+}
+
+bool Plano::keyPressed(const OgreBites::KeyboardEvent& evt)
+{
+    if (evt.keysym.sym == SDLK_t) {
+		sendEvent(DETIENE, this);
+		sendEvent(CAMBIATEXTURE, this);
+	}
+	return false;
 }
 
 void Plano::frameRendered(const Ogre::FrameEvent& evt) {
@@ -123,10 +128,7 @@ Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node), estagirando(true), 
 	}
 }
 
-void Noria::giraNoria()
-{
-	if (!estagirando) aspasNode->pitch(Ogre::Degree(1.0));
-}
+
 
 void Noria::frameRendered(const Ogre::FrameEvent& evt)
 {
@@ -191,7 +193,7 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) : EntidadIG(padre), tortura(false)
 	track->setAssociatedNode(cuello);
 	Ogre::Real durPaso = duration / 4.0;
 	Ogre::Vector3 initPose = cuello->getPosition();
-	Ogre::Vector3 finalPose = cuello->getPosition()+Ogre::Vector3(-800,0,0);
+	Ogre::Vector3 finalPose = cuello->getPosition() + Ogre::Vector3(-800, 0, 0);
 	Ogre::Vector3 src(1, 0, 0);
 
 	//keyframe1
@@ -207,7 +209,7 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) : EntidadIG(padre), tortura(false)
 	kf->setTranslate(finalPose);
 
 	//keyframe3
-    kf = track->createNodeKeyFrame(durPaso * 2);
+	kf = track->createNodeKeyFrame(durPaso * 2);
 	kf->setTranslate(finalPose);
 	kf->setRotation(Ogre::Quaternion(Ogre::Degree(90), Ogre::Vector3(0, 1, 0)));
 	kf->setScale(cuello->getScale());
@@ -219,11 +221,11 @@ Munyeco::Munyeco(Ogre::SceneNode* padre) : EntidadIG(padre), tortura(false)
 	kf->setScale(cuello->getScale());
 
 	//keyframe5
-    kf = track->createNodeKeyFrame(durPaso * 4);
+	kf = track->createNodeKeyFrame(durPaso * 4);
 	kf->setTranslate(initPose);
 	kf->setRotation(Ogre::Quaternion(Ogre::Degree(270), Ogre::Vector3(0, 1, 0)));
 	kf->setScale(cuello->getScale());
-   
+
 
 	Ogre::SceneNode* explosion = padre->createChildSceneNode();
 
@@ -277,7 +279,7 @@ void Munyeco::frameRendered(const Ogre::FrameEvent& evt)
 
 }
 
-Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n, int scene) :EntidadIG(padre), movimiento(nodoMovimiento), estaMoviendo(false), scene_(scene)
+Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n) :EntidadIG(padre), movimiento(nodoMovimiento), estaMoviendo(false)
 {
 
 	avionCompleto = padre->createChildSceneNode();
@@ -327,74 +329,55 @@ Avion::Avion(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, int n, int
 	alaAspa2->setPosition(200, 0, -100);
 	alaAspa2->setScale(0.2, 0.2, 0.2);
 
-	if (scene_ == 4) {
+	ParticulasAvion(padre);
+}
 
-		Ogre::SceneNode* cartel = avionCompleto->createChildSceneNode();
-		Ogre::BillboardSet* bbSet = mSM->createBillboardSet("cartel", 1);
-		bbSet->setDefaultDimensions(200, 200);
-		bbSet->setMaterialName("Practica1/points");
-		cartel->attachObject(bbSet);
+void Avion::ParticulasAvion(Ogre::SceneNode* padre)
+{
+	Ogre::SceneNode* cartel = avionCompleto->createChildSceneNode();
+	Ogre::BillboardSet* bbSet = mSM->createBillboardSet("cartel", 1);
+	bbSet->setDefaultDimensions(200, 200);
+	bbSet->setMaterialName("Practica1/points");
+	cartel->attachObject(bbSet);
 
-		bbSet->createBillboard({ 0,0,200 });
+	bbSet->createBillboard({ 0,0,200 });
 
-		Ogre::ParticleSystem* pSys = mSM->createParticleSystem("psSmoke", "particles/Smoke");
-		pSys->setEmitting(true);
-		cartel->attachObject(pSys);
+	Ogre::ParticleSystem* pSys = mSM->createParticleSystem("psSmoke", "particles/Smoke");
+	pSys->setEmitting(true);
+	cartel->attachObject(pSys);
 
-		pSysExp = mSM->createParticleSystem("psSysExpA", "particles/ExplosionAv");
-		padre->attachObject(pSysExp);
-		pSysExp->setEmitting(false);
+	pSysExp = mSM->createParticleSystem("psSysExpA", "particles/ExplosionAv");
+	padre->attachObject(pSysExp);
+	pSysExp->setEmitting(false);
 
-		estaMoviendo = true;
-	}
+	estaMoviendo = true;
+
 }
 
 bool Avion::keyPressed(const OgreBites::KeyboardEvent& evt)
 {
-	if (scene_ == 2) {
-		if (evt.keysym.sym == SDLK_h)
-		{
-			movimiento->pitch(Ogre::Degree(-4));
-			estaMoviendo = true;
-		}
-		else if (evt.keysym.sym == SDLK_j)
-		{
-			movimiento->yaw(Ogre::Degree(-2));
-		}
+	
+	if (evt.keysym.sym == SDLK_r)
+	{
+		pSysExp->setEmitting(true);
+		avionCompleto->setVisible(false);
+		this->sendEvent(MUERTE, this);
+		estaMoviendo = false;
 	}
-
-	else if (scene_ = 4) {
-		if (evt.keysym.sym == SDLK_r)
-		{
-			pSysExp->setEmitting(true);
-			avionCompleto->setVisible(false);
-			this->sendEvent(MUERTE, this);
-			estaMoviendo = false;
-		}
-	}
+	
 
 	return true;
 }
 
 void Avion::frameRendered(const Ogre::FrameEvent& evt)
 {
-	if (scene_ == 2) {
-		if (estaMoviendo) {
-			Aspa1->frameRendered(evt);
-			Aspa2->frameRendered(evt);
-		}
 
-		estaMoviendo = false;
+	if (estaMoviendo) {
+		Aspa1->frameRendered(evt);
+		Aspa2->frameRendered(evt);
+		movimiento->yaw(Ogre::Degree(1));
 	}
-
-	else if (scene_ == 4) {
-		if (estaMoviendo){
-			Aspa1->frameRendered(evt);
-			Aspa2->frameRendered(evt);
-			movimiento->yaw(Ogre::Degree(1));
-		}
-	}
-
+	
 }
 
 AspasNave::AspasNave(Ogre::SceneNode* padre, int n) :EntidadIG(padre) {
@@ -537,7 +520,7 @@ void BrazoDron::frameRendered(const Ogre::FrameEvent& evt)
 	aspa->frameRendered(evt);
 }
 
-Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
+Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano) :EntidadIG(padre)
 {
 	myTymer = new Ogre::Timer();
 
@@ -546,73 +529,14 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 	mSinbadNode = mSinbadNodemov->createChildSceneNode();
 	mSinbadNode->attachObject(sinbad);
 
-	scene = scene_;
+	//POSICIÓN DE SINBAD
+	mSinbadNode->setScale(20, 20, 20);
+	mSinbadNode->setPosition(1000, mSinbadNode->getScale().y / 2 * 12, 1000);
+	mSinbadNode->yaw(Ogre::Degree(90));
 
-	if (scene == 3) {
-		mSinbadNode->setPosition(0, 120, 0);
-		mSinbadNode->yaw(Ogre::Degree(180));
-		mSinbadNode->setScale(5, 5, 5);
-	}
+	AnimacionPersonalizada();
 
-	else if (scene == 4) {
-
-		mSinbadNode->setScale(20, 20, 20);
-		mSinbadNode->setPosition(1000, mSinbadNode->getScale().y / 2 * 12, 1000);
-		mSinbadNode->yaw(Ogre::Degree(90));
-
-		int duration = 16;
-		Ogre::Animation* animation = mSM->createAnimation("animSSs", duration);
-
-		Ogre::NodeAnimationTrack* track = animation->createNodeTrack(0);
-		track->setAssociatedNode(mSinbadNode);
-
-		Ogre::Real durPaso = duration / 5.0;
-		Ogre::Vector3 sinbadInitPose = mSinbadNode->getPosition();
-		Ogre::Vector3 sinbadDestination = { -1200/3, mSinbadNode->getScale().y / 2 * 12, -900/3 };
-		Ogre::Vector3 src(0, 0, 1);
-
-		//1 keyframe rotar a simbad
-		Ogre::TransformKeyFrame* kf = track->createNodeKeyFrame(durPaso * 0);
-		kf->setScale(mSinbadNode->getScale());
-		kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
-		kf->setTranslate(sinbadInitPose);
-
-		//2 keyframe mover a simbad al medio
-		kf = track->createNodeKeyFrame(durPaso * 1);
-		kf->setScale(mSinbadNode->getScale());
-		kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
-		kf->setTranslate(sinbadDestination);
-
-		//3 keyframe mover a simbad al destino
-		kf = track->createNodeKeyFrame(durPaso * 2);
-		kf->setScale(mSinbadNode->getScale());
-		kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
-		kf->setTranslate(sinbadDestination * Ogre::Vector3(3,1,3));
-
-		//4 keyframe rotar a simbad
-		kf = track->createNodeKeyFrame(durPaso * 3);
-		kf->setScale(mSinbadNode->getScale());
-		kf->setRotation(Ogre::Quaternion(Ogre::Degree(45), Ogre::Vector3(0, 1, 0)));
-		kf->setTranslate(sinbadDestination * Ogre::Vector3(3, 1, 3));
-
-		//4 keyframe mover  a simbad a la posicion origen
-		kf = track->createNodeKeyFrame(durPaso * 4);
-		kf->setScale(mSinbadNode->getScale());
-		kf->setRotation(Ogre::Quaternion(Ogre::Degree(45), Ogre::Vector3(0, 1, 0)));
-		kf->setTranslate(sinbadInitPose);
-
-		//5 keyframe rotar a simbad
-		kf = track->createNodeKeyFrame(durPaso * 5);
-		kf->setScale(mSinbadNode->getScale());
-		kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
-		kf->setTranslate(sinbadInitPose);
-
-		anim_Sinbadmove = mSM->createAnimationState("animSSs");
-		anim_Sinbadmove->setLoop(true);
-		anim_Sinbadmove->setEnabled(true);
-
-	}
-
+	//ANIMACIONES PROPIAS DE SINBAD
 	animaciones();
 
 	Ogre::AnimationStateSet* aux = sinbad->getAllAnimationStates();
@@ -622,13 +546,64 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 		auto s = it->first; ++it;
 		std::cout << s << std::endl;
 	}
-
-	initTime = myTymer->getMilliseconds();
-	corriendo = true;
 	vivo = true;
 	izq = mano;
 	cambiaEspada();
 
+}
+
+void Sinbad::AnimacionPersonalizada()
+{
+	int duration = 16;
+	Ogre::Animation* animation = mSM->createAnimation("animSSs", duration);
+
+	Ogre::NodeAnimationTrack* track = animation->createNodeTrack(0);
+	track->setAssociatedNode(mSinbadNode);
+
+	Ogre::Real durPaso = duration / 5.0;
+	Ogre::Vector3 sinbadInitPose = mSinbadNode->getPosition();
+	Ogre::Vector3 sinbadDestination = { -1200 / 3, mSinbadNode->getScale().y / 2 * 12, -900 / 3 };
+	Ogre::Vector3 src(0, 0, 1);
+
+	//1 keyframe rotar a simbad
+	Ogre::TransformKeyFrame* kf = track->createNodeKeyFrame(durPaso * 0);
+	kf->setScale(mSinbadNode->getScale());
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
+	kf->setTranslate(sinbadInitPose);
+
+	//2 keyframe mover a simbad al medio
+	kf = track->createNodeKeyFrame(durPaso * 1);
+	kf->setScale(mSinbadNode->getScale());
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
+	kf->setTranslate(sinbadDestination);
+
+	//3 keyframe mover a simbad al destino
+	kf = track->createNodeKeyFrame(durPaso * 2);
+	kf->setScale(mSinbadNode->getScale());
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
+	kf->setTranslate(sinbadDestination * Ogre::Vector3(3, 1, 3));
+
+	//4 keyframe rotar a simbad
+	kf = track->createNodeKeyFrame(durPaso * 3);
+	kf->setScale(mSinbadNode->getScale());
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(45), Ogre::Vector3(0, 1, 0)));
+	kf->setTranslate(sinbadDestination * Ogre::Vector3(3, 1, 3));
+
+	//4 keyframe mover  a simbad a la posicion origen
+	kf = track->createNodeKeyFrame(durPaso * 4);
+	kf->setScale(mSinbadNode->getScale());
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(45), Ogre::Vector3(0, 1, 0)));
+	kf->setTranslate(sinbadInitPose);
+
+	//5 keyframe rotar a simbad
+	kf = track->createNodeKeyFrame(durPaso * 5);
+	kf->setScale(mSinbadNode->getScale());
+	kf->setRotation(Ogre::Quaternion(Ogre::Degree(-135.0), Ogre::Vector3(0, 1, 0)));
+	kf->setTranslate(sinbadInitPose);
+
+	anim_Sinbadmove = mSM->createAnimationState("animSSs");
+	anim_Sinbadmove->setLoop(true);
+	anim_Sinbadmove->setEnabled(true);
 }
 
 void Sinbad::animaciones()
@@ -656,55 +631,19 @@ void Sinbad::animaciones()
 
 void Sinbad::frameRendered(const Ogre::FrameEvent& evt)
 {
-	if (scene == 3) {
-		if (corriendo) {
-
-			anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
-			anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
-			mSinbadNodemov->pitch(Ogre::Degree(-100 * evt.timeSinceLastFrame));
-
-			unsigned long s = myTymer->getMilliseconds();
-			if (s >= initTime + 2000) {
-
-				mSinbadNodemov->yaw(Ogre::Degree(sentido * 30));
-				initTime = s;
-
-			}
-			else
-			{
-				std::random_device rd;
-				std::default_random_engine eng(rd());
-				std::uniform_int_distribution<int> distr(-1, 1);
-				sentido = distr(eng);
-				if (sentido == 0) {
-					sentido = -1;
-				}
-				mSinbadNodemov->pitch(Ogre::Degree(-0.2f));
-			}
-		}
-
-		else {
-			anim_Sinbaddance->addTime(evt.timeSinceLastFrame);
-		}
+	if (vivo) {
+		anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
+		anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
+		anim_Sinbadmove->addTime(evt.timeSinceLastFrame);
 	}
 
-	else if (scene == 4) {
+	else {
+		anim_SinbaddeadTop->addTime(evt.timeSinceLastFrame);
+		anim_SinbaddeadIdle->addTime(evt.timeSinceLastFrame);
 
-		if (vivo) {
-			anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
-			anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
-			anim_Sinbadmove->addTime(evt.timeSinceLastFrame);
+		if (myTymer->getMilliseconds() >= initTime + 5000) {
+			ent->sendEvent(EXPLOSION, ent);
 		}
-
-		else {
-			anim_SinbaddeadTop->addTime(evt.timeSinceLastFrame);
-			anim_SinbaddeadIdle->addTime(evt.timeSinceLastFrame);
-
-			if (myTymer->getMilliseconds() >= initTime + 5000) {
-				ent->sendEvent(EXPLOSION, ent);
-			}
-		}
-
 	}
 }
 
@@ -750,19 +689,13 @@ void Sinbad::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 
 	switch (msgType)
 	{
-	case NADA:
-		break;
-	case CAMBIATEXTURE:
-		break;
-	case DETIENE:
-		break;
 	case MUERTE:
 		if (vivo) {
 			vivo = false;
 			initTime = myTymer->getMilliseconds();
-			if(anim_Sinbadmove != nullptr) anim_Sinbadmove->setEnabled(false);
+			if (anim_Sinbadmove != nullptr) anim_Sinbadmove->setEnabled(false);
 			mSinbadNode->pitch(Ogre::Degree(-90));
-			mSinbadNode->translate(0, -mSinbadNode->getScale().y / 2 * 10,0);
+			mSinbadNode->translate(0, -mSinbadNode->getScale().y / 2 * 10, 0);
 			ent = entidad;
 		}
 		break;
@@ -844,10 +777,7 @@ void Bomba::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 
 	switch (msgType)
 	{
-	case NADA:
-		break;
-	case CAMBIATEXTURE:
-		break;
+
 	case DETIENE:
 		parada = true;
 		break;

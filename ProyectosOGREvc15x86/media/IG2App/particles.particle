@@ -65,7 +65,7 @@ particle_system particles/ExplosionAv
 		direction  0 1 0	
 		velocity_min 50
 		velocity_max 80    	
-		duration 10
+		duration 3
 	}
 
 	affector ColourFader

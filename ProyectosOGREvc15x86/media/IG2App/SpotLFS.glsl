@@ -22,10 +22,10 @@ float diff(vec3 cVertex, vec3 cNormal)
 
 void main(void) {
 	ZF=st*a+b;
-	float op = diff(viewVertex, viewNormal)*ZF;
+	float op = diff(viewVertex, viewNormal);
 	vec3 color = vec3(texture(beachStones, vUv0));
 	
-	if(op - 1 <= 0)
+	if(op <= ZF)
 		color = vec3(texture(beachStones, vUv0))*0.2; // acceso a t�xel
 
 	fFragColor = vec4(color*intLuzAmb, 1.0); // out
