@@ -29,19 +29,21 @@ void Plano::SetMaterial(std::string name) {
 	plano->setMaterialName(name);
 }
 
+bool Plano:: keyPressed(const OgreBites::KeyboardEvent& evt) {
+	if (evt.keysym.sym == SDLK_t) {
+		sendEvent(DETIENE, this);
+		sendEvent(CAMBIATEXTURE, this);
+	}
+	return true;
+}
+
 void Plano::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 
 	switch (msgType)
 	{
-	case NADA:
-		break;
 	case CAMBIATEXTURE:
 		cambiaText = true;
 		initTime = myTymer->getMilliseconds();
-		break;
-	case DETIENE:
-		break;
-	default:
 		break;
 	}
 
@@ -123,10 +125,7 @@ Noria::Noria(int n, Ogre::SceneNode* node) :EntidadIG(node), estagirando(true), 
 	}
 }
 
-void Noria::giraNoria()
-{
-	if (!estagirando) aspasNode->pitch(Ogre::Degree(1.0));
-}
+
 
 void Noria::frameRendered(const Ogre::FrameEvent& evt)
 {
@@ -363,7 +362,7 @@ bool Avion::keyPressed(const OgreBites::KeyboardEvent& evt)
 		}
 	}
 
-	else if (scene_ = 4) {
+	else if (scene_ == 4) {
 		if (evt.keysym.sym == SDLK_r)
 		{
 			pSysExp->setEmitting(true);
@@ -750,12 +749,6 @@ void Sinbad::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 
 	switch (msgType)
 	{
-	case NADA:
-		break;
-	case CAMBIATEXTURE:
-		break;
-	case DETIENE:
-		break;
 	case MUERTE:
 		if (vivo) {
 			vivo = false;
@@ -765,8 +758,6 @@ void Sinbad::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 			mSinbadNode->translate(0, -mSinbadNode->getScale().y / 2 * 10,0);
 			ent = entidad;
 		}
-		break;
-	default:
 		break;
 	}
 
@@ -844,10 +835,6 @@ void Bomba::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 
 	switch (msgType)
 	{
-	case NADA:
-		break;
-	case CAMBIATEXTURE:
-		break;
 	case DETIENE:
 		parada = true;
 		break;
@@ -855,8 +842,6 @@ void Bomba::receiveEvent(MessageType msgType, EntidadIG* entidad) {
 		pSysExp->setEmitting(true);
 		bomba->setVisible(false);
 		parada = true;
-		break;
-	default:
 		break;
 	}
 

@@ -13,7 +13,7 @@
 #include<OgreParticleSystem.h>
 
 
-enum MessageType {NADA, CAMBIATEXTURE, DETIENE, MUERTE, EXPLOSION};
+enum MessageType {CAMBIATEXTURE, DETIENE, MUERTE, EXPLOSION};
 
 class EntidadIG :public OgreBites::InputListener {
 public:
@@ -45,6 +45,7 @@ class Plano :public EntidadIG {
 
 	Ogre::Entity* plano;
 	virtual void receiveEvent(MessageType msgType, EntidadIG* entidad);
+	bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	bool cambiaText;
 	unsigned long initTime;
 	Ogre::Timer* myTymer;
@@ -85,7 +86,6 @@ class Noria :public  EntidadIG
 
 		Noria(int n, Ogre::SceneNode* node);
 		~Noria() {  };
-		void giraNoria();
 		void frameRendered(const Ogre::FrameEvent& evt);
 
 	private:

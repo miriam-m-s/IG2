@@ -27,6 +27,7 @@ protected:
   void EscenaPlanetaSinbad();
   void NoriaMunyeco();
   void PlanetaAvispa();
+  void RelojEscena();
 
   virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);  // InputListener
   virtual void frameRendered(const Ogre::FrameEvent& evt);
@@ -41,7 +42,6 @@ protected:
   Ogre::SceneNode* Scene2 = nullptr;
   Ogre::SceneNode* Scene3 = nullptr;
   Ogre::SceneNode* Scene4 = nullptr;
-  Ogre::SceneNode* PN = nullptr;
 
   Ogre::ParticleSystem* pSysExp;
   

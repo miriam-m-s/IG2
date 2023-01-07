@@ -15,45 +15,7 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 		getRoot()->queueEndRendering();
 	}
 
-	else if (evt.keysym.sym == SDLK_g) {
-		/* auto mClockNode = mSM->getRootSceneNode()->getChild("Clock");
-
-		 mClockNode->roll(Ogre::Degree(-8));*/
-	}
-
-	else if (evt.keysym.sym == SDLK_y) {
-		/* auto nHours = mSM->getRootSceneNode()->getChild("Clock")->getChild("Hours");
-
-		 nHours->yaw(Ogre::Degree(-8));*/
-	}
-
-	else if (evt.keysym.sym == SDLK_q) {
-		noria->giraNoria();
-	}
-
-	else if (evt.keysym.sym == SDLK_p) {
-		PN->yaw(Ogre::Degree(1.0));
-	}
-
-	else if (evt.keysym.sym == SDLK_t) {
-		plano->sendEvent(DETIENE, plano);
-		plano->sendEvent(CAMBIATEXTURE, plano);
-	}
-
-	else if (evt.keysym.sym == SDLK_r) {
-		plano->sendEvent(NADA ,noria);
-	}
-
-	else if (evt.keysym.sym == SDLK_1) {
-		Scene2->setVisible(false);
-		Scene1->setVisible(true);
-		Scene4->setVisible(false);
-		Scene3->setVisible(false);
-		dronesVivos->hide();
-	}
-
 	else if (evt.keysym.sym == SDLK_2) {
-		Scene1->setVisible(false);
 		Scene2->setVisible(true);
 		Scene4->setVisible(false);
 		Scene3->setVisible(false);
@@ -61,17 +23,17 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 	}
 
 	else if (evt.keysym.sym == SDLK_3) {
-		Scene1->setVisible(false);
 		Scene2->setVisible(false);
 		Scene4->setVisible(false);
 		Scene3->setVisible(true);
+		dronesVivos->hide();
 	}
 
 	else if (evt.keysym.sym == SDLK_4) {
-		Scene1->setVisible(false);
 		Scene3->setVisible(false);
 		Scene2->setVisible(false);
 		Scene4->setVisible(true);
+		dronesVivos->hide();
 	}
 
 	return true;
@@ -80,23 +42,22 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
 	
-	
-	//for (auto it = avispero.begin(); it != avispero.end();) {
-	//	Ogre::SceneNode* avispa = *it;
-	//	if (AvionCompleto->_getWorldAABB().intersects(avispa->_getWorldAABB())) {
-	//		//avispa->setVisible(false);
-	//		avispa->getParent()->removeChild(*it);;
-	//		it=avispero.erase(it);
-	//		dronesVivos->setText(std::to_string(avispero.size()));
-	//	}
-	//	else {
-	//		++it;
-	//	}
-	//}
+	for (auto it = avispero.begin(); it != avispero.end();) {
+		Ogre::SceneNode* avispa = *it;
+		if (AvionCompleto->_getWorldAABB().intersects(avispa->_getWorldAABB())) {
+			//avispa->setVisible(false);
+			avispa->getParent()->removeChild(*it);;
+			it=avispero.erase(it);
+			dronesVivos->setText(std::to_string(avispero.size()));
+		}
+		else {
+			++it;
+		}
+	}
 
-	//if (avispero.size() == 0) {
-	//	drone->changeColor();
-	//}
+	if (avispero.size() == 0) {
+		drone->changeColor();
+	}
 }
 
 void IG2App::shutdown()
@@ -177,68 +138,7 @@ void IG2App::setupScene(void)
 
 	// finally something to render
 
-	//Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
-
-	//mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
-	//mSinbadNode->attachObject(ent);
-
-	////mSinbadNode->setPosition(400, 100, -300);
-	//mSinbadNode->setScale(20, 20, 20);
-	//mSinbadNode->yaw(Ogre::Degree(-45));
-	//mSinbadNode->showBoundingBox(true);
-	//mSinbadNode->setVisible(false);
-
-	//Ogre::SceneNode* mClockNode = mSM->getRootSceneNode()->createChildSceneNode("Clock");
-	//mClockNode->setPosition(0,0,0);
-	//Ogre::SceneNode* mHoursNode = mClockNode->createChildSceneNode("Hours");
-
-	//double angle = 90;
-	//double radius = 200;
-
-	//for (int i = 0; i < 12; i++) {
-
-	   // Ogre::Entity* hora = mSM->createEntity("uv_sphere.mesh");
-
-	   // Ogre::SceneNode* Hora = mHoursNode->createChildSceneNode("Hora"+std::to_string(i+1));
-	   // Hora->attachObject(hora);
-
-	   // Hora->setScale(0.2, 0.2, 0.2);
-	   // Hora->setPosition(Ogre::Math::Cos(Ogre::Math::DegreesToRadians(angle)) *radius, 
-		  //  Ogre::Math::Sin(Ogre::Math::DegreesToRadians(angle))*radius , 0);
-
-	   // angle += 360 / 12;
-	//}
-
-	//EJ 2
-   /*  for (int i = 0; i < 12; i+=2) {
-		auto s=mHoursNode->getChild("Hora" + std::to_string(i + 1));
-		s->setScale(0.1, 0.1, 0.1);
-	}*/
-
-	//Ogre::Entity* agujaM = mSM->createEntity("cube.mesh");
-	//Ogre::SceneNode* AgujaM = mClockNode->createChildSceneNode();
-	//AgujaM->attachObject(agujaM);
-	//AgujaM->setScale(0.2, 1.75, 0.1);
-	//AgujaM->setPosition(mClockNode->getPosition().x, mClockNode->getPosition().y + radius / 4 , 0);
-
-	//Ogre::Entity* agujaH = mSM->createEntity("cube.mesh");
-	//Ogre::SceneNode* AgujaH = mClockNode->createChildSceneNode();
-	//AgujaH->attachObject(agujaH);
-	//AgujaH->setScale(0.1, 1.5, 0.1);
-	//AgujaH->setPosition(mClockNode->getPosition().x + radius/4, mClockNode->getPosition().y, 0);
-	//AgujaH->roll(Ogre::Degree(90));
-
-	//Ogre::Entity* agujaS = mSM->createEntity("cube.mesh");
-	//Ogre::SceneNode* AgujaS = mClockNode->createChildSceneNode();
-	//AgujaS->attachObject(agujaS);
-	//AgujaS->setScale(0.1/2, 1.5, 0.1);
-	//AgujaS->roll(Ogre::Degree(-60));
-	//AgujaS->setPosition(mClockNode->getPosition().x-50, mClockNode->getPosition().y - radius / 4+20, 0);
-
-	//mSinbadNode->setPosition(400, 100, -300);
-	//mSinbadNode->setScale(20, 20, 20);
-
-	NoriaMunyeco();
+	//NoriaMunyeco();
 
 	PlanetaAvispa();
 
@@ -255,6 +155,68 @@ void IG2App::setupScene(void)
 
 	//------------------------------------------------------------------------
 
+}
+
+void IG2App::RelojEscena() {
+	/*
+	Ogre::SceneNode* mClockNode = mSM->getRootSceneNode()->createChildSceneNode("Clock");
+	mClockNode->setPosition(0,0,0);
+	Ogre::SceneNode* mHoursNode = mClockNode->createChildSceneNode("Hours");
+
+	double angle = 90;
+	double radius = 200;
+
+	for (int i = 0; i < 12; i++) {
+
+	    Ogre::Entity* hora = mSM->createEntity("uv_sphere.mesh");
+
+	    Ogre::SceneNode* Hora = mHoursNode->createChildSceneNode("Hora"+std::to_string(i+1));
+	    Hora->attachObject(hora);
+
+	    Hora->setScale(0.2, 0.2, 0.2);
+	    Hora->setPosition(Ogre::Math::Cos(Ogre::Math::DegreesToRadians(angle)) *radius, 
+		    Ogre::Math::Sin(Ogre::Math::DegreesToRadians(angle))*radius , 0);
+
+	    angle += 360 / 12;
+	}
+
+   for (int i = 0; i < 12; i+=2) {
+		auto s=mHoursNode->getChild("Hora" + std::to_string(i + 1));
+		s->setScale(0.1, 0.1, 0.1);
+	}
+
+	Ogre::Entity* agujaM = mSM->createEntity("cube.mesh");
+	Ogre::SceneNode* AgujaM = mClockNode->createChildSceneNode();
+	AgujaM->attachObject(agujaM);
+	AgujaM->setScale(0.2, 1.75, 0.1);
+	AgujaM->setPosition(mClockNode->getPosition().x, mClockNode->getPosition().y + radius / 4 , 0);
+
+	Ogre::Entity* agujaH = mSM->createEntity("cube.mesh");
+	Ogre::SceneNode* AgujaH = mClockNode->createChildSceneNode();
+	AgujaH->attachObject(agujaH);
+	AgujaH->setScale(0.1, 1.5, 0.1);
+	AgujaH->setPosition(mClockNode->getPosition().x + radius/4, mClockNode->getPosition().y, 0);
+	AgujaH->roll(Ogre::Degree(90));
+
+	Ogre::Entity* agujaS = mSM->createEntity("cube.mesh");
+	Ogre::SceneNode* AgujaS = mClockNode->createChildSceneNode();
+	AgujaS->attachObject(agujaS);
+	AgujaS->setScale(0.1/2, 1.5, 0.1);
+	AgujaS->roll(Ogre::Degree(-60));
+	AgujaS->setPosition(mClockNode->getPosition().x-50, mClockNode->getPosition().y - radius / 4+20, 0);
+	*/
+
+	//else if (evt.keysym.sym == SDLK_g) {
+//	/* auto mClockNode = mSM->getRootSceneNode()->getChild("Clock");
+
+//	 mClockNode->roll(Ogre::Degree(-8));*/
+//}
+
+//else if (evt.keysym.sym == SDLK_y) {
+//	/* auto nHours = mSM->getRootSceneNode()->getChild("Clock")->getChild("Hours");
+
+//	 nHours->yaw(Ogre::Degree(-8));*/
+//}
 }
 
 void IG2App::EscenaBombaSinbad() {
@@ -309,18 +271,20 @@ void IG2App::EscenaBombaSinbad() {
 
 	bbSet->createBillboard({ 0,0,0 });
 
-
 	addInputListener(avion);
 	addInputListener(olaf);
 	addInputListener(sinbad);
 	addInputListener(plano);
 	addInputListener(bomba);
+	addInputListener(noria);
 	EntidadIG::addListener(avion);
 	EntidadIG::addListener(sinbad);
 	EntidadIG::addListener(plano);
 	EntidadIG::addListener(bomba);
+	EntidadIG::addListener(noria);
 
-	Scene4->setVisible(false);
+	Scene4->setVisible(true);
+	dronesVivos->hide();
 }  
 
 void IG2App::EscenaPlanetaSinbad() {
@@ -340,6 +304,7 @@ void IG2App::EscenaPlanetaSinbad() {
 	EntidadIG::addListener(sinbad);
 
 	Scene3->setVisible(false);
+	dronesVivos->hide();
 }
 
 void IG2App::NoriaMunyeco()
@@ -426,6 +391,8 @@ void IG2App::PlanetaAvispa()
 		centro->pitch(Ogre::Degree(pitch));
 
 	}
+
+	Scene2->setVisible(false);
 }
 
 
