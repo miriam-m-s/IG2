@@ -1,5 +1,6 @@
 #version 330 core
 in vec2 uv0;
+in vec2 uv1;
 in vec4 vertex;
 out vec2 vUv0;
 uniform mat4 modelViewProjMat;

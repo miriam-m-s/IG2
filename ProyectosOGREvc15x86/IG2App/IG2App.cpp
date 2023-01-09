@@ -194,8 +194,28 @@ void IG2App::EscenaBombaSinbad() {
 	bicopeteroNode2->translate(-200, 2000, 0);
 
 
-	mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -40), "practica2GLSL/space2"
+	mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -40), "practica2GLSL/space"
 		, 1, 1, true, 1.0, 100, 100);
+
+	Ogre::SceneNode* grada = mainScene->createChildSceneNode();
+	Ogre::BillboardSet* bbSet = mSM->createBillboardSet(1);
+	bbSet->setDefaultDimensions(200, 200);
+	bbSet->setMaterialName("Practica1/antonio");
+	bbSet->setCommonDirection({1,0,1});
+	grada->attachObject(bbSet);
+
+	Ogre::Real x = 300, y = 100, z = 100;
+
+	for (int i = 0; i < 5; i++) {
+		Ogre::Real x2 = x;
+		for (int j = 0; j < 7; j++) {
+			x2 = j * 200;
+			bbSet->createBillboard({ x2,y,z });
+		}
+
+		y = y + 200;
+		z = z - 200;
+	}
 
 	addInputListener(avion);
 	addInputListener(sinbad);

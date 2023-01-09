@@ -578,6 +578,11 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 	mSinbadNode = mSinbadNodemov->createChildSceneNode();
 	mSinbadNode->attachObject(sinbad);
 
+	Ogre::BillboardSet* bbSet = mSM->createBillboardSet(1);
+	bbSet->setDefaultDimensions(200, 200);
+	bbSet->setMaterialName("Practica1/antonio");
+	mSinbadNode->attachObject(bbSet);
+
 	scene = scene_;
 
 	if (scene == 3) {
@@ -914,9 +919,8 @@ void Bicoptero::receiveEvent(MessageType msgType, EntidadIG* entidad)
 		pSysExp->setEmitting(true);
 		m = false;
 		break;
-	default:
-		break;
 	}
+
 }
 
 Bicoptero::Bicoptero(Ogre::SceneNode* padre, Ogre::SceneNode* nodoMovimiento, bool azul) :EntidadIG(padre), movimiento(nodoMovimiento)
