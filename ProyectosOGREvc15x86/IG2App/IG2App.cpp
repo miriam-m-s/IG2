@@ -201,7 +201,9 @@ void IG2App::EscenaBombaSinbad() {
 	Ogre::BillboardSet* bbSet = mSM->createBillboardSet(1);
 	bbSet->setDefaultDimensions(200, 200);
 	bbSet->setMaterialName("Practica1/antonio");
-	bbSet->setCommonDirection({1,0,1});
+	bbSet->setCommonUpVector({ 0,1,0 });
+	//bbSet->setCommonDirection({ 1, 1 ,1} );
+	bbSet->setBillboardType(BBT_ORIENTED_COMMON);
 	grada->attachObject(bbSet);
 
 	Ogre::Real x = 300, y = 100, z = 100;

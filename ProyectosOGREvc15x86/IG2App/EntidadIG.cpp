@@ -579,9 +579,11 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 	mSinbadNode->attachObject(sinbad);
 
 	Ogre::BillboardSet* bbSet = mSM->createBillboardSet(1);
-	bbSet->setDefaultDimensions(200, 200);
+	bbSet->setDefaultDimensions(2, 2);
 	bbSet->setMaterialName("Practica1/antonio");
 	mSinbadNode->attachObject(bbSet);
+
+	bbSet->createBillboard({0,3,2});
 
 	scene = scene_;
 
@@ -597,15 +599,16 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 		mSinbadNode->setPosition(-1000, mSinbadNode->getScale().y / 2 * 12, -1000);
 		mSinbadNode->yaw(Ogre::Degree(90));
 
-		int duration = 18;
+		int duration = 4;
 		Ogre::Animation* animation = mSM->createAnimation("animSSs", duration);
 
 		Ogre::NodeAnimationTrack* track = animation->createNodeTrack(0);
 		track->setAssociatedNode(mSinbadNode);
 
-		Ogre::Real durPaso = duration / 5.0;
+		Ogre::Real durPaso = duration / 3;
 		Ogre::Vector3 sinbadInitPose = mSinbadNode->getPosition();
-		Ogre::Vector3 sinbadDestination = { mSinbadNode->getPosition().x, 1000 , mSinbadNode->getPosition().z};
+		Ogre::Vector3 sinbadDestination = { mSinbadNode->getPosition().x, mSinbadNode->getPosition().y
+			 , mSinbadNode->getPosition().z + 300};
 		//Ogre::Vector3 src(0, 0, 1);
 
 		////1 keyframe rotar a simbad
@@ -613,30 +616,25 @@ Sinbad::Sinbad(Ogre::SceneNode* padre, bool mano, int scene_) :EntidadIG(padre)
 		kf->setScale(mSinbadNode->getScale());
 		kf->setTranslate(sinbadInitPose);
 
+		kf = track->createNodeKeyFrame(2);
+		kf->setScale(mSinbadNode->getScale());
+		kf->setTranslate(sinbadDestination);
+		sinbadDestination.z += 200;
+
 		////2 keyframe mover a simbad al medio
-		kf = track->createNodeKeyFrame(8);
-		kf->setScale(mSinbadNode->getScale());
-		kf->setTranslate(sinbadDestination);
-
-		kf = track->createNodeKeyFrame(10);
+		kf = track->createNodeKeyFrame(3);
 		kf->setScale(mSinbadNode->getScale());
 		kf->setRotation(Ogre::Quaternion(Ogre::Degree(180), Ogre::Vector3(1, 0, 0)));
 		kf->setTranslate(sinbadDestination);
 
-		kf = track->createNodeKeyFrame(12);
-		kf->setScale(mSinbadNode->getScale());
-		kf->setRotation(Ogre::Quaternion(Ogre::Degree(180), Ogre::Vector3(1, 0, 0)));
-		kf->setTranslate(sinbadDestination* Ogre::Vector3(1,-1,1));
+		sinbadDestination.z += 200;
 
-		kf = track->createNodeKeyFrame(14);
+		kf = track->createNodeKeyFrame(4);
 		kf->setScale(mSinbadNode->getScale());
 		kf->setRotation(Ogre::Quaternion(Ogre::Degree(360), Ogre::Vector3(1, 0, 0)));
-		kf->setTranslate(sinbadDestination * Ogre::Vector3(1, -1, 1));
+		kf->setTranslate(sinbadDestination);
 
-	    kf = track->createNodeKeyFrame(18);
-		kf->setScale(mSinbadNode->getScale());
-		kf->setRotation(Ogre::Quaternion(Ogre::Degree(360), Ogre::Vector3(1, 0, 0)));
-		kf->setTranslate(sinbadInitPose);
+		
 
 		anim_Sinbadmove = mSM->createAnimationState("animSSs");
 		anim_Sinbadmove->setLoop(true);
@@ -726,8 +724,8 @@ void Sinbad::frameRendered(const Ogre::FrameEvent& evt)
 	else if (scene == 4) {
 
 		if (vivo) {
-			//anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
-			//anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
+			anim_Sinbadtop->addTime(evt.timeSinceLastFrame);
+			anim_Sinbaddown->addTime(evt.timeSinceLastFrame);
 			if(detiene)anim_Sinbadmove->addTime(evt.timeSinceLastFrame);
 		}
 
