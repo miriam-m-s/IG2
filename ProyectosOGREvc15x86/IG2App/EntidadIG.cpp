@@ -936,7 +936,7 @@ Bicoptero::Bicoptero(Ogre::SceneNode* papa, Ogre::SceneNode* rota,int i) :Entida
 	Ogre::SceneNode* cartel = bicopCompleto->createChildSceneNode();
 	Ogre::BillboardSet* bbSet = mSM->createBillboardSet( 1);
 	bbSet->setDefaultDimensions(200, 200);
-	bbSet->setMaterialName("Practica1/pilotando");
+	bbSet->setMaterialName("Practica1/antonio");
 	cartel->attachObject(bbSet);
 	bbSet->createBillboard({ 0,200,0 });
 
@@ -961,14 +961,14 @@ void Bicoptero::frameRendered(const Ogre::FrameEvent& evt)
 		rota_->pitch(Ogre::Radian(time * 7));
 		bicopCompleto->roll(Ogre::Radian(-time * 7));
 	}
-	
+	Ogre::Vector3 posyyyy = (bicopCompleto->getPosition());
 	
 
 }
 
 void Bicoptero::receiveEvent(MessageType msgType, EntidadIG* entidad)
 {
-	Ogre::Vector3 posyyyy = bicopCompleto->getInitialPosition();
+	
 		switch (msgType)
 		{
 
@@ -976,7 +976,7 @@ void Bicoptero::receiveEvent(MessageType msgType, EntidadIG* entidad)
 		
 			Ogre::SceneNode* mainScene = mSM->getRootSceneNode()->createChildSceneNode();
 		
-			mainScene->translate(Ogre::Vector3(posyyyy.x, posyyyy.y,posyyyy.z));
+			mainScene->translate(bicopCompleto->getPosition());
 			pSysExp = mSM->createParticleSystem("psSysExpA" + std::to_string(i_), "particles/ExplosionAv");
 			mainScene->attachObject(pSysExp);
 		
@@ -985,7 +985,7 @@ void Bicoptero::receiveEvent(MessageType msgType, EntidadIG* entidad)
 			pSysExp->setEmitting(true);
 			//bicopCompleto->getParent()->cancelUpdate
 		
-			pSys->setEmitting(false);
+			//pSys->setEmitting(false);
 		
 			
 			moviendo = false;

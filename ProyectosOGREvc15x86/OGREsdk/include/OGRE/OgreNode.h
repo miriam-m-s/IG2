@@ -288,7 +288,7 @@ namespace Ogre {
 
         /** Gets the position of the node relative to it's parent.
         */
-        const Vector3 & getPosition(void) const { return mPosition; }
+        const Vector3 &getPosition(void) const { return mPosition; }
 
         /** Sets the scaling factor applied to this node.
         @remarks

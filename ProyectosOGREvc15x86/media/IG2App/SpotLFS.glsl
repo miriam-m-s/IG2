@@ -21,12 +21,24 @@ float diff(vec3 cVertex, vec3 cNormal)
 }
 
 void main(void) {
-	ZF=st*a+b;
-	float op = diff(viewVertex, viewNormal)*ZF;
-	vec3 color = vec3(texture(beachStones, vUv0));
-	
-	if(op - 1 <= 0)
-		color = vec3(texture(beachStones, vUv0))*0.2; // acceso a t�xel
+	vec3 colorCelda = vec3(texture(beachStones, vec2(vUv0.x+st, vUv0.y))); // acceso a téxel
 
-	fFragColor = vec4(color*intLuzAmb, 1.0); // out
+	if(colorCelda.x < 0.6){
+				ZF=st*a+b;
+				float op = diff(viewVertex, viewNormal);
+				vec3 color = vec3(texture(beachStones, vec2(vUv0.x+st, vUv0.y)));
+	
+				if(op<=ZF)
+					color = vec3(texture(beachStones,  vec2(vUv0.x+st, vUv0.y)))*op*vec3(1,0.2,1); // acceso a t�xel
+				else{
+				   color = vec3(texture(beachStones,  vec2(vUv0.x+st, vUv0.y)))*op*vec3(0,1,1); // acceso a t�xel
+				}
+
+				fFragColor = vec4(color*intLuzAmb, 1.0); // out
+		
+		}
+		else {
+			fFragColor = vec4(vec3(0,st/2+0.5,st/2+0.5), 1.0); // out
+		}
+	
 }

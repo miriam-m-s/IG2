@@ -146,6 +146,7 @@ fragment_program SpaceFS glsl
 			param_named texturaSky int 0 
 			param_named texturaMap int 1
 			param_named intLuzAmb float 1.0
+			param_named_auto ofsset sintime_0_2pi 5
 
 		
 		}
@@ -160,7 +161,7 @@ material practica2GLSL/space2{
 
 			texture_unit //int 0
 			{ 
-				texture  spaceSky.jpg 2d
+				texture  antonio.jpg 2d
 				tex_address_mode clamp // s�lo configuraci�n
 				filtering bilinear // de acceso al texel
 			}
@@ -336,7 +337,7 @@ vertex_program SpotLVS glsl
 		default_params
 		{
 			param_named_auto modelViewProjMat worldviewproj_matrix
-			param_named_auto normalMat inverse_transpose_worldview_matrix
+			param_named_auto normalMat inverse_transpose_world_matrix
 		}
 }
 
@@ -347,8 +348,8 @@ fragment_program SpotLFS glsl
 			param_named beachStones int 0
 			param_named intLuzAmb float 1.0
 		    param_named_auto positionaLight light_position 0
-			param_named a float 0.5
-			param_named b float 1.5
+			param_named a float 0.05
+			param_named b float 0.85
 			param_named_auto st costime_0_2pi 3
 		}
 }
@@ -365,6 +366,45 @@ material practica2GLSL/SpotL{
 						texture BeachStones.jpg 2d // archivo
 						tex_address_mode wrap // s�lo configuraci�n
 					}
+
+			}
+		}
+}
+
+vertex_program mandelVS glsl 
+{
+		source mandelVS.glsl
+		default_params
+		{
+			param_named_auto modelViewProjMat worldviewproj_matrix
+		}
+}
+
+fragment_program mandelFS glsl
+{
+		source mandelFS.glsl
+		default_params{
+			param_named texturaM int 0 
+			param_named MAXITER int 600
+		
+		}
+}
+
+material practica2GLSL/mandel{
+	technique {
+			pass {
+					vertex_program_ref mandelVS{}
+					fragment_program_ref mandelFS{	}
+				
+
+			texture_unit //int 0
+			{ 
+				texture  spaceSky.jpg 2d
+				tex_address_mode clamp // s�lo configuraci�n
+				filtering bilinear // de acceso al texel
+				rotate_anim 0.05
+			}
+			
 
 			}
 		}

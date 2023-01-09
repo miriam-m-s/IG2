@@ -117,7 +117,15 @@ void IG2App::setupScene(void)
 	//------------------------------------------------------------------------
 
 	// finally something to render
-
+	Light* luzFoco = mSM->createLight("Luz Foco");
+	luzFoco->setType(Ogre::Light::LT_SPOTLIGHT);
+	luzFoco->
+		setDiffuseColour(Ogre::ColourValue(1.0f, 1.0f, 1.0f));
+	luzFoco->setDirection(Ogre::Vector3(1, -1, 0));
+	luzFoco->setSpotlightInnerAngle(Ogre::Degree(5.0f));
+	luzFoco->setSpotlightOuterAngle(Ogre::Degree(45.0f));
+	luzFoco->setSpotlightFalloff(0.0f);
+	mLightNode->attachObject(luzFoco);
 	EscenaBombaSinbad();
 
 	mCamMgr = new OgreBites::CameraMan(mCamNode);
@@ -186,6 +194,17 @@ void IG2App::EscenaBombaSinbad() {
 	bicopter1->yaw(Ogre::Degree(90));
 	mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -40), "practica2GLSL/space2"
 		, 1, 1, true, 1.0, 100, 100);
+	Ogre::SceneNode* node = mainScene->createChildSceneNode();
+	Ogre::BillboardSet* bbSet = mSM->createBillboardSet(4);
+
+	bbSet->setDefaultDimensions(200, 200);
+	bbSet->setMaterialName("Practica1/antonio");
+	node->attachObject(bbSet);
+	for (int i = 0; i < 8; i++) {
+		
+	
+		bbSet->createBillboard({ Ogre::Real(i*300)-1000,200,-1000 });
+	}
 
 	addInputListener(avion);
 	addInputListener(bico);

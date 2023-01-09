@@ -238,19 +238,6 @@ material Practica1/points {
 		 }
 	 }
 }
-material Practica1/pilotando {
-		technique {
-			pass {
-			    lighting off  
-				texture_unit {
-					texture spotlight_image.png
-					
-					tex_address_mode clamp
-			
-				}
-		 }
-	 }
-}
 
 material Practica1/Smoke
 {
@@ -269,6 +256,31 @@ material Practica1/Smoke
 					}
 				}
 			}
+}
+
+material Practica1/sendo {
+		technique {
+			pass {
+				diffuse 0.3 0.3 0.3
+				texture_unit {
+					texture spotlight_image.png
+					colour_op add
+				}
+		 }
+	 }
+}
+
+material Practica1/antonio {
+		technique {
+			pass {
+				diffuse 1.0 0.0 0.0
+				texture_unit {
+					texture antonio.jpg
+					colour_op add
+					scroll_anim 0.5  0.0
+				}
+		 }
+	 }
 }
 
 material IG2/Space{
@@ -297,4 +309,3 @@ material IG2/Space{
 						}
 					}
 }
-
